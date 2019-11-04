@@ -1,6 +1,7 @@
 image: ruby:2.5.1
 stages:
   - build
+  - deploy_staging
 
 job_build:
   stage: build
@@ -11,3 +12,12 @@ job_build:
     - gem install bundler --no-ri --no-rdoc
     - bundle install --without staging production
     - RACK_ENV=test bundle exec rake
+
+job_deploy_staging:
+  stage: deploy_staging
+  script:
+  - gem install dpl -v 1.10.12
+  - dpl --provider=heroku --app=$HEROKU_STAGING_APP --api-key=$HEROKU_API_KEY
+  only:
+    variables:
+      - $STAGING_BRANCH == $CI_COMMIT_REF_NAME
