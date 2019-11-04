@@ -1,4 +1,11 @@
 image: ruby:2.5.1
+services:
+  - postgres:9.5
+variables:
+  POSTGRES_DB: pentosapi_test
+  POSTGRES_USER: pentosapi
+  POSTGRES_PASSWORD: pentosapi
+  DB_HOST: postgres
 stages:
   - build
   - deploy_staging

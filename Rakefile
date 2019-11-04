@@ -1,6 +1,9 @@
 require 'bundler/setup'
 require 'English'
 
+require_relative './config/database'
+require_relative './tasks/sequel'
+
 RACK_ENV = ENV['RACK_ENV'] ||= ENV['RACK_ENV'] ||= 'test' unless defined?(RACK_ENV)
 
 task :version do
@@ -29,10 +32,12 @@ if %w[development test travis].include?(RACK_ENV)
 
   require 'cucumber/rake/task'
   Cucumber::Rake::Task.new(:cucumber) do |task|
+    Rake::Task['db:migrate'].invoke
     task.cucumber_opts = ['features', '--tags ~@wip']
   end
 
   Cucumber::Rake::Task.new(:cucumber_report) do |task|
+    Rake::Task['db:migrate'].invoke
     task.cucumber_opts = ['features', '--format html -o reports/cucumber.html']
   end
 
