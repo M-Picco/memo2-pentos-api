@@ -1,2 +1,1 @@
-web: bundle exec padrino start -p $PORT -h 0.0.0.0
-release: rake db:migrate
+web: bundle exec ruby app/app.rb -p $PORT -o 0.0.0.0
