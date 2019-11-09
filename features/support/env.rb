@@ -11,6 +11,7 @@ include Rack::Test::Methods # rubocop:disable Style/MixinUsage:
 BASE_URL = ENV['BASE_URL'] || 'http://localhost:4567'
 
 CLIENT_BASE_URL = BASE_URL + '/client'
+ORDER_BASE_URL = CLIENT_BASE_URL + '/%s/order'
 
 def header
   { 'Content-Type' => 'application/json' }
