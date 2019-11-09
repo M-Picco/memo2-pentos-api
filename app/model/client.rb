@@ -5,6 +5,8 @@ class Client
 
   attr_accessor :id, :name, :phone, :address, :updated_on, :created_on
 
+  validates :name, presence: true
+
   def initialize(data = {})
     @id = data['id']
     @name = data['username']
