@@ -13,10 +13,13 @@ post '/client' do
   params = JSON.parse(request.body.read)
 
   client = Client.new(params)
-  ClientRepository.new.save(client)
 
-  response = { client_id: client.id }
-  status 200
+  if ClientRepository.new.save(client)
+    response = { client_id: client.id }
+  else
+    status 400
+    response = { error: extract_first_error(client) }
+  end
 
   response.to_json
 end
@@ -24,4 +27,11 @@ end
 post '/reset' do
   ClientRepository.new.delete_all
   status 200
+end
+
+def extract_first_error(entity)
+  return '' if entity.errors.empty?
+
+  # Ex: entity.errors.messages = [:symbol, ["the error"]]
+  entity.errors.messages.first[1].first
 end
