@@ -10,3 +10,10 @@ Característica: Realizar un pedido
     Escenario: P1 - Hace pedido exitoso
         Cuando el cliente pide un "menu_individual"
         Entonces obtiene numero de pedido único
+
+    @wip
+    Escenario: CEP1 - cambio de estado de recibida a en_preparacion
+      Dado que el cliente pidio un "menu_pareja"
+      Cuando el estado cambia a "en_preparacion"
+      Y consulta el estado
+      Entonces el estado es "en_preparacion"
