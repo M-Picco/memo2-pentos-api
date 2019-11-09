@@ -5,5 +5,12 @@ class Client
 
   attr_accessor :id, :name, :phone, :address, :updated_on, :created_on
 
-  def initialize; end
+  def initialize(data = {})
+    @id = data[:id]
+    @name = data[:name]
+    @phone = data[:phone]
+    @address = data[:address]
+    @updated_on = data[:updated_on]
+    @created_on = data[:created_on]
+  end
 end
