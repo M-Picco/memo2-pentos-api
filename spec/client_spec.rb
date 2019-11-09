@@ -45,5 +45,12 @@ describe Client do
       expect(client.valid?).to eq false
       expect(client.errors).to have_key(:phone)
     end
+
+    it 'should be invalid when phone contains non numerical numbers' do
+      client = described_class.new('username' => 'pentos123', 'phone' => '4123-412A',
+                                   'address' => 'Av Paseo Colón 840')
+      expect(client.valid?).to eq false
+      expect(client.errors).to have_key(:phone)
+    end
   end
 end

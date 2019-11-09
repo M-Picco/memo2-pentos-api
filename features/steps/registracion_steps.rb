@@ -18,8 +18,8 @@ Entonces('obtiene un numero unico de cliente') do
   expect(@client_id).to be > 0 # rubocop:disable Style/NumericPredicate
 end
 
-Entonces('obtiene un mensaje de error por nombre de usuario inválido') do
+Entonces('obtiene un mensaje de error: {string}') do |mensaje_error|
   expect(@response.status).to eq(400)
   parsed_response = JSON.parse(@response.body)
-  expect(parsed_response['error']).to eq('invalid_username')
+  expect(parsed_response['error']).to eq(mensaje_error)
 end

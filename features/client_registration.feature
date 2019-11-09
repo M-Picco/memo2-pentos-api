@@ -10,10 +10,9 @@ Característica: Registracion de cliente
     Escenario: RC2 - registracion con nombre invalido
         Dado el cliente "#!?"
         Cuando se registra con domicilio "Plumas verdes" y telefono "4098-0997"
-        Entonces obtiene un mensaje de error por nombre de usuario inválido
+        Entonces obtiene un mensaje de error: 'invalid_username'
 
-	@wip
 	Escenario: RC3 - registracion con telefono invalida
         Dado el cliente "juanse"
         Cuando se registra con domicilio "Plumas verdes" y telefono "abcd-4123"
-        Entonces obtiene un mensaje de error por número de teléfono inválido
+        Entonces obtiene un mensaje de error: 'invalid_phone'

@@ -6,8 +6,10 @@ class Client
   attr_accessor :id, :name, :phone, :address, :updated_on, :created_on
 
   VALID_NAME_REGEX = /\A[_A-z0-9]*((-)*[_A-z0-9])*\Z/.freeze
+  VALID_PHONE_REGEX = /\A(\d)+-?(\d)+\Z/.freeze
 
-  validates :phone, presence: true
+  validates :phone, presence: true, format: { with: VALID_PHONE_REGEX,
+                                              message: 'invalid_phone' }
   validates :name, presence: true, format: { with: VALID_NAME_REGEX,
                                              message: 'invalid_username' }
 
