@@ -8,7 +8,7 @@ class Client
   VALID_NAME_REGEX = /\A[_A-z0-9]*((-)*[_A-z0-9])*\Z/.freeze
 
   validates :name, presence: true, format: { with: VALID_NAME_REGEX,
-                                             message: 'invalid name' }
+                                             message: 'invalid_username' }
 
   def initialize(data = {})
     @id = data['id']
