@@ -6,3 +6,9 @@ Característica: Registracion de cliente
         Dado el cliente "jperez"
         Cuando se registra con domicilio "Cucha Cucha 1234 1 Piso B" y telefono "4123-4123"
         Entonces obtiene un numero unico de cliente
+
+	@wip
+    Escenario: RC2 - registracion con nombre invalido
+        Dado el cliente "#!?"
+        Cuando se registra con domicilio "Plumas verdes" y telefono "4098-0997"
+        Entonces obtiene un mensaje de error por nombre de usuario inválido
