@@ -11,6 +11,6 @@ Sequel.migration do
   end
 
   down do
-    drop_table(:clients)
+    drop_table(:orders)
   end
 end

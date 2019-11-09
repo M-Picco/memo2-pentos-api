@@ -1,5 +1,5 @@
 # language: es
-@wip
+
 Característica: Realizar un pedido
 
     Antecedentes:

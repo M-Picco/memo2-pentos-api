@@ -4,6 +4,11 @@ class ClientRepository < BaseRepository
   self.table_name = :clients
   self.model_class = 'Client'
 
+  def find_by_name(client_name)
+    row = dataset.first(name: client_name)
+    load_object(row) unless row.nil?
+  end
+
   protected
 
   def changeset(client)
