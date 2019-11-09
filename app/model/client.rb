@@ -12,12 +12,13 @@ class Client
                                               message: 'invalid_phone' }
   validates :name, presence: true, format: { with: VALID_NAME_REGEX,
                                              message: 'invalid_username' }
+  validates :address, presence: { message: 'invalid_address' }
 
   def initialize(data = {})
     @id = data['id']
     @name = data['username']
     @phone = data['phone']
-    @address = data['addres']
+    @address = data['address']
     @updated_on = data['updated_on']
     @created_on = data['created_on']
   end
