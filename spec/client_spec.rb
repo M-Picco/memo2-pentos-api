@@ -38,5 +38,12 @@ describe Client do
       expect(client.valid?).to eq false
       expect(client.errors).to have_key(:name)
     end
+
+    it 'should be invalid when phone is blank' do
+      client = described_class.new('username' => 'pentos123', 'phone' => '',
+                                   'address' => 'Av Paseo Colón 840')
+      expect(client.valid?).to eq false
+      expect(client.errors).to have_key(:phone)
+    end
   end
 end

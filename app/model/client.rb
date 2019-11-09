@@ -7,6 +7,7 @@ class Client
 
   VALID_NAME_REGEX = /\A[_A-z0-9]*((-)*[_A-z0-9])*\Z/.freeze
 
+  validates :phone, presence: true
   validates :name, presence: true, format: { with: VALID_NAME_REGEX,
                                              message: 'invalid_username' }
 
