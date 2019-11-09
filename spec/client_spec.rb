@@ -12,7 +12,7 @@ describe Client do
 
   describe 'valid?' do
     it 'should be valid when name, phone and address are valid' do
-      user = described_class.new(name: 'jperez', phone: '4123-4123',
+      user = described_class.new(username: 'jperez', phone: '4123-4123',
                                  address: 'Av Paseo Colón 840')
       expect(user.valid?).to eq true
       expect(user.errors.empty?).to eq true
