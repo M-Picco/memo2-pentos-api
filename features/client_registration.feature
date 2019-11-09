@@ -17,7 +17,7 @@ Característica: Registracion de cliente
         Cuando se registra con domicilio "Plumas verdes" y telefono "abcd-4123"
         Entonces obtiene un mensaje de error: 'invalid_phone'
 
-    Escenario: RC4 - registracion con domicilio invalido
-        Dado el cliente "jperez"
-        Cuando se registra con domicilio "" y telefono "4123-4123"
-        Entonces obtiene un mensaje de error: "invalid_address"
+    Escenario: RC4 - registracion con domicilio invalida
+        Dado el cliente "pedrosi"
+        Cuando se registra con domicilio "a1" y telefono "4098-0997"
+        Entonces obtiene un mensaje de error: 'invalid_address'

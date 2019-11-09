@@ -54,10 +54,17 @@ describe Client do
     end
 
     it 'should be invalid when address is blank' do
-      client = described_class.new('username' => 'pentos123', 'phone' => '4123-412A',
+      client = described_class.new('username' => 'pentos123', 'phone' => '4123-412',
                                    'address' => '')
       expect(client.valid?).to eq false
-      expect(client.errors).to have_key(:phone)
+      expect(client.errors).to have_key(:address)
+    end
+
+    it 'should be invalid when address size is less than 3' do
+      client = described_class.new('username' => 'pentos123', 'phone' => '4123-4127',
+                                   'address' => 'a1')
+      expect(client.valid?).to eq false
+      expect(client.errors).to have_key(:address)
     end
   end
 end
