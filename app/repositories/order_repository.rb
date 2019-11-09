@@ -8,7 +8,8 @@ class OrderRepository < BaseRepository
 
   def changeset(order)
     {
-      client_username: order.client.name
+      client_username: order.client.name,
+      state: order.state
     }
   end
 end
