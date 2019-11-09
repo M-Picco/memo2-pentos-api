@@ -10,6 +10,6 @@ class Order
     @client = data['client']
     @updated_on = data['updated_on']
     @created_on = data['created_on']
-    @state = data['state']
+    @state = data['state'] || 'recibido'
   end
 end
