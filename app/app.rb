@@ -20,3 +20,8 @@ post '/client' do
 
   response.to_json
 end
+
+post '/reset' do
+  ClientRepository.new.delete_all
+  status 200
+end
