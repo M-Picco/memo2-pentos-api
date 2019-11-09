@@ -5,7 +5,10 @@ class Client
 
   attr_accessor :id, :name, :phone, :address, :updated_on, :created_on
 
-  validates :name, presence: true
+  VALID_NAME_REGEX = /\A[_A-z0-9]*((-|\s)*[_A-z0-9])*\Z/.freeze
+
+  validates :name, presence: true, format: { with: VALID_NAME_REGEX,
+                                             message: 'invalid name' }
 
   def initialize(data = {})
     @id = data['id']
