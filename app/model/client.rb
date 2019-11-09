@@ -12,7 +12,7 @@ class Client
                                               message: 'invalid_phone' }
   validates :name, presence: true, format: { with: VALID_NAME_REGEX,
                                              message: 'invalid_username' }
-  validates :address, presence: { message: 'invalid_address' }
+  validates :address, presence: true, length: { minimum: 5, message: 'invalid_address' }
 
   def initialize(data = {})
     @id = data['id']
