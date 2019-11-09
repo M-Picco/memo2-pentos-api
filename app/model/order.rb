@@ -2,7 +2,7 @@ require 'active_model'
 
 class Order
   include ActiveModel::Validations
-  attr_accessor :id, :client, :updated_on, :created_on
+  attr_accessor :id, :client, :updated_on, :created_on, :state
   validates :client, presence: true
 
   def initialize(data = {})
@@ -10,5 +10,6 @@ class Order
     @client = data['client']
     @updated_on = data['updated_on']
     @created_on = data['created_on']
+    @state = data['state']
   end
 end

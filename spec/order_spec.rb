@@ -6,5 +6,6 @@ describe Order do
   describe 'model' do
     it { is_expected.to respond_to(:id) }
     it { is_expected.to respond_to(:client) }
+    it { is_expected.to respond_to(:state) }
   end
 end
