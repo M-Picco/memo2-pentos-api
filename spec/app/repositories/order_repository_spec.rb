@@ -11,8 +11,21 @@ describe OrderRepository do
   end
 
   it 'New Order' do
-    order = Order.new('client' => client)
+    order = Order.new(client: client)
     repository.save(order)
     expect(order.id).to be > 0
+  end
+
+  describe 'change state' do
+    it 'changes the order state from received to in_preparation' do
+      order = Order.new(client: client)
+      repository.save(order)
+
+      repository.change_order_state(order.id, 'en_preparacion')
+
+      reloaded_order = repository.find(order.id)
+
+      expect(reloaded_order.state).to eq('en_preparacion')
+    end
   end
 end

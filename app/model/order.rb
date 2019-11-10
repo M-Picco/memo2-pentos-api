@@ -6,10 +6,10 @@ class Order
   validates :client, presence: true
 
   def initialize(data = {})
-    @id = data['id']
-    @client = data['client']
-    @updated_on = data['updated_on']
-    @created_on = data['created_on']
-    @state = data['state'] || 'recibido'
+    @id = data[:id]
+    @client = data[:client]
+    @updated_on = data[:updated_on]
+    @created_on = data[:created_on]
+    @state = data[:state] || 'recibido'
   end
 end

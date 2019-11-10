@@ -29,7 +29,7 @@ end
 post '/client/:username/order' do
   content_type :json
   client = ClientRepository.new.find_by_name(params['username'])
-  order = Order.new('client' => client)
+  order = Order.new(client: client)
   if OrderRepository.new.save(order)
     response = { order_id: order.id }
   else
