@@ -48,9 +48,12 @@ put '/order/:order_id/status' do
   order_id = params['order_id']
   new_status = body['status']
 
-  OrderRepository.new.change_order_state(order_id, new_status)
-
-  status 200
+  if OrderRepository.new.change_order_state(order_id, new_status)
+    status 200
+  else
+    status 400
+    { error: 'invalid_state_transition' }.to_json
+  end
 end
 
 get '/client/:username/order/:order_id' do
