@@ -23,9 +23,8 @@ Característica: Realizar un pedido
         Y consulta el estado
         Entonces el estado es "en_entrega"
 
-    @wip
     Escenario: CEP3 - cambio de estado de en_entrega a entregada
-        Dado que otro cliente pidio un "menu_individual"
+        Dado que el cliente pidio un "menu_familiar"
         Cuando el estado cambia a "entregado"
         Y consulta el estado
         Entonces el estado es "entregado"
