@@ -12,8 +12,8 @@ class OrderRepository < BaseRepository
     save order
   end
 
-  def has_orders?(_user_name)
-    true
+  def has_orders?(user_name)
+    !(load_collection dataset.where(client_username: user_name)).empty?
   end
 
   protected

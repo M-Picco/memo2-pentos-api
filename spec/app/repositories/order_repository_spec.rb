@@ -46,5 +46,10 @@ describe OrderRepository do
       repository.save(order)
       expect(repository.has_orders?(client.name)).to be(true)
     end
+
+    it 'given a client without orders, it should be false if
+        I ask that the client has orders' do
+      expect(repository.has_orders?(client.name)).to be(false)
+    end
   end
 end
