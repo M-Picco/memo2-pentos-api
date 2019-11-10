@@ -8,7 +8,7 @@ class Order
 
   validate :valid_state
 
-  ALLOWED_STATES = %w[recibido en_preparacion en_entrega].freeze
+  ALLOWED_STATES = %w[recibido en_preparacion en_entrega entregado].freeze
 
   def initialize(data = {})
     @id = data[:id]

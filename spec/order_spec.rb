@@ -33,6 +33,13 @@ describe Order do
       expect(order.valid?).to eq(true)
     end
 
+    it 'allows delivered state' do
+      order.state = 'entregado'
+
+      expect(order.state).to eq('entregado')
+      expect(order.valid?).to eq(true)
+    end
+
     it 'is invalid when changing to an invalid state' do
       order.state = 'not_contemplated_state'
 
