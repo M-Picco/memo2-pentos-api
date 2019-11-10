@@ -22,6 +22,8 @@ class OrderRepository < BaseRepository
     raise OrderNotFoundError unless order.client.username?(user_name)
 
     order
+  rescue Sequel::NoMatchingRow
+    raise OrderNotFoundError
   end
 
   protected
