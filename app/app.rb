@@ -4,6 +4,7 @@ require_relative 'model/client.rb'
 require_relative 'model/order.rb'
 require_relative 'repositories/client_repository.rb'
 require_relative 'repositories/order_repository.rb'
+require_relative 'errors/errors'
 
 get '/' do
   content_type :json
@@ -66,7 +67,7 @@ get '/client/:username/order/:order_id' do
     begin
       order = OrderRepository.new.find_for_user(order_id, username)
       response = { order_status: order.state }
-    rescue StandardError => e
+    rescue OrderNotFoundError => e
       status 400
       response = { error: e.message }
     end
