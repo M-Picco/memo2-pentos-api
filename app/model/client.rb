@@ -22,4 +22,8 @@ class Client
     @updated_on = data['updated_on']
     @created_on = data['created_on']
   end
+
+  def username?(username)
+    @name == username
+  end
 end

@@ -21,7 +21,6 @@ Característica: Realizar un pedido
       Dado que el cliente pidio un "menu_individual"
       Cuando consulta el estado
       Entonces el estado es "recibido"
-    
 
     Escenario: CP2 - Consulta de pedido inexistente
       Dado que el cliente no hizo pedidos
@@ -33,3 +32,4 @@ Característica: Realizar un pedido
       Dado que el cliente pidio un "menu_individual"
       Cuando consulta el estado de un pedido que no hizo el
       Entonces obtiene un mensaje de error indicando que la orden no existe
+
