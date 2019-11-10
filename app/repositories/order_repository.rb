@@ -1,4 +1,5 @@
 require_relative 'base_repository'
+require_relative '../errors/errors'
 
 class OrderRepository < BaseRepository
   self.table_name = :orders
@@ -10,6 +11,19 @@ class OrderRepository < BaseRepository
     order.state = new_state
 
     save order
+  end
+
+  def has_orders?(user_name)
+    !(load_collection dataset.where(client_username: user_name)).empty?
+  end
+
+  def find_for_user(order_id, user_name)
+    order = find(order_id)
+    raise OrderNotFoundError unless order.client.username?(user_name)
+
+    order
+  rescue Sequel::NoMatchingRow
+    raise OrderNotFoundError
   end
 
   protected

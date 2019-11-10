@@ -4,6 +4,7 @@ require_relative 'model/client.rb'
 require_relative 'model/order.rb'
 require_relative 'repositories/client_repository.rb'
 require_relative 'repositories/order_repository.rb'
+require_relative 'errors/errors'
 
 get '/' do
   content_type :json
@@ -28,13 +29,15 @@ end
 
 post '/client/:username/order' do
   content_type :json
+
   client = ClientRepository.new.find_by_name(params['username'])
   order = Order.new(client: client)
+
   if OrderRepository.new.save(order)
     response = { order_id: order.id }
   else
     status 400
-    response response = { error: extract_first_error(client) }
+    response = { error: extract_first_error(client) }
   end
 
   response.to_json
@@ -42,7 +45,6 @@ end
 
 put '/order/:order_id/status' do
   content_type :json
-
   body = JSON.parse(request.body.read)
 
   order_id = params['order_id']
@@ -58,13 +60,23 @@ end
 
 get '/client/:username/order/:order_id' do
   content_type :json
+  username = params['username']
 
-  order_id = params['order_id']
+  if OrderRepository.new.has_orders?(username)
+    order_id = params['order_id']
+    begin
+      order = OrderRepository.new.find_for_user(order_id, username)
+      response = { order_status: order.state }
+    rescue OrderNotFoundError => e
+      status 400
+      response = { error: e.message }
+    end
+  else
+    status 400
+    response = { error: 'there are no orders' }
+  end
 
-  order = OrderRepository.new.find(order_id)
-
-  status 200
-  { order_status: order.state }.to_json
+  response.to_json
 end
 
 post '/reset' do
