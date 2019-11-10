@@ -34,3 +34,16 @@ Entonces('el estado es {string}') do |expected_status|
   order_status = parsed_response['order_status']
   expect(order_status).to eq(expected_status)
 end
+
+Dado('que el cliente no hizo pedidos') do
+end
+
+Cuando('consulta el estado de un pedido') do
+  @response = Faraday.get(query_order_status_url(@username, 1), {}, header)
+end
+
+Entonces('obtiene un mensaje indicando que no realizo pedidos') do
+  expect(@response.status).to eq(400)
+  parsed_response = JSON.parse(@response.body)
+  expect(parsed_response['error']).to eq('there are no orders')
+end

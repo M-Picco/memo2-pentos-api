@@ -38,4 +38,13 @@ describe OrderRepository do
       expect(result).to be(false)
     end
   end
+
+  describe 'request order' do
+    it 'given a client with orders, it should be true if
+        I ask that the client has orders' do
+      order = Order.new(client: client)
+      repository.save(order)
+      expect(repository.has_orders?(client.name)).to be(true)
+    end
+  end
 end

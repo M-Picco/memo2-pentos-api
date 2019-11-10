@@ -12,6 +12,10 @@ class OrderRepository < BaseRepository
     save order
   end
 
+  def has_orders?(_user_name)
+    true
+  end
+
   protected
 
   def load_object(a_record)

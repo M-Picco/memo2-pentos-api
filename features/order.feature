@@ -16,3 +16,20 @@ Característica: Realizar un pedido
       Cuando el estado cambia a "en_preparacion"
       Y consulta el estado
       Entonces el estado es "en_preparacion"
+
+    Escenario: CP1 - Consulta de pedido
+      Dado que el cliente pidio un "menu_individual"
+      Cuando consulta el estado
+      Entonces el estado es "recibido"
+    
+    @wip
+    Escenario: CP2 - Consulta de pedido inexistente
+      Dado que el cliente no hizo pedidos
+      Cuando consulta el estado de un pedido
+      Entonces obtiene un mensaje indicando que no realizo pedidos
+
+    @wip
+    Escenario: CP3 - Consulta de pedido de otro cliente
+      Dado que el cliente pidio un "menu_individual"
+      Cuando consulta el estado de un pedido que no hizo el
+      Entonces obtiene un mensaje de error indicando que la orden no existe
