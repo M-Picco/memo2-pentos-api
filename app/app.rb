@@ -29,7 +29,7 @@ end
 post '/client/:username/order' do
   content_type :json
   client = ClientRepository.new.find_by_name(params['username'])
-  order = Order.new('client' => client)
+  order = Order.new(client: client)
   if OrderRepository.new.save(order)
     response = { order_id: order.id }
   else
@@ -40,7 +40,35 @@ post '/client/:username/order' do
   response.to_json
 end
 
+put '/order/:order_id/status' do
+  content_type :json
+
+  body = JSON.parse(request.body.read)
+
+  order_id = params['order_id']
+  new_status = body['status']
+
+  if OrderRepository.new.change_order_state(order_id, new_status)
+    status 200
+  else
+    status 400
+    { error: 'invalid_state_transition' }.to_json
+  end
+end
+
+get '/client/:username/order/:order_id' do
+  content_type :json
+
+  order_id = params['order_id']
+
+  order = OrderRepository.new.find(order_id)
+
+  status 200
+  { order_status: order.state }.to_json
+end
+
 post '/reset' do
+  OrderRepository.new.delete_all
   ClientRepository.new.delete_all
   status 200
 end
