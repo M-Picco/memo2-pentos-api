@@ -19,6 +19,13 @@ describe Order do
       expect(order.state).to eq('recibido')
     end
 
+    it 'allows transition from received to in_preparation' do
+      order.state = 'en_preparacion'
+
+      expect(order.state).to eq('en_preparacion')
+      expect(order.valid?).to eq(true)
+    end
+
     it 'is invalid when changing to an invalid state' do
       order.state = 'not_contemplated_state'
 
