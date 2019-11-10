@@ -8,9 +8,7 @@ class Order
 
   validate :valid_state
 
-  ALLOWED_STATE_TRANSITIONS = {
-    'recibido' => ['en_preparacion']
-  }.freeze
+  ALLOWED_STATES = %w[recibido en_preparacion en_entrega].freeze
 
   def initialize(data = {})
     @id = data[:id]
@@ -21,7 +19,7 @@ class Order
   end
 
   def state=(new_state)
-    valid_transition = ALLOWED_STATE_TRANSITIONS[@state].include?(new_state)
+    valid_transition = ALLOWED_STATES.include?(new_state)
     @state = valid_transition ? new_state : 'invalid_state'
   end
 
