@@ -27,5 +27,15 @@ describe OrderRepository do
 
       expect(reloaded_order.state).to eq('en_preparacion')
     end
+
+    it 'fails to change the order state from received to
+        an invalid state (any other than in_preparation)' do
+      order = Order.new(client: client)
+      repository.save(order)
+
+      result = repository.change_order_state(order.id, 'un_estado_invalido')
+
+      expect(result).to be(0)
+    end
   end
 end
