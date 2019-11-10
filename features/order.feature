@@ -22,7 +22,7 @@ Característica: Realizar un pedido
       Cuando consulta el estado
       Entonces el estado es "recibido"
     
-    @wip
+
     Escenario: CP2 - Consulta de pedido inexistente
       Dado que el cliente no hizo pedidos
       Cuando consulta el estado de un pedido

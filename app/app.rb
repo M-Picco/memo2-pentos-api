@@ -34,7 +34,7 @@ post '/client/:username/order' do
     response = { order_id: order.id }
   else
     status 400
-    response response = { error: extract_first_error(client) }
+    response = { error: extract_first_error(client) }
   end
 
   response.to_json
@@ -59,12 +59,16 @@ end
 get '/client/:username/order/:order_id' do
   content_type :json
 
-  order_id = params['order_id']
+  if OrderRepository.new.has_orders?(params['username'])
+    order_id = params['order_id']
+    order = OrderRepository.new.find(order_id)
+    response = { order_status: order.state }
+  else
+    status 400
+    response = { error: 'there are no orders' }
+  end
 
-  order = OrderRepository.new.find(order_id)
-
-  status 200
-  { order_status: order.state }.to_json
+  response.to_json
 end
 
 post '/reset' do
