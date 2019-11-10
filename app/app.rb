@@ -59,11 +59,17 @@ end
 
 get '/client/:username/order/:order_id' do
   content_type :json
+  username = params['username']
 
-  if OrderRepository.new.has_orders?(params['username'])
+  if OrderRepository.new.has_orders?(username)
     order_id = params['order_id']
-    order = OrderRepository.new.find(order_id)
-    response = { order_status: order.state }
+    begin
+      order = OrderRepository.new.find_for_user(order_id, username)
+      response = { order_status: order.state }
+    rescue StandardError => e
+      status 400
+      response = { error: e.message }
+    end
   else
     status 400
     response = { error: 'there are no orders' }

@@ -1,5 +1,5 @@
 class OrderNotFoundError < StandardError
-  def initialize(msg = 'there are no orders')
+  def initialize(msg = 'order not exist')
     super
   end
 end
