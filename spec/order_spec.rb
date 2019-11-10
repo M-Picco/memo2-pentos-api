@@ -1,7 +1,12 @@
 require 'spec_helper'
 
 describe Order do
-  subject(:order) { described_class.new({}) }
+  subject(:order) { described_class.new(client: client) }
+
+  let(:client) do
+    Client.new('username' => 'jperez', 'phone' => '4123-4123',
+               'address' => 'Av Paseo Colón 840')
+  end
 
   describe 'model' do
     it { is_expected.to respond_to(:id) }
