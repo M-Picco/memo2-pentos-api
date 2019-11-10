@@ -4,20 +4,12 @@ class OrderRepository < BaseRepository
   self.table_name = :orders
   self.model_class = 'Order'
 
-  ALLOWED_STATE_TRANSITIONS = {
-    'recibido' => ['en_preparacion']
-  }.freeze
-
   def change_order_state(order_id, new_state)
     order = find order_id
 
-    if ALLOWED_STATE_TRANSITIONS[order.state].include?(new_state)
-      order.state = new_state
+    order.state = new_state
 
-      save order
-    else
-      0
-    end
+    save order
   end
 
   protected

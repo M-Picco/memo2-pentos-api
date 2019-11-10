@@ -35,7 +35,7 @@ describe OrderRepository do
 
       result = repository.change_order_state(order.id, 'un_estado_invalido')
 
-      expect(result).to be(0)
+      expect(result).to be(false)
     end
   end
 end

@@ -13,5 +13,12 @@ describe Order do
     it 'has "received" as initial value' do
       expect(order.state).to eq('recibido')
     end
+
+    it 'is invalid when changing to an invalid state' do
+      order.state = 'not_contemplated_state'
+
+      expect(order.state).to eq('invalid_state')
+      expect(order.valid?).to eq(false)
+    end
   end
 end

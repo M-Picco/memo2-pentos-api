@@ -2,8 +2,15 @@ require 'active_model'
 
 class Order
   include ActiveModel::Validations
-  attr_accessor :id, :client, :updated_on, :created_on, :state
+  attr_reader :state
+  attr_accessor :id, :client, :updated_on, :created_on
   validates :client, presence: true
+
+  validate :valid_state
+
+  ALLOWED_STATE_TRANSITIONS = {
+    'recibido' => ['en_preparacion']
+  }.freeze
 
   def initialize(data = {})
     @id = data[:id]
@@ -11,5 +18,17 @@ class Order
     @updated_on = data[:updated_on]
     @created_on = data[:created_on]
     @state = data[:state] || 'recibido'
+  end
+
+  def state=(new_state)
+    valid_transition = ALLOWED_STATE_TRANSITIONS[@state].include?(new_state)
+    @state = valid_transition ? new_state : 'invalid_state'
+  end
+
+  private
+
+  def valid_state
+    valid_state = @state != 'invalid_state'
+    errors.add(:state, 'invalid state') unless valid_state
   end
 end
