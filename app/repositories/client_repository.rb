@@ -5,7 +5,7 @@ class ClientRepository < BaseRepository
   self.model_class = 'Client'
 
   def find_by_name(client_name)
-    row = dataset.first(name: client_name)
+    row = dataset.first(username: client_name)
     load_object(row) unless row.nil?
   end
 
@@ -13,7 +13,7 @@ class ClientRepository < BaseRepository
 
   def changeset(client)
     {
-      name: client.name,
+      username: client.name,
       phone: client.phone,
       address: client.address
     }

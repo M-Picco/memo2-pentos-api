@@ -16,7 +16,7 @@ class Client
 
   def initialize(data = {})
     @id = data['id']
-    @name = data['username'] || data[:name]
+    @name = data['username'] || data[:username]
     @phone = data['phone']
     @address = data['address']
     @updated_on = data['updated_on']
