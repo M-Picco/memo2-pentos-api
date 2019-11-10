@@ -17,6 +17,18 @@ Característica: Realizar un pedido
       Y consulta el estado
       Entonces el estado es "en_preparacion"
 
+    Escenario: CEP2 - cambio de estado de en_preparacion a en_entrega
+        Dado que el cliente pidio un "menu_familiar"
+        Cuando el estado cambia a "en_entrega"
+        Y consulta el estado
+        Entonces el estado es "en_entrega"
+
+    Escenario: CEP3 - cambio de estado de en_entrega a entregada
+        Dado que el cliente pidio un "menu_familiar"
+        Cuando el estado cambia a "entregado"
+        Y consulta el estado
+        Entonces el estado es "entregado"
+
     Escenario: CP1 - Consulta de pedido
       Dado que el cliente pidio un "menu_individual"
       Cuando consulta el estado

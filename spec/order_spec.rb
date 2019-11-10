@@ -19,10 +19,24 @@ describe Order do
       expect(order.state).to eq('recibido')
     end
 
-    it 'allows transition from received to in_preparation' do
+    it 'allows in_preparation state' do
       order.state = 'en_preparacion'
 
       expect(order.state).to eq('en_preparacion')
+      expect(order.valid?).to eq(true)
+    end
+
+    it 'allows delivery state' do
+      order.state = 'en_entrega'
+
+      expect(order.state).to eq('en_entrega')
+      expect(order.valid?).to eq(true)
+    end
+
+    it 'allows delivered state' do
+      order.state = 'entregado'
+
+      expect(order.state).to eq('entregado')
       expect(order.valid?).to eq(true)
     end
 
