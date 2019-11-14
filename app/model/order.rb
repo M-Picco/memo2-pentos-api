@@ -5,6 +5,9 @@ class Order
   attr_reader :state
   attr_accessor :id, :client, :updated_on, :created_on, :rating
   validates :client, presence: true
+  validates :rating, numericality: { greater_than_or_equal_to: 1,
+                                     message: 'invalid_rating' },
+                     allow_nil: true
 
   validate :valid_state, :valid_state_for_rating
 

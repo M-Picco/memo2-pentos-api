@@ -91,5 +91,14 @@ describe Order do
       expect(order.valid?).to eq(false)
       expect(order.errors.messages.first[1].first).to eq('order_not_delivered')
     end
+
+    it 'is invalid to rate an order with a value 1' do
+      order.state = 'entregado'
+
+      order.rating = -1
+
+      expect(order.valid?).to eq(false)
+      expect(order.errors.messages.first[1].first).to eq('invalid_rating')
+    end
   end
 end
