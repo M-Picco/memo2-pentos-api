@@ -16,3 +16,10 @@ Característica: Calificacion de Pedidos
     Dado que el cliente pidio un "menu_individual"
     Cuando el cliente califica con 5
     Entonces recibe un error indicando que no puede calificar un pedido no entregado
+
+  @wip
+  Escenario: CAP3 - calificacion de orden en_preparacion
+    Dado que el cliente pidio un "menu_individual"
+    Y el estado cambia a "en_preparacion"
+    Cuando el cliente califica con 5
+    Entonces recibe un error indicando que no puede calificar un pedido no entregado
