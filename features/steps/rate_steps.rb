@@ -20,3 +20,9 @@ end
 
 Entonces('pedido esta asignado a {string}') do |repartidor|
 end
+
+Entonces('recibe un error indicando que no puede calificar un pedido no entregado') do
+  expect(@response.status).to eq(400)
+  parsed_response = JSON.parse(@response.body)
+  expect(parsed_response['error']).to eq('order_not_delivered')
+end
