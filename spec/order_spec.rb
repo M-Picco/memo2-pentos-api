@@ -81,5 +81,15 @@ describe Order do
       expect(order.valid?).to eq(false)
       expect(order.errors.messages.first[1].first).to eq('order_not_delivered')
     end
+
+    it 'is invalid when rating an order in delivering state' do
+      order.state = 'en_entrega'
+
+      order.rating = 3
+
+      expect(order.rating).to eq(3)
+      expect(order.valid?).to eq(false)
+      expect(order.errors.messages.first[1].first).to eq('order_not_delivered')
+    end
   end
 end
