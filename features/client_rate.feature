@@ -39,6 +39,11 @@ Característica: Calificacion de Pedidos
     Cuando califica un pedido que no hizo el
     Entonces obtiene un mensaje de error indicando que la orden no existe
 
+  Escenario: CAP7 - calificacion de orden sin haber hecho pedidos
+    Dado que el cliente no hizo pedidos
+    Cuando califica un pedido que no hizo el
+    Entonces obtiene un mensaje indicando que no realizo pedidos
+
   Escenario: CAP8 - calificacion por debajo de 1
     Dado que el cliente pidio un "menu_individual"
     Y el pedido es entregado por "juanmotoneta"

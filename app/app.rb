@@ -100,15 +100,20 @@ post '/client/:username/order/:order_id/rate' do
   order_id = params['order_id']
   rating = body['rating']
 
-  order = OrderRepository.new.find_for_user(order_id, username)
-  order.rating = rating
+  if OrderRepository.new.has_orders?(username)
+    order = OrderRepository.new.find_for_user(order_id, username)
+    order.rating = rating
 
-  if OrderRepository.new.save(order)
-    status 200
-    response = { rating: rating }
+    if OrderRepository.new.save(order)
+      status 200
+      response = { rating: rating }
+    else
+      status 400
+      response = { error: extract_first_error(order) }
+    end
   else
     status 400
-    response = { error: extract_first_error(order) }
+    response = { error: 'there are no orders' }
   end
 
   response.to_json
