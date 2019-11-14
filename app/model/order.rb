@@ -20,6 +20,7 @@ class Order
     @updated_on = data[:updated_on]
     @created_on = data[:created_on]
     @state = data[:state] || 'recibido'
+    @rating = data[:rating]
   end
 
   def state=(new_state)
