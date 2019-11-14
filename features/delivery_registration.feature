@@ -9,3 +9,9 @@ Característica: Registracion de repartidor
         Dado el nombre del repartidor "juanmotoneta"
         Cuando se registra
         Entonces obtiene un numero unico de repartidor
+
+    @wip
+    Escenario: RP2 - Registracion con nombre muy corto
+        Dado el repartidor "pepe"
+        Cuando se registra
+        Entonces obtiene un error por nombre de usuario invalido
