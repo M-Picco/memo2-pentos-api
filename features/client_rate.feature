@@ -33,3 +33,8 @@ Característica: Calificacion de Pedidos
     Dado que el cliente no hizo pedidos
     Cuando el cliente califica con 5 un pedido inexistente
     Entonces obtiene un mensaje de error indicando que la orden no existe
+
+  Escenario: CAP6 - calificacion de orden de otro cliente
+    Dado que el cliente no hizo pedidos
+    Cuando califica un pedido que no hizo el
+    Entonces obtiene un mensaje de error indicando que la orden no existe
