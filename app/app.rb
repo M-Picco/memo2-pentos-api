@@ -106,10 +106,16 @@ post '/client/:username/order/:order_id/rate' do
 
   order = OrderRepository.new.find_for_user(order_id, username)
   order.rating = rating
-  OrderRepository.new.save(order)
 
-  status 200
-  { rating: rating }.to_json
+  if OrderRepository.new.save(order)
+    status 200
+    response = { rating: rating }
+  else
+    status 400
+    response = { error: extract_first_error(order) }
+  end
+
+  response.to_json
 end
 
 post '/reset' do
