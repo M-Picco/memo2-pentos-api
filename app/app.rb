@@ -96,6 +96,22 @@ post '/delivery' do
   response.to_json
 end
 
+post '/client/:username/order/:order_id/rate' do
+  content_type :json
+  body = JSON.parse(request.body.read)
+
+  username = params['username']
+  order_id = params['order_id']
+  rating = body['rating']
+
+  order = OrderRepository.new.find_for_user(order_id, username)
+  order.rating = rating
+  OrderRepository.new.save(order)
+
+  status 200
+  { rating: rating }.to_json
+end
+
 post '/reset' do
   OrderRepository.new.delete_all
   ClientRepository.new.delete_all
