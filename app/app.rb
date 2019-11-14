@@ -2,6 +2,7 @@ require 'sinatra'
 require 'json'
 require_relative 'model/client.rb'
 require_relative 'model/order.rb'
+require_relative 'model/delivery.rb'
 require_relative 'repositories/client_repository.rb'
 require_relative 'repositories/order_repository.rb'
 require_relative 'repositories/delivery_repository.rb'
@@ -82,7 +83,9 @@ end
 
 post '/delivery' do
   content_type :json
-  delivery = DeliveryRepository.new(params['username'])
+  params = JSON.parse(request.body.read)
+  delivery = Delivery.new(params)
+  DeliveryRepository.new.save(delivery)
 
   { delivery_id: delivery.id }.to_json
 end

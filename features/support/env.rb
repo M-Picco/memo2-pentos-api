@@ -13,6 +13,7 @@ BASE_URL = ENV['BASE_URL'] || 'http://localhost:4567'
 CLIENT_BASE_URL = BASE_URL + '/client'
 ORDER_BASE_URL = CLIENT_BASE_URL + '/%s/order'
 QUERY_ORDER_URL = BASE_URL + '/order'
+REGISTER_DELIVERY_URL = BASE_URL + '/delivery'
 
 def query_order_status_url(username, order_id)
   CLIENT_BASE_URL + "/#{username}/order/#{order_id}"
