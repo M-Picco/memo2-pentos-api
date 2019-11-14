@@ -43,3 +43,9 @@ Cuando('califica un pedido que no hizo el') do
   @username = @current_client
   step 'el cliente califica con 5'
 end
+
+Entonces('recibe un error indicando que la calificación es inválida') do
+  expect(@response.status).to eq(400)
+  parsed_response = JSON.parse(@response.body)
+  expect(parsed_response['error']).to eq('invalid_rating')
+end
