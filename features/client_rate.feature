@@ -22,3 +22,9 @@ Característica: Calificacion de Pedidos
     Y el estado cambia a "en_preparacion"
     Cuando el cliente califica con 5
     Entonces recibe un error indicando que no puede calificar un pedido no entregado
+
+  Escenario: CAP4 - calificacion de orden en_entrega
+    Dado que el cliente pidio un "menu_individual"
+    Y el estado cambia a "en_entrega"
+    Cuando el cliente califica con 5
+    Entonces recibe un error indicando que no puede calificar un pedido no entregado
