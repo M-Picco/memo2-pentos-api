@@ -48,4 +48,11 @@ describe Order do
       expect(order.valid?).to eq(false)
     end
   end
+
+  describe 'rating' do
+    it 'is valid when no rating' do
+      expect(order.rating).to be_nil
+      expect(order.valid?).to eq(true)
+    end
+  end
 end
