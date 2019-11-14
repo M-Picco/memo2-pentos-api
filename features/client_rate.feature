@@ -29,7 +29,6 @@ Característica: Calificacion de Pedidos
     Cuando el cliente califica con 5
     Entonces recibe un error indicando que no puede calificar un pedido no entregado
 
-  @wip
   Escenario: CAP5 - calificacion de orden inexistente
     Dado que el cliente no hizo pedidos
     Cuando el cliente califica con 5 un pedido inexistente

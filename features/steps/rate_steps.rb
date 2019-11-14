@@ -26,3 +26,11 @@ Entonces('recibe un error indicando que no puede calificar un pedido no entregad
   parsed_response = JSON.parse(@response.body)
   expect(parsed_response['error']).to eq('order_not_delivered')
 end
+
+Cuando('el cliente califica con {int} un pedido inexistente') do |calificacion|
+  @calificacion = calificacion
+  @request ||= {}
+  @request['rating'] = @calificacion
+  order_id = 9999
+  @response = Faraday.post(rate_order_url(@username, order_id), @request.to_json, header)
+end
