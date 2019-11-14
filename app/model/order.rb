@@ -31,9 +31,6 @@ class Order
   end
 
   def valid_state_for_rating
-    errors.add(:state_for_rating, 'order_not_delivered') if !@rating.nil? &&
-                                                            (@state == 'recibido' ||
-                                                             @state == 'en_preparacion' ||
-                                                             @state == 'en_entrega')
+    errors.add(:state_for_rating, 'order_not_delivered') if !@rating.nil? && @state != 'entregado'
   end
 end
