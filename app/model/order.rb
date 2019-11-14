@@ -6,7 +6,7 @@ class Order
   attr_accessor :id, :client, :updated_on, :created_on, :rating
   validates :client, presence: true
 
-  validate :valid_state
+  validate :valid_state, :valid_state_for_rating
 
   ALLOWED_STATES = %w[recibido en_preparacion en_entrega entregado].freeze
 
@@ -28,5 +28,9 @@ class Order
   def valid_state
     valid_state = @state != 'invalid_state'
     errors.add(:state, 'invalid state') unless valid_state
+  end
+
+  def valid_state_for_rating
+    errors.add(:state_for_rating, 'order_not_delivered') if !@rating.nil? && @state == 'recibido'
   end
 end

@@ -56,10 +56,20 @@ describe Order do
     end
 
     it 'is valid when rating with 3' do
+      order.state = 'entregado'
+
       order.rating = 3
 
       expect(order.rating).to eq(3)
       expect(order.valid?).to eq(true)
+    end
+
+    it 'is invalid when rating an order in received state' do
+      order.rating = 3
+
+      expect(order.rating).to eq(3)
+      expect(order.valid?).to eq(false)
+      expect(order.errors.messages.first[1].first).to eq('order_not_delivered')
     end
   end
 end
