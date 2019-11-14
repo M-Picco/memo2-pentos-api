@@ -4,6 +4,7 @@ require_relative 'model/client.rb'
 require_relative 'model/order.rb'
 require_relative 'repositories/client_repository.rb'
 require_relative 'repositories/order_repository.rb'
+require_relative 'repositories/delivery_repository.rb'
 require_relative 'errors/errors'
 
 get '/' do
@@ -77,6 +78,13 @@ get '/client/:username/order/:order_id' do
   end
 
   response.to_json
+end
+
+post '/delivery' do
+  content_type :json
+  delivery = DeliveryRepository.new(params['username'])
+
+  { delivery_id: delivery.id }.to_json
 end
 
 post '/reset' do
