@@ -1,5 +1,5 @@
 class Delivery
-  attr_accessor :id, :username
+  attr_accessor :id, :username, :updated_on, :created_on
 
-  def initialize(_username) end
+  def initialize(data = {}) end
 end
