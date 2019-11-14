@@ -54,5 +54,12 @@ describe Order do
       expect(order.rating).to be_nil
       expect(order.valid?).to eq(true)
     end
+
+    it 'is valid when rating with 3' do
+      order.rating = 3
+
+      expect(order.rating).to eq(3)
+      expect(order.valid?).to eq(true)
+    end
   end
 end
