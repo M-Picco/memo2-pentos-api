@@ -104,18 +104,23 @@ post '/client/:username/order/:order_id/rate' do
   order_id = params['order_id']
   rating = body['rating']
 
-  order = OrderRepository.new.find_for_user(order_id, username)
-  order.rating = rating
+  begin
+    order = OrderRepository.new.find_for_user(order_id, username)
+    order.rating = rating
 
-  if OrderRepository.new.save(order)
-    status 200
-    response = { rating: rating }
-  else
+    if OrderRepository.new.save(order)
+      status 200
+      response = { rating: rating }
+    else
+      status 400
+      response = { error: extract_first_error(order) }
+    end
+
+    response.to_json
+  rescue OrderNotFoundError => e
     status 400
-    response = { error: extract_first_error(order) }
+    { error: e.message }.to_json
   end
-
-  response.to_json
 end
 
 post '/reset' do
