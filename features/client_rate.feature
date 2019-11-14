@@ -38,3 +38,10 @@ Característica: Calificacion de Pedidos
     Dado que el cliente no hizo pedidos
     Cuando califica un pedido que no hizo el
     Entonces obtiene un mensaje de error indicando que la orden no existe
+
+  @wip
+  Escenario: CAP8 - calificacion por debajo de 1
+    Dado el cliente pide un "menu_individual"
+    Y el pedido es entregado por "juanmotoneta"
+    Cuando el cliente califica con 0
+    Entonces recibe un error indicando que la calificación es inválida
