@@ -44,3 +44,9 @@ Característica: Calificacion de Pedidos
     Y el pedido es entregado por "juanmotoneta"
     Cuando el cliente califica con 0
     Entonces recibe un error indicando que la calificación es inválida
+
+  Escenario: CAP9 - calificacion por encima de 5
+    Dado el cliente pide un "menu_individual"
+    Y el pedido es entregado por "juanmotoneta"
+    Cuando el cliente califica con 6
+    Entonces recibe un error indicando que la calificación es inválida
