@@ -12,6 +12,7 @@ describe Order do
     it { is_expected.to respond_to(:id) }
     it { is_expected.to respond_to(:client) }
     it { is_expected.to respond_to(:state) }
+    it { is_expected.to respond_to(:rating) }
   end
 
   describe 'state' do

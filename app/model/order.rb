@@ -3,7 +3,7 @@ require 'active_model'
 class Order
   include ActiveModel::Validations
   attr_reader :state
-  attr_accessor :id, :client, :updated_on, :created_on
+  attr_accessor :id, :client, :updated_on, :created_on, :rating
   validates :client, presence: true
 
   validate :valid_state
