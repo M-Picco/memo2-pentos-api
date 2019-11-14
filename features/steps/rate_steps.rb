@@ -1,5 +1,4 @@
 Cuando('el pedido es entregado por {string}') do |repartidor|
-  step 'obtiene numero de pedido único'
   step 'el estado cambia a "en_entrega"'
   step "pedido esta asignado a \"#{repartidor}\""
   step 'el estado cambia a "entregado"'

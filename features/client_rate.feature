@@ -30,23 +30,23 @@ Característica: Calificacion de Pedidos
     Entonces recibe un error indicando que no puede calificar un pedido no entregado
 
   Escenario: CAP5 - calificacion de orden inexistente
-    Dado que el cliente no hizo pedidos
+    Dado que el cliente pidio un "menu_individual"
     Cuando el cliente califica con 5 un pedido inexistente
     Entonces obtiene un mensaje de error indicando que la orden no existe
 
   Escenario: CAP6 - calificacion de orden de otro cliente
-    Dado que el cliente no hizo pedidos
+    Dado que el cliente pidio un "menu_individual"
     Cuando califica un pedido que no hizo el
     Entonces obtiene un mensaje de error indicando que la orden no existe
 
   Escenario: CAP8 - calificacion por debajo de 1
-    Dado el cliente pide un "menu_individual"
+    Dado que el cliente pidio un "menu_individual"
     Y el pedido es entregado por "juanmotoneta"
     Cuando el cliente califica con 0
     Entonces recibe un error indicando que la calificación es inválida
 
   Escenario: CAP9 - calificacion por encima de 5
-    Dado el cliente pide un "menu_individual"
+    Dado que el cliente pidio un "menu_individual"
     Y el pedido es entregado por "juanmotoneta"
     Cuando el cliente califica con 6
     Entonces recibe un error indicando que la calificación es inválida
