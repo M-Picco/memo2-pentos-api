@@ -8,8 +8,11 @@ require_relative 'repositories/order_repository.rb'
 require_relative 'repositories/delivery_repository.rb'
 require_relative 'errors/order_not_found_error'
 require_relative 'errors/invalid_menu_error'
+require_relative 'errors/client_has_no_orders_error'
+require_relative 'errors/failed_save_operation_error'
 
-KNOWN_ERRORS = [OrderNotFoundError, ClientHasNoOrdersError, InvalidMenuError].freeze
+KNOWN_ERRORS = [OrderNotFoundError, ClientHasNoOrdersError,
+                InvalidMenuError, FailedSaveOperationError].freeze
 
 get '/' do
   content_type :json
@@ -22,14 +25,9 @@ post '/client' do
 
   client = Client.new(params)
 
-  if ClientRepository.new.save(client)
-    response = { client_id: client.id }
-  else
-    status 400
-    response = { error: extract_first_error(client) }
-  end
+  raise FailedSaveOperationError, client unless ClientRepository.new.save(client)
 
-  response.to_json
+  { client_id: client.id }.to_json
 end
 
 post '/client/:username/order' do
@@ -40,14 +38,9 @@ post '/client/:username/order' do
   client = ClientRepository.new.find_by_name(params['username'])
   order = Order.new(client: client, type: body['order'])
 
-  if OrderRepository.new.save(order)
-    response = { order_id: order.id }
-  else
-    status 400
-    response = { error: extract_first_error(client) }
-  end
+  raise FailedSaveOperationError, order unless OrderRepository.new.save(order)
 
-  response.to_json
+  { order_id: order.id }.to_json
 end
 
 put '/order/:order_id/status' do
@@ -107,15 +100,9 @@ post '/client/:username/order/:order_id/rate' do
   order = OrderRepository.new.find_for_user(order_id, username)
   order.rating = rating
 
-  if OrderRepository.new.save(order)
-    status 200
-    response = { rating: rating }
-  else
-    status 400
-    response = { error: extract_first_error(order) }
-  end
+  raise FailedSaveOperationError, order unless OrderRepository.new.save(order)
 
-  response.to_json
+  { rating: rating }.to_json
 end
 
 error(*KNOWN_ERRORS) do |e|
