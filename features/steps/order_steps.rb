@@ -67,3 +67,9 @@ Entonces('obtiene un mensaje de error indicando que la orden no existe') do
   parsed_response = JSON.parse(@response.body)
   expect(parsed_response['error']).to eq('order not exist')
 end
+
+Entonces('obtiene error por pedido inválido') do
+  expect(@response.status).to eq(400)
+  parsed_response = JSON.parse(@response.body)
+  expect(parsed_response['error']).to eq('invalid_menu')
+end

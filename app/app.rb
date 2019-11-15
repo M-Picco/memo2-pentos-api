@@ -121,7 +121,7 @@ post '/client/:username/order/:order_id/rate' do
   response.to_json
 end
 
-error OrderNotFoundError do |e|
+error OrderNotFoundError, InvalidMenuError do |e|
   status 400
   { error: e.message }.to_json
 end

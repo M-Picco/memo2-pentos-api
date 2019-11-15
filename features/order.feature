@@ -11,7 +11,6 @@ Característica: Realizar un pedido
         Cuando el cliente pide un "menu_individual"
         Entonces obtiene numero de pedido único
 
-    @wip
     Escenario: P2 - menu invalido
       Cuando el cliente pide un "menu_ejecutivo"
       Entonces obtiene error por pedido inválido
