@@ -67,4 +67,62 @@ describe OrderRepository do
         .to raise_error(OrderNotFoundError)
     end
   end
+
+  describe 'change rating' do
+    # rubocop:disable RSpect/ExampleLength
+    it 'changes the rating of an order in delivered state' do
+      order = Order.new(client: client)
+      order.state = 'entregado'
+      repository.save(order)
+
+      order.rating = 3
+      repository.save(order)
+
+      reloaded_order = repository.find(order.id)
+
+      expect(reloaded_order.rating).to eq(3)
+    end
+
+    it 'does not change the rating of an order with invalid rating
+        due to not being in delivered state' do
+      order = Order.new(client: client)
+      repository.save(order)
+
+      order.rating = 3
+      repository.save(order)
+
+      reloaded_order = repository.find(order.id)
+
+      expect(reloaded_order.rating).to be_nil
+    end
+
+    it 'does not change the rating of an order with invalid rating
+        due to it being above 5' do
+      order = Order.new(client: client)
+      order.state = 'entregado'
+      repository.save(order)
+
+      order.rating = 6
+      repository.save(order)
+
+      reloaded_order = repository.find(order.id)
+
+      expect(reloaded_order.rating).to be_nil
+    end
+
+    it 'does not change the rating of an order with invalid rating
+        due to it being below 1' do
+      order = Order.new(client: client)
+      order.state = 'entregado'
+      repository.save(order)
+
+      order.rating = 0
+      repository.save(order)
+
+      reloaded_order = repository.find(order.id)
+
+      expect(reloaded_order.rating).to be_nil
+    end
+    # rubocop:enable RSpect/ExampleLength
+  end
 end

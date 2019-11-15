@@ -23,6 +23,10 @@ def change_order_status_url(order_id)
   BASE_URL + "/order/#{order_id}/status"
 end
 
+def rate_order_url(username, order_id)
+  CLIENT_BASE_URL + "/#{username}/order/#{order_id}/rate"
+end
+
 def header
   { 'Content-Type' => 'application/json' }
 end

@@ -66,13 +66,9 @@ get '/client/:username/order/:order_id' do
 
   if OrderRepository.new.has_orders?(username)
     order_id = params['order_id']
-    begin
-      order = OrderRepository.new.find_for_user(order_id, username)
-      response = { order_status: order.state }
-    rescue OrderNotFoundError => e
-      status 400
-      response = { error: e.message }
-    end
+
+    order = OrderRepository.new.find_for_user(order_id, username)
+    response = { order_status: order.state }
   else
     status 400
     response = { error: 'there are no orders' }
@@ -94,6 +90,38 @@ post '/delivery' do
   end
 
   response.to_json
+end
+
+post '/client/:username/order/:order_id/rate' do
+  content_type :json
+  body = JSON.parse(request.body.read)
+
+  username = params['username']
+  order_id = params['order_id']
+  rating = body['rating']
+
+  if OrderRepository.new.has_orders?(username)
+    order = OrderRepository.new.find_for_user(order_id, username)
+    order.rating = rating
+
+    if OrderRepository.new.save(order)
+      status 200
+      response = { rating: rating }
+    else
+      status 400
+      response = { error: extract_first_error(order) }
+    end
+  else
+    status 400
+    response = { error: 'there are no orders' }
+  end
+
+  response.to_json
+end
+
+error OrderNotFoundError do |e|
+  status 400
+  { error: e.message }.to_json
 end
 
 post '/reset' do
