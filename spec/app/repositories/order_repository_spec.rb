@@ -1,5 +1,5 @@
 require 'integration_spec_helper'
-require_relative '../../../app/errors/errors'
+require_relative '../../../app/errors/order_not_found_error'
 
 describe OrderRepository do
   let(:repository) { described_class.new }
@@ -15,6 +15,26 @@ describe OrderRepository do
     order = Order.new(client: client, type: 'menu_individual')
     repository.save(order)
     expect(order.id).to be > 0
+  end
+
+  describe 'find by username' do
+    it 'finds an order for an existing username' do
+      order = Order.new(client: client)
+      repository.save(order)
+
+      reloaded_order = repository.find_for_user(order.id, client.name)
+
+      expect(reloaded_order.id).to eq(order.id)
+      expect(reloaded_order.client.name).to eq(client.name)
+    end
+
+    it 'raises OrderNotFoundError if the order does not exist' do
+      order = Order.new(client: client)
+      repository.save(order)
+
+      expect { repository.find_for_user(order.id + 1, client.name) }
+        .to raise_error(OrderNotFoundError)
+    end
   end
 
   describe 'change state' do
