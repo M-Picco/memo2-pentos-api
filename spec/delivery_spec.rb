@@ -40,5 +40,11 @@ describe Delivery do
       expect(delivery.valid?).to eq false
       expect(delivery.errors).to have_key(:username)
     end
+
+    it 'should be valid when username size is nineteen characters' do
+      delivery = described_class.new('username' => 'elsenordelosanillos')
+      expect(delivery.valid?).to eq true
+      expect(delivery.errors.empty?).to eq true
+    end
   end
 end
