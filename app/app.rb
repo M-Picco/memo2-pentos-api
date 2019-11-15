@@ -99,6 +99,7 @@ end
 post '/reset' do
   OrderRepository.new.delete_all
   ClientRepository.new.delete_all
+  DeliveryRepository.new.delete_all
   status 200
 end
 
