@@ -75,14 +75,10 @@ post '/delivery' do
   params = JSON.parse(request.body.read)
   delivery = Delivery.new(params)
 
-  if DeliveryRepository.new.save(delivery)
-    response = { delivery_id: delivery.id }
-  else
-    status 400
-    response = { error: 'invalid_username' }
-  end
+  raise FailedSaveOperationError, delivery unless DeliveryRepository.new.save(delivery)
 
-  response.to_json
+  status 200
+  { delivery_id: delivery.id }.to_json
 end
 
 post '/client/:username/order/:order_id/rate' do
