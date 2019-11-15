@@ -5,7 +5,7 @@ class Delivery
 
   attr_accessor :id, :username, :updated_on, :created_on
 
-  validates :username, presence: true
+  validates :username, presence: true, length: { minimum: 5 }
 
   def initialize(data = {})
     @id = data['id']
