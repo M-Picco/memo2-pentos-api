@@ -15,7 +15,6 @@ Característica: Registracion de repartidor
         Cuando se registra
         Entonces obtiene un error por nombre de usuario invalido
 
-    @wip
     Escenario: RP3 - Registracion con nombre muy largo
         Dado el nombre del repartidor "elseniordelosanillos"
         Cuando se registra
