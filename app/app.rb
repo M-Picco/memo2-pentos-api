@@ -6,7 +6,7 @@ require_relative 'model/delivery.rb'
 require_relative 'repositories/client_repository.rb'
 require_relative 'repositories/order_repository.rb'
 require_relative 'repositories/delivery_repository.rb'
-require_relative 'errors/errors'
+require_relative 'errors/order_not_found_error'
 
 get '/' do
   content_type :json
