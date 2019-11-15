@@ -12,14 +12,14 @@ describe OrderRepository do
   end
 
   it 'New Order' do
-    order = Order.new(client: client)
+    order = Order.new(client: client, type: 'menu_individual')
     repository.save(order)
     expect(order.id).to be > 0
   end
 
   describe 'change state' do
     it 'changes the order state from received to in_preparation' do
-      order = Order.new(client: client)
+      order = Order.new(client: client, type: 'menu_individual')
       repository.save(order)
 
       repository.change_order_state(order.id, 'en_preparacion')
@@ -31,7 +31,7 @@ describe OrderRepository do
 
     it 'fails to change the order state from received to
         an invalid state (any other than in_preparation)' do
-      order = Order.new(client: client)
+      order = Order.new(client: client, type: 'menu_individual')
       repository.save(order)
 
       result = repository.change_order_state(order.id, 'un_estado_invalido')
@@ -43,7 +43,7 @@ describe OrderRepository do
   describe 'request order' do
     it 'given a client with orders, it should be true if
         I ask that the client has orders' do
-      order = Order.new(client: client)
+      order = Order.new(client: client, type: 'menu_individual')
       repository.save(order)
       expect(repository.has_orders?(client.name)).to be(true)
     end
@@ -54,14 +54,14 @@ describe OrderRepository do
     end
 
     it 'should be able to find client order id' do
-      order = Order.new(client: client)
+      order = Order.new(client: client, type: 'menu_individual')
       repository.save(order)
       reloaded_order = repository.find_for_user(order.id, client.name)
       expect(reloaded_order.id).to be(order.id)
     end
 
     it 'should not be able to find another client order id' do
-      order = Order.new(client: client)
+      order = Order.new(client: client, type: 'menu_individual')
       repository.save(order)
       expect { repository.find_for_user(order.id, 'antoher_client') }
         .to raise_error(OrderNotFoundError)
@@ -71,7 +71,7 @@ describe OrderRepository do
   describe 'change rating' do
     # rubocop:disable RSpect/ExampleLength
     it 'changes the rating of an order in delivered state' do
-      order = Order.new(client: client)
+      order = Order.new(client: client, type: 'menu_individual')
       order.state = 'entregado'
       repository.save(order)
 
@@ -85,7 +85,7 @@ describe OrderRepository do
 
     it 'does not change the rating of an order with invalid rating
         due to not being in delivered state' do
-      order = Order.new(client: client)
+      order = Order.new(client: client, type: 'menu_individual')
       repository.save(order)
 
       order.rating = 3
@@ -98,7 +98,7 @@ describe OrderRepository do
 
     it 'does not change the rating of an order with invalid rating
         due to it being above 5' do
-      order = Order.new(client: client)
+      order = Order.new(client: client, type: 'menu_individual')
       order.state = 'entregado'
       repository.save(order)
 
@@ -112,7 +112,7 @@ describe OrderRepository do
 
     it 'does not change the rating of an order with invalid rating
         due to it being below 1' do
-      order = Order.new(client: client)
+      order = Order.new(client: client, type: 'menu_individual')
       order.state = 'entregado'
       repository.save(order)
 

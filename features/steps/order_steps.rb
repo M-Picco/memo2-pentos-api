@@ -1,7 +1,8 @@
 Dado('el repartidor {string}') do |string|
 end
 
-Cuando('el cliente pide un {string}') do |_menu|
+Cuando('el cliente pide un {string}') do |menu|
+  @request['order'] = menu
   order_url = format(ORDER_BASE_URL, @request['username'])
   @response = Faraday.post(order_url, @request.to_json, header)
 end

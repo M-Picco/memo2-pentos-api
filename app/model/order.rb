@@ -1,4 +1,5 @@
 require 'active_model'
+require_relative '../errors/invalid_menu_error'
 
 class Order
   include ActiveModel::Validations
@@ -21,6 +22,9 @@ class Order
     @created_on = data[:created_on]
     @state = data[:state] || 'recibido'
     @rating = data[:rating]
+
+    raise InvalidMenuError if data[:type].blank?
+
     @type = data[:type]
   end
 
