@@ -1,5 +1,6 @@
 require_relative 'base_repository'
 require_relative '../errors/order_not_found_error'
+require_relative '../errors/client_has_no_orders_error'
 
 class OrderRepository < BaseRepository
   self.table_name = :orders

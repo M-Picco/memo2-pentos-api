@@ -7,6 +7,9 @@ require_relative 'repositories/client_repository.rb'
 require_relative 'repositories/order_repository.rb'
 require_relative 'repositories/delivery_repository.rb'
 require_relative 'errors/order_not_found_error'
+require_relative 'errors/invalid_menu_error'
+
+KNOWN_ERRORS = [OrderNotFoundError, ClientHasNoOrdersError, InvalidMenuError].freeze
 
 get '/' do
   content_type :json
@@ -66,15 +69,12 @@ get '/client/:username/order/:order_id' do
   content_type :json
   username = params['username']
 
-  if OrderRepository.new.has_orders?(username)
-    order_id = params['order_id']
+  raise ClientHasNoOrdersError unless OrderRepository.new.has_orders?(username)
 
-    order = OrderRepository.new.find_for_user(order_id, username)
-    response = { order_status: order.state }
-  else
-    status 400
-    response = { error: 'there are no orders' }
-  end
+  order_id = params['order_id']
+
+  order = OrderRepository.new.find_for_user(order_id, username)
+  response = { order_status: order.state }
 
   response.to_json
 end
@@ -102,26 +102,23 @@ post '/client/:username/order/:order_id/rate' do
   order_id = params['order_id']
   rating = body['rating']
 
-  if OrderRepository.new.has_orders?(username)
-    order = OrderRepository.new.find_for_user(order_id, username)
-    order.rating = rating
+  raise ClientHasNoOrdersError unless OrderRepository.new.has_orders?(username)
 
-    if OrderRepository.new.save(order)
-      status 200
-      response = { rating: rating }
-    else
-      status 400
-      response = { error: extract_first_error(order) }
-    end
+  order = OrderRepository.new.find_for_user(order_id, username)
+  order.rating = rating
+
+  if OrderRepository.new.save(order)
+    status 200
+    response = { rating: rating }
   else
     status 400
-    response = { error: 'there are no orders' }
+    response = { error: extract_first_error(order) }
   end
 
   response.to_json
 end
 
-error OrderNotFoundError, InvalidMenuError do |e|
+error(*KNOWN_ERRORS) do |e|
   status 400
   { error: e.message }.to_json
 end
