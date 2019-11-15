@@ -16,6 +16,13 @@ describe Order do
     it { is_expected.to respond_to(:type) }
   end
 
+  describe 'type' do
+    it 'can be created with a menu_individual type' do
+      order = described_class.new(client: client, type: 'menu_individual')
+      expect(order.type).to eq('menu_individual')
+    end
+  end
+
   describe 'state' do
     it 'has "received" as initial value' do
       expect(order.state).to eq('recibido')

@@ -2,8 +2,8 @@ require 'active_model'
 
 class Order
   include ActiveModel::Validations
-  attr_reader :state
-  attr_accessor :id, :client, :updated_on, :created_on, :rating, :type
+  attr_reader :state, :type
+  attr_accessor :id, :client, :updated_on, :created_on, :rating
   validates :client, presence: true
   validates :rating, numericality: { greater_than_or_equal_to: 1,
                                      less_than_or_equal_to: 5,
@@ -21,6 +21,7 @@ class Order
     @created_on = data[:created_on]
     @state = data[:state] || 'recibido'
     @rating = data[:rating]
+    @type = data[:type]
   end
 
   def state=(new_state)
