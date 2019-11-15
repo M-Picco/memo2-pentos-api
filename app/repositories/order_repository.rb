@@ -40,7 +40,8 @@ class OrderRepository < BaseRepository
     {
       client_username: order.client.name,
       state: order.state,
-      rating: order.rating
+      rating: order.rating,
+      type: order.type
     }
   end
 end
