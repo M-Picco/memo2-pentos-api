@@ -38,3 +38,9 @@ Entonces('obtiene un numero unico de repartidor') do
   parsed_response = JSON.parse(@response.body)
   expect(parsed_response['delivery_id']).to be > 0 # rubocop:disable Style/NumericPredicate
 end
+
+Entonces('obtiene un error por nombre de usuario invalido') do
+  expect(@response.status).to eq(400)
+  parsed_response = JSON.parse(@response.body)
+  expect(parsed_response['error']).to eq('invalid_username')
+end

@@ -10,8 +10,7 @@ Característica: Registracion de repartidor
         Cuando se registra
         Entonces obtiene un numero unico de repartidor
 
-    @wip
     Escenario: RP2 - Registracion con nombre muy corto
-        Dado el repartidor "pepe"
+        Dado el nombre del repartidor "pepe"
         Cuando se registra
         Entonces obtiene un error por nombre de usuario invalido
