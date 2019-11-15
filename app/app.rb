@@ -85,9 +85,15 @@ post '/delivery' do
   content_type :json
   params = JSON.parse(request.body.read)
   delivery = Delivery.new(params)
-  DeliveryRepository.new.save(delivery)
 
-  { delivery_id: delivery.id }.to_json
+  if DeliveryRepository.new.save(delivery)
+    response = { delivery_id: delivery.id }
+  else
+    status 400
+    response = { error: 'invalid_username' }
+  end
+
+  response.to_json
 end
 
 post '/reset' do
