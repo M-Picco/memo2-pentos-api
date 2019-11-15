@@ -2,8 +2,10 @@ require 'sinatra'
 require 'json'
 require_relative 'model/client.rb'
 require_relative 'model/order.rb'
+require_relative 'model/delivery.rb'
 require_relative 'repositories/client_repository.rb'
 require_relative 'repositories/order_repository.rb'
+require_relative 'repositories/delivery_repository.rb'
 require_relative 'errors/errors'
 
 get '/' do
@@ -79,9 +81,25 @@ get '/client/:username/order/:order_id' do
   response.to_json
 end
 
+post '/delivery' do
+  content_type :json
+  params = JSON.parse(request.body.read)
+  delivery = Delivery.new(params)
+
+  if DeliveryRepository.new.save(delivery)
+    response = { delivery_id: delivery.id }
+  else
+    status 400
+    response = { error: 'invalid_username' }
+  end
+
+  response.to_json
+end
+
 post '/reset' do
   OrderRepository.new.delete_all
   ClientRepository.new.delete_all
+  DeliveryRepository.new.delete_all
   status 200
 end
 
