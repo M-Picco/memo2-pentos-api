@@ -14,6 +14,7 @@ class Order
   validate :valid_state, :valid_state_for_rating
 
   ALLOWED_STATES = %w[recibido en_preparacion en_entrega entregado].freeze
+  VALID_TYPES = %w[menu_individual menu_familiar menu_pareja].freeze
 
   def initialize(data = {})
     @id = data[:id]
@@ -23,7 +24,7 @@ class Order
     @state = data[:state] || 'recibido'
     @rating = data[:rating]
 
-    raise InvalidMenuError if data[:type].blank?
+    raise InvalidMenuError unless VALID_TYPES.include?(data[:type])
 
     @type = data[:type]
   end

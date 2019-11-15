@@ -26,6 +26,11 @@ describe Order do
       expect { described_class.new(client: client) }
         .to raise_error(InvalidMenuError)
     end
+
+    it 'fails to create an order with an invalid type' do
+      expect { described_class.new(client: client, type: 'menu_invalido') }
+        .to raise_error(InvalidMenuError)
+    end
   end
 
   describe 'state' do
