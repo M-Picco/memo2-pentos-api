@@ -104,16 +104,19 @@ error(*KNOWN_ERRORS) do |e|
   { error: e.message }.to_json
 end
 
-post '/reset' do
-  OrderRepository.new.delete_all
-  ClientRepository.new.delete_all
-  DeliveryRepository.new.delete_all
-  status 200
-end
-
 def extract_first_error(entity)
   return '' if entity.errors.empty?
 
   # Ex: entity.errors.messages = [:symbol, ["the error"]]
   entity.errors.messages.first[1].first
+end
+
+# test environment methods
+if settings.environment != :production
+  post '/reset' do
+    OrderRepository.new.delete_all
+    ClientRepository.new.delete_all
+    DeliveryRepository.new.delete_all
+    status 200
+  end
 end
