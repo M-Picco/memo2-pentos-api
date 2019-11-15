@@ -19,7 +19,7 @@ describe OrderRepository do
 
   describe 'find by username' do
     it 'finds an order for an existing username' do
-      order = Order.new(client: client)
+      order = Order.new(client: client, type: 'menu_individual')
       repository.save(order)
 
       reloaded_order = repository.find_for_user(order.id, client.name)
@@ -29,7 +29,7 @@ describe OrderRepository do
     end
 
     it 'raises OrderNotFoundError if the order does not exist' do
-      order = Order.new(client: client)
+      order = Order.new(client: client, type: 'menu_individual')
       repository.save(order)
 
       expect { repository.find_for_user(order.id + 1, client.name) }
