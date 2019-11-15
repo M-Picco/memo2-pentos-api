@@ -1,7 +1,8 @@
 Dado('el repartidor {string}') do |string|
 end
 
-Cuando('el cliente pide un {string}') do |_menu|
+Cuando('el cliente pide un {string}') do |menu|
+  @request['order'] = menu
   order_url = format(ORDER_BASE_URL, @request['username'])
   @response = Faraday.post(order_url, @request.to_json, header)
 end
@@ -65,4 +66,10 @@ Entonces('obtiene un mensaje de error indicando que la orden no existe') do
   expect(@response.status).to eq(400)
   parsed_response = JSON.parse(@response.body)
   expect(parsed_response['error']).to eq('order not exist')
+end
+
+Entonces('obtiene error por pedido inválido') do
+  expect(@response.status).to eq(400)
+  parsed_response = JSON.parse(@response.body)
+  expect(parsed_response['error']).to eq('invalid_menu')
 end

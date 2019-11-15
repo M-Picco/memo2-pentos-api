@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Order do
-  subject(:order) { described_class.new(client: client) }
+  subject(:order) { described_class.new(client: client, type: 'menu_individual') }
 
   let(:client) do
     Client.new('username' => 'jperez', 'phone' => '4123-4123',
@@ -13,6 +13,24 @@ describe Order do
     it { is_expected.to respond_to(:client) }
     it { is_expected.to respond_to(:state) }
     it { is_expected.to respond_to(:rating) }
+    it { is_expected.to respond_to(:type) }
+  end
+
+  describe 'type' do
+    it 'can be created with a menu_individual type' do
+      order = described_class.new(client: client, type: 'menu_individual')
+      expect(order.type).to eq('menu_individual')
+    end
+
+    it 'fails to create an order without a type' do
+      expect { described_class.new(client: client) }
+        .to raise_error(InvalidMenuError)
+    end
+
+    it 'fails to create an order with an invalid type' do
+      expect { described_class.new(client: client, type: 'menu_invalido') }
+        .to raise_error(InvalidMenuError)
+    end
   end
 
   describe 'state' do

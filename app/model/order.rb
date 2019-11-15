@@ -1,8 +1,9 @@
 require 'active_model'
+require_relative '../errors/invalid_menu_error'
 
 class Order
   include ActiveModel::Validations
-  attr_reader :state
+  attr_reader :state, :type
   attr_accessor :id, :client, :updated_on, :created_on, :rating
   validates :client, presence: true
   validates :rating, numericality: { greater_than_or_equal_to: 1,
@@ -13,6 +14,7 @@ class Order
   validate :valid_state, :valid_state_for_rating
 
   ALLOWED_STATES = %w[recibido en_preparacion en_entrega entregado].freeze
+  VALID_TYPES = %w[menu_individual menu_familiar menu_pareja].freeze
 
   def initialize(data = {})
     @id = data[:id]
@@ -21,6 +23,10 @@ class Order
     @created_on = data[:created_on]
     @state = data[:state] || 'recibido'
     @rating = data[:rating]
+
+    raise InvalidMenuError unless VALID_TYPES.include?(data[:type])
+
+    @type = data[:type]
   end
 
   def state=(new_state)
@@ -32,7 +38,7 @@ class Order
 
   def valid_state
     valid_state = @state != 'invalid_state'
-    errors.add(:state, 'invalid state') unless valid_state
+    errors.add(:state, 'invalid_state_transition') unless valid_state
   end
 
   def valid_state_for_rating
