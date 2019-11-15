@@ -38,7 +38,7 @@ class Order
 
   def valid_state
     valid_state = @state != 'invalid_state'
-    errors.add(:state, 'invalid state') unless valid_state
+    errors.add(:state, 'invalid_state_transition') unless valid_state
   end
 
   def valid_state_for_rating
