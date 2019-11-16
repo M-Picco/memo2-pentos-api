@@ -64,6 +64,7 @@ get '/client/:username/order/:order_id' do
   content_type :json
   username = params['username']
 
+  raise ClientNotFoundError unless ClientRepository.new.exists?(username)
   raise ClientHasNoOrdersError unless OrderRepository.new.has_orders?(username)
 
   order_id = params['order_id']
@@ -93,6 +94,7 @@ post '/client/:username/order/:order_id/rate' do
   order_id = params['order_id']
   rating = body['rating']
 
+  raise ClientNotFoundError unless ClientRepository.new.exists?(username)
   raise ClientHasNoOrdersError unless OrderRepository.new.has_orders?(username)
 
   order = OrderRepository.new.find_for_user(order_id, username)
