@@ -50,8 +50,12 @@ put '/order/:order_id/status' do
   order_id = params['order_id']
   new_status = body['status']
 
-  raise FailedSaveOperationError, order unless OrderRepository.new.change_order_state(order_id,
-                                                                                      new_status)
+  repository = OrderRepository.new
+
+  order = repository.find_by_id(order_id)
+  order.state = new_status
+
+  raise FailedSaveOperationError, order unless repository.save(order)
 
   status 200
 end

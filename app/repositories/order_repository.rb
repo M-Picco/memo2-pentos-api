@@ -6,14 +6,6 @@ class OrderRepository < BaseRepository
   self.table_name = :orders
   self.model_class = 'Order'
 
-  def change_order_state(order_id, new_state)
-    order = find order_id
-
-    order.state = new_state
-
-    save order
-  end
-
   def find_by_id(order_id)
     find(order_id)
   rescue Sequel::NoMatchingRow
