@@ -1,5 +1,11 @@
 require 'active_model'
 require_relative '../errors/invalid_menu_error'
+require_relative '../helpers/states_helper'
+require_relative '../states/recieved_state'
+require_relative '../states/inpreparation_state'
+require_relative '../states/ondelivery_state'
+require_relative '../states/delivered_state'
+require_relative '../states/invalid_state'
 
 class Order
   include ActiveModel::Validations
@@ -13,7 +19,8 @@ class Order
 
   validate :valid_state, :valid_state_for_rating
 
-  ALLOWED_STATES = %w[recibido en_preparacion en_entrega entregado].freeze
+  ALLOWED_STATES = [RecievedState.new, InPreparationState.new,
+                    OnDeliveryState.new, DeliveredState.new].freeze
   VALID_TYPES = %w[menu_individual menu_familiar menu_pareja].freeze
 
   def initialize(data = {})
@@ -21,7 +28,7 @@ class Order
     @client = data[:client]
     @updated_on = data[:updated_on]
     @created_on = data[:created_on]
-    @state = data[:state] || 'recibido'
+    @state = RecievedState.new
     @rating = data[:rating]
 
     raise InvalidMenuError unless VALID_TYPES.include?(data[:type])
@@ -31,17 +38,18 @@ class Order
 
   def state=(new_state)
     valid_transition = ALLOWED_STATES.include?(new_state)
-    @state = valid_transition ? new_state : 'invalid_state'
+    @state = valid_transition ? new_state : InvalidState.new
   end
 
   private
 
   def valid_state
-    valid_state = @state != 'invalid_state'
+    valid_state = @state != InvalidState.new
     errors.add(:state, 'invalid_state_transition') unless valid_state
   end
 
   def valid_state_for_rating
-    errors.add(:state_for_rating, 'order_not_delivered') if !@rating.nil? && @state != 'entregado'
+    return errors.add(:state_for_rating, 'order_not_delivered') if !@rating.nil? &&
+                                                                   @state != DeliveredState.new
   end
 end

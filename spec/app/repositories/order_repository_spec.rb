@@ -1,5 +1,11 @@
 require 'integration_spec_helper'
 require_relative '../../../app/errors/order_not_found_error'
+require_relative '../../../app/helpers/states_helper'
+require_relative '../../../app/states/recieved_state'
+require_relative '../../../app/states/inpreparation_state'
+require_relative '../../../app/states/ondelivery_state'
+require_relative '../../../app/states/delivered_state'
+require_relative '../../../app/states/invalid_state'
 
 describe OrderRepository do
   let(:repository) { described_class.new }
@@ -41,12 +47,11 @@ describe OrderRepository do
     it 'changes the order state from received to in_preparation' do
       order = Order.new(client: client, type: 'menu_individual')
       repository.save(order)
-
-      repository.change_order_state(order.id, 'en_preparacion')
+      repository.change_order_state(order.id, InPreparationState.new)
 
       reloaded_order = repository.find(order.id)
 
-      expect(reloaded_order.state).to eq('en_preparacion')
+      expect(reloaded_order.state).to eq(InPreparationState.new)
     end
 
     it 'fails to change the order state from received to
@@ -54,7 +59,7 @@ describe OrderRepository do
       order = Order.new(client: client, type: 'menu_individual')
       repository.save(order)
 
-      result = repository.change_order_state(order.id, 'un_estado_invalido')
+      result = repository.change_order_state(order.id, InvalidState.new)
 
       expect(result).to be(false)
     end
@@ -92,7 +97,7 @@ describe OrderRepository do
     # rubocop:disable RSpect/ExampleLength
     it 'changes the rating of an order in delivered state' do
       order = Order.new(client: client, type: 'menu_individual')
-      order.state = 'entregado'
+      order.state = DeliveredState.new
       repository.save(order)
 
       order.rating = 3
@@ -119,7 +124,7 @@ describe OrderRepository do
     it 'does not change the rating of an order with invalid rating
         due to it being above 5' do
       order = Order.new(client: client, type: 'menu_individual')
-      order.state = 'entregado'
+      order.state = DeliveredState.new
       repository.save(order)
 
       order.rating = 6
@@ -133,7 +138,7 @@ describe OrderRepository do
     it 'does not change the rating of an order with invalid rating
         due to it being below 1' do
       order = Order.new(client: client, type: 'menu_individual')
-      order.state = 'entregado'
+      order.state = DeliveredState.new
       repository.save(order)
 
       order.rating = 0

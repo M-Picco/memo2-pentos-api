@@ -4,6 +4,7 @@ require_relative '../app/states/recieved_state'
 require_relative '../app/states/inpreparation_state'
 require_relative '../app/states/ondelivery_state'
 require_relative '../app/states/delivered_state'
+require_relative '../app/states/invalid_state'
 
 describe StatesHelper do
   describe 'create for' do
@@ -25,6 +26,16 @@ describe StatesHelper do
     it 'should return DeliveredState class when I pass "entregado"' do
       return_state = described_class.create_for('entregado')
       expect(return_state).to eq(DeliveredState.new)
+    end
+
+    it 'should return InvalidState class when I pass "invalid_state"' do
+      return_state = described_class.create_for('invalid_state')
+      expect(return_state).to eq(InvalidState.new)
+    end
+
+    it 'should return InvalidState class when I pass "invalid_name"' do
+      return_state = described_class.create_for('invalid_name')
+      expect(return_state).to eq(InvalidState.new)
     end
   end
 end

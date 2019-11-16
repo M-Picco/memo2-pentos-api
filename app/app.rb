@@ -10,6 +10,7 @@ require_relative 'errors/order_not_found_error'
 require_relative 'errors/invalid_menu_error'
 require_relative 'errors/client_has_no_orders_error'
 require_relative 'errors/failed_save_operation_error'
+require_relative 'helpers/states_helper'
 
 KNOWN_ERRORS = [OrderNotFoundError, ClientHasNoOrdersError,
                 InvalidMenuError, FailedSaveOperationError].freeze
@@ -48,7 +49,7 @@ put '/order/:order_id/status' do
   body = JSON.parse(request.body.read)
 
   order_id = params['order_id']
-  new_status = body['status']
+  new_status = StatesHelper.create_for(body['status'])
 
   raise FailedSaveOperationError, order unless OrderRepository.new.change_order_state(order_id,
                                                                                       new_status)
@@ -65,7 +66,7 @@ get '/client/:username/order/:order_id' do
   order_id = params['order_id']
 
   order = OrderRepository.new.find_for_user(order_id, username)
-  response = { order_status: order.state }
+  response = { order_status: order.state.state_name }
 
   response.to_json
 end
