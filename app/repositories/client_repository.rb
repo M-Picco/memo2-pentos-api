@@ -13,7 +13,7 @@ class ClientRepository < BaseRepository
     load_object(row)
   end
 
-  def exists(client_name)
+  def exists?(client_name)
     dataset.count(username: client_name).positive?
   end
 

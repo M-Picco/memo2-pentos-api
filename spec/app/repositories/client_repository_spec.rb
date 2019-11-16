@@ -38,13 +38,13 @@ describe ClientRepository do
                           'phone' => '4444-4564', 'address' => 'Av 1234')
       repository.save(client)
 
-      exists = repository.exists('jperez')
+      exists = repository.exists?('jperez')
 
       expect(exists).to eq(true)
     end
 
     it 'returns false for an inexesisting client' do
-      exists = repository.exists('jdoe')
+      exists = repository.exists?('jdoe')
 
       expect(exists).to eq(false)
     end
