@@ -1,6 +1,7 @@
 require_relative 'base_repository'
 require_relative '../errors/order_not_found_error'
 require_relative '../errors/client_has_no_orders_error'
+require_relative '../helpers/states_helper'
 
 class OrderRepository < BaseRepository
   self.table_name = :orders
@@ -31,6 +32,7 @@ class OrderRepository < BaseRepository
     order = Order.new(a_record)
 
     order.client = ClientRepository.new.find_by_name(a_record[:client_username])
+    order.state = StatesHelper.create_for(a_record[:state])
 
     order
   end
@@ -38,7 +40,7 @@ class OrderRepository < BaseRepository
   def changeset(order)
     {
       client_username: order.client.name,
-      state: order.state,
+      state: order.state.state_name,
       rating: order.rating,
       type: order.type
     }

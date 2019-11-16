@@ -10,6 +10,7 @@ require_relative 'errors/order_not_found_error'
 require_relative 'errors/invalid_menu_error'
 require_relative 'errors/client_has_no_orders_error'
 require_relative 'errors/failed_save_operation_error'
+require_relative 'helpers/states_helper'
 
 KNOWN_ERRORS = [OrderNotFoundError, ClientHasNoOrdersError,
                 InvalidMenuError, FailedSaveOperationError,
@@ -49,7 +50,7 @@ put '/order/:order_id/status' do
   body = JSON.parse(request.body.read)
 
   order_id = params['order_id']
-  new_status = body['status']
+  new_status = StatesHelper.create_for(body['status'])
 
   repository = OrderRepository.new
 
@@ -71,7 +72,8 @@ get '/client/:username/order/:order_id' do
   order_id = params['order_id']
 
   order = OrderRepository.new.find_for_user(order_id, username)
-  response = { order_status: order.state }
+  response = { order_status: order.state.state_name,
+               assigned_to: order.assigned_to }
 
   response.to_json
 end
@@ -109,13 +111,6 @@ end
 error(*KNOWN_ERRORS) do |e|
   status 400
   { error: e.message }.to_json
-end
-
-def extract_first_error(entity)
-  return '' if entity.errors.empty?
-
-  # Ex: entity.errors.messages = [:symbol, ["the error"]]
-  entity.errors.messages.first[1].first
 end
 
 # test environment methods

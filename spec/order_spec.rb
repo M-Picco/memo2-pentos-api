@@ -1,4 +1,10 @@
 require 'spec_helper'
+require_relative '../app/helpers/states_helper'
+require_relative '../app/states/recieved_state'
+require_relative '../app/states/inpreparation_state'
+require_relative '../app/states/ondelivery_state'
+require_relative '../app/states/delivered_state'
+require_relative '../app/states/invalid_state'
 
 describe Order do
   subject(:order) { described_class.new(client: client, type: 'menu_individual') }
@@ -14,6 +20,7 @@ describe Order do
     it { is_expected.to respond_to(:state) }
     it { is_expected.to respond_to(:rating) }
     it { is_expected.to respond_to(:type) }
+    it { is_expected.to respond_to(:assigned_to) }
   end
 
   describe 'type' do
@@ -35,34 +42,34 @@ describe Order do
 
   describe 'state' do
     it 'has "received" as initial value' do
-      expect(order.state).to eq('recibido')
+      expect(order.state).to eq(RecievedState.new)
     end
 
     it 'allows in_preparation state' do
-      order.state = 'en_preparacion'
+      order.state = StatesHelper.create_for('en_preparacion')
 
-      expect(order.state).to eq('en_preparacion')
+      expect(order.state).to eq(InPreparationState.new)
       expect(order.valid?).to eq(true)
     end
 
     it 'allows delivery state' do
-      order.state = 'en_entrega'
+      order.state = StatesHelper.create_for('en_entrega')
 
-      expect(order.state).to eq('en_entrega')
+      expect(order.state).to eq(OnDeliveryState.new)
       expect(order.valid?).to eq(true)
     end
 
     it 'allows delivered state' do
-      order.state = 'entregado'
+      order.state = StatesHelper.create_for('entregado')
 
-      expect(order.state).to eq('entregado')
+      expect(order.state).to eq(DeliveredState.new)
       expect(order.valid?).to eq(true)
     end
 
     it 'is invalid when changing to an invalid state' do
-      order.state = 'not_contemplated_state'
+      order.state = StatesHelper.create_for('not_contemplated_state')
 
-      expect(order.state).to eq('invalid_state')
+      expect(order.state).to eq(InvalidState.new)
       expect(order.valid?).to eq(false)
     end
   end
@@ -74,7 +81,7 @@ describe Order do
     end
 
     it 'is valid when rating with 3' do
-      order.state = 'entregado'
+      order.state =  StatesHelper.create_for('entregado')
 
       order.rating = 3
 
@@ -91,7 +98,7 @@ describe Order do
     end
 
     it 'is invalid when rating an order in in_preparation state' do
-      order.state = 'en_preparacion'
+      order.state = StatesHelper.create_for('en_preparacion')
 
       order.rating = 3
 
@@ -101,7 +108,7 @@ describe Order do
     end
 
     it 'is invalid when rating an order in delivering state' do
-      order.state = 'en_entrega'
+      order.state =  StatesHelper.create_for('en_entrega')
 
       order.rating = 3
 
@@ -111,7 +118,7 @@ describe Order do
     end
 
     it 'is invalid to rate an order with a value 1' do
-      order.state = 'entregado'
+      order.state =  StatesHelper.create_for('entregado')
 
       order.rating = -1
 
@@ -120,12 +127,21 @@ describe Order do
     end
 
     it 'is invalid to rate an order with a value 6' do
-      order.state = 'entregado'
+      order.state =  StatesHelper.create_for('entregado')
 
       order.rating = 6
 
       expect(order.valid?).to eq(false)
       expect(order.errors.messages.first[1].first).to eq('invalid_rating')
+    end
+  end
+
+  describe 'delivery assigment' do
+    it 'should assign when status is in "en_entrega"' do
+      delivery = Delivery.new('username' => 'pepemoto')
+      DeliveryRepository.new.save(delivery)
+      order.state = StatesHelper.create_for('en_entrega')
+      expect(order.assigned_to).to eq(delivery.username)
     end
   end
 end
