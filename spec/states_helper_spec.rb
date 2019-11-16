@@ -3,6 +3,7 @@ require_relative '../app/helpers/states_helper'
 require_relative '../app/states/recieved_state'
 require_relative '../app/states/inpreparation_state'
 require_relative '../app/states/ondelivery_state'
+require_relative '../app/states/delivered_state'
 
 describe StatesHelper do
   describe 'create for' do
@@ -19,6 +20,11 @@ describe StatesHelper do
     it 'should return OnDeliveryState class when I pass "en_entrega"' do
       return_state = described_class.create_for('en_entrega')
       expect(return_state).to eq(OnDeliveryState.new)
+    end
+
+    it 'should return DeliveredState class when I pass "entregado"' do
+      return_state = described_class.create_for('entregado')
+      expect(return_state).to eq(DeliveredState.new)
     end
   end
 end
