@@ -14,6 +14,10 @@ class OrderRepository < BaseRepository
     save order
   end
 
+  def find_by_id(order_id)
+    find(order_id)
+  end
+
   def has_orders?(user_name)
     !(load_collection dataset.where(client_username: user_name)).empty?
   end

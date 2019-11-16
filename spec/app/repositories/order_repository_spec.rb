@@ -17,6 +17,18 @@ describe OrderRepository do
     expect(order.id).to be > 0
   end
 
+  describe 'find by id' do
+    it 'finds an order by its id' do
+      order = Order.new(client: client, type: 'menu_individual')
+      repository.save(order)
+
+      reloaded_order = repository.find_by_id(order.id)
+
+      expect(reloaded_order.id).to eq(order.id)
+      expect(reloaded_order.client.name).to eq(order.client.name)
+    end
+  end
+
   describe 'find by username' do
     it 'finds an order for an existing username' do
       order = Order.new(client: client, type: 'menu_individual')
