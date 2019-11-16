@@ -42,5 +42,11 @@ describe ClientRepository do
 
       expect(exists).to eq(true)
     end
+
+    it 'returns false for an inexesisting client' do
+      exists = repository.exists('jdoe')
+
+      expect(exists).to eq(false)
+    end
   end
 end
