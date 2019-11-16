@@ -3,7 +3,7 @@ require_relative '../errors/invalid_menu_error'
 
 class Order
   include ActiveModel::Validations
-  attr_reader :state, :type
+  attr_reader :state, :type, :assigned_to
   attr_accessor :id, :client, :updated_on, :created_on, :rating
   validates :client, presence: true
   validates :rating, numericality: { greater_than_or_equal_to: 1,
