@@ -12,7 +12,8 @@ require_relative 'errors/client_has_no_orders_error'
 require_relative 'errors/failed_save_operation_error'
 
 KNOWN_ERRORS = [OrderNotFoundError, ClientHasNoOrdersError,
-                InvalidMenuError, FailedSaveOperationError].freeze
+                InvalidMenuError, FailedSaveOperationError,
+                ClientNotFoundError].freeze
 
 get '/' do
   content_type :json
@@ -50,8 +51,12 @@ put '/order/:order_id/status' do
   order_id = params['order_id']
   new_status = body['status']
 
-  raise FailedSaveOperationError, order unless OrderRepository.new.change_order_state(order_id,
-                                                                                      new_status)
+  repository = OrderRepository.new
+
+  order = repository.find_by_id(order_id)
+  order.state = new_status
+
+  raise FailedSaveOperationError, order unless repository.save(order)
 
   status 200
 end
@@ -60,6 +65,7 @@ get '/client/:username/order/:order_id' do
   content_type :json
   username = params['username']
 
+  raise ClientNotFoundError unless ClientRepository.new.exists?(username)
   raise ClientHasNoOrdersError unless OrderRepository.new.has_orders?(username)
 
   order_id = params['order_id']
@@ -89,6 +95,7 @@ post '/client/:username/order/:order_id/rate' do
   order_id = params['order_id']
   rating = body['rating']
 
+  raise ClientNotFoundError unless ClientRepository.new.exists?(username)
   raise ClientHasNoOrdersError unless OrderRepository.new.has_orders?(username)
 
   order = OrderRepository.new.find_for_user(order_id, username)
