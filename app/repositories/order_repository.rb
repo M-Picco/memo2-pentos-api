@@ -16,6 +16,8 @@ class OrderRepository < BaseRepository
 
   def find_by_id(order_id)
     find(order_id)
+  rescue Sequel::NoMatchingRow
+    raise OrderNotFoundError
   end
 
   def has_orders?(user_name)

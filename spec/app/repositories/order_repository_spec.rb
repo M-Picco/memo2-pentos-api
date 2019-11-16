@@ -27,6 +27,11 @@ describe OrderRepository do
       expect(reloaded_order.id).to eq(order.id)
       expect(reloaded_order.client.name).to eq(order.client.name)
     end
+
+    it 'fails to find an inexistent order' do
+      expect { repository.find_by_id(999_999) }
+        .to raise_error(OrderNotFoundError)
+    end
   end
 
   describe 'find by username' do
