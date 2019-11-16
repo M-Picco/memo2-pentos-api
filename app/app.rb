@@ -12,7 +12,8 @@ require_relative 'errors/client_has_no_orders_error'
 require_relative 'errors/failed_save_operation_error'
 
 KNOWN_ERRORS = [OrderNotFoundError, ClientHasNoOrdersError,
-                InvalidMenuError, FailedSaveOperationError].freeze
+                InvalidMenuError, FailedSaveOperationError,
+                ClientNotFoundError].freeze
 
 get '/' do
   content_type :json
