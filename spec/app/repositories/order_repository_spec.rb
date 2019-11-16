@@ -23,6 +23,23 @@ describe OrderRepository do
     expect(order.id).to be > 0
   end
 
+  describe 'find by id' do
+    it 'finds an order by its id' do
+      order = Order.new(client: client, type: 'menu_individual')
+      repository.save(order)
+
+      reloaded_order = repository.find_by_id(order.id)
+
+      expect(reloaded_order.id).to eq(order.id)
+      expect(reloaded_order.client.name).to eq(order.client.name)
+    end
+
+    it 'fails to find an inexistent order' do
+      expect { repository.find_by_id(999_999) }
+        .to raise_error(OrderNotFoundError)
+    end
+  end
+
   describe 'find by username' do
     it 'finds an order for an existing username' do
       order = Order.new(client: client, type: 'menu_individual')
@@ -40,28 +57,6 @@ describe OrderRepository do
 
       expect { repository.find_for_user(order.id + 1, client.name) }
         .to raise_error(OrderNotFoundError)
-    end
-  end
-
-  describe 'change state' do
-    it 'changes the order state from received to in_preparation' do
-      order = Order.new(client: client, type: 'menu_individual')
-      repository.save(order)
-      repository.change_order_state(order.id, InPreparationState.new)
-
-      reloaded_order = repository.find(order.id)
-
-      expect(reloaded_order.state).to eq(InPreparationState.new)
-    end
-
-    it 'fails to change the order state from received to
-        an invalid state (any other than in_preparation)' do
-      order = Order.new(client: client, type: 'menu_individual')
-      repository.save(order)
-
-      result = repository.change_order_state(order.id, InvalidState.new)
-
-      expect(result).to be(false)
     end
   end
 
