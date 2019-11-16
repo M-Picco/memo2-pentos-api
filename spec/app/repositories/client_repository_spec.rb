@@ -31,4 +31,16 @@ describe ClientRepository do
     end
     # rubocop:enable RSpec/ExampleLength:
   end
+
+  describe 'exists' do
+    it 'returns true for an existing client' do
+      client = Client.new('username' => 'jperez',
+                          'phone' => '4444-4564', 'address' => 'Av 1234')
+      repository.save(client)
+
+      exists = repository.exists('jperez')
+
+      expect(exists).to eq(true)
+    end
+  end
 end
