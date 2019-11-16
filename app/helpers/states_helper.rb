@@ -1,7 +1,7 @@
-require_relative '../states/recibido_state'
+require_relative '../states/recieved_state'
 
 class StatesHelper
   def self.create_for(_string_state)
-    RecibidoState.new
+    RecievedState.new
   end
 end

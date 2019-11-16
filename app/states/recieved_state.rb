@@ -1,4 +1,4 @@
-class RecibidoState
+class RecievedState
   attr_reader :state_name
 
   def initialize
