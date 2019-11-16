@@ -135,4 +135,13 @@ describe Order do
       expect(order.errors.messages.first[1].first).to eq('invalid_rating')
     end
   end
+
+  describe 'delivery assigment' do
+    it 'should assign when status is in "en_entrega"' do
+      delivery = Delivery.new('username' => 'pepemoto')
+      DeliveryRepository.new.save(delivery)
+      order.state = StatesHelper.create_for('en_entrega')
+      expect(order.assigned_to).to eq(delivery.username)
+    end
+  end
 end

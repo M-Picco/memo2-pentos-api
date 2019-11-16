@@ -6,6 +6,8 @@ class DeliveryAssigner
   end
 
   def assign_to(order)
-    order.assigned_to = delivery
+    order.assigned_to = delivery.username
+  rescue NoMethodError
+    order.assigned_to = nil
   end
 end

@@ -9,13 +9,12 @@ Característica: Asignacion de repartidor
     """
 
     Antecedentes:
-      Dado el cliente "jperez"
-      Y se registra con domicilio "Cucha Cucha 1234 1 Piso B" y telefono "4123-4123"
-      Y el repartidor "pepebicicleta" que entrego 1 pedidos
+      Dado el repartidor "pepebicicleta" que entrego 1 pedidos
       Y el repartidor "juanmotoneta" que entrego 0 pedidos
-    
-    @wip
+      Y el cliente "jperez"
+      Y se registra con domicilio "Cucha Cucha 1234 1 Piso B" y telefono "4123-4123"
+
     Escenario: A0 - Menu individual es asignado cualquier repartidor
-      Dado el cliente pide un "menu_individual"
+      Dado que el cliente pidio un "menu_individual"
       Cuando el estado cambia a "en_entrega"
       Entonces pedido esta asignado a "juanmotoneta" o a "pepebicicleta"

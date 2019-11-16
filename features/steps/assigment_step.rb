@@ -1,4 +1,6 @@
-Dado('el repartidor {string} que entrego {int} pedidos') do |string, int|
+Dado('el repartidor {string} que entrego {int} pedidos') do |nombre_repartidor, _int|
+  step "el nombre del repartidor \"#{nombre_repartidor}\""
+  step 'se registra'
 end
 
 Entonces('pedido esta asignado a {string} o a {string}') do |repartidor1, repartidor2|

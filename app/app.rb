@@ -66,7 +66,8 @@ get '/client/:username/order/:order_id' do
   order_id = params['order_id']
 
   order = OrderRepository.new.find_for_user(order_id, username)
-  response = { order_status: order.state.state_name }
+  response = { order_status: order.state.state_name,
+               assigned_to: order.assigned_to }
 
   response.to_json
 end

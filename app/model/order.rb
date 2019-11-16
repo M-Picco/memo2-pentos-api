@@ -39,6 +39,7 @@ class Order
   def state=(new_state)
     valid_transition = ALLOWED_STATES.include?(new_state)
     @state = valid_transition ? new_state : InvalidState.new
+    @state.on_enter(self)
   end
 
   private
