@@ -5,7 +5,7 @@ class Commission
 
   attr_accessor :id, :amount, :order_cost
 
-  validates :order_cost, length: { minimum: 0 }
+  validates :order_cost, numericality: { greater_than_or_equal_to: 0 }
 
   def initialize(data = { 'order_cost' => 0 })
     @id = data['id']

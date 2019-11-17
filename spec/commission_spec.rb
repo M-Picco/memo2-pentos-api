@@ -11,9 +11,15 @@ describe Commission do
 
   describe 'valid?' do
     it 'should de valid when order_cost is positive number' do
-      commision = described_class.new
+      commision = described_class.new('order_cost' => 100)
       expect(commision.valid?).to eq true
       expect(commision.errors.empty?).to eq true
+    end
+
+    it 'should de invalid when order_cost is negative number' do
+      commision = described_class.new('order_cost' => -1)
+      expect(commision.valid?).to eq false
+      expect(commision.errors).to have_key(:order_cost)
     end
   end
 
