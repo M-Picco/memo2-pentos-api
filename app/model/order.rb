@@ -9,8 +9,8 @@ require_relative '../states/invalid_state'
 
 class Order
   include ActiveModel::Validations
-  attr_reader :state, :type
-  attr_accessor :id, :client, :updated_on, :created_on, :rating, :assigned_to, :commission
+  attr_reader :state, :type, :rating
+  attr_accessor :id, :client, :updated_on, :created_on, :assigned_to, :commission
   validates :client, presence: true
   validates :rating, numericality: { greater_than_or_equal_to: 1,
                                      less_than_or_equal_to: 5,
@@ -45,6 +45,11 @@ class Order
 
   def cost
     100
+  end
+
+  def rating=(new_rating)
+    @rating = new_rating
+    @commission&.update_by_rating(new_rating)
   end
 
   private
