@@ -52,7 +52,11 @@ class Order
 
   def rating=(new_rating)
     @rating = new_rating
-    @commission&.update_by_rating(new_rating)
+
+    return if @commission.nil?
+
+    @commission.update_by_rating(new_rating)
+    CommissionRepository.new.save(@commission)
   end
 
   private

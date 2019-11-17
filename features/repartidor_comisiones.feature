@@ -37,7 +37,6 @@ A su vez los dias de lluvia las comisiones se incrementan en un 1% (*)
       Y no llueve
       Entonces la comision 12.5
 
-    @wip
     Escenario: COM4 - Comision por menu_familiar con mala calificacion y sin lluvia
       Dado que el cliente pidio un "menu_familiar"
       Cuando el pedido es entregado por "juanmotoneta"

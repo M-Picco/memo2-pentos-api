@@ -8,7 +8,8 @@ class CommissionRepository < BaseRepository
 
   def changeset(commission)
     {
-      amount: commission.amount
+      amount: commission.amount,
+      order_cost: commission.order_cost
     }
   end
 end
