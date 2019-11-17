@@ -9,6 +9,7 @@ class Commission
 
   BASE_PERCENTAGE = 0.05
   MIN_PERCENTAGE = 0.03
+  MAX_PERCENTAGE = 0.07
 
   def initialize(data = { order_cost: 0 })
     @id = data[:id]
@@ -20,5 +21,6 @@ class Commission
 
   def update_by_rating(rating)
     @amount = MIN_PERCENTAGE * @order_cost if rating == 1
+    @amount = MAX_PERCENTAGE * @order_cost if rating == 5
   end
 end

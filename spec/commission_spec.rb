@@ -58,5 +58,12 @@ describe Commission do
       commision.update_by_rating(1)
       expect(commision.amount).to eq(order_cost * 0.03)
     end
+
+    it 'amount change to 7% if rating is 5' do
+      order_cost = 100
+      commision = described_class.new(order_cost: order_cost)
+      commision.update_by_rating(5)
+      expect(commision.amount).to eq(order_cost * 0.07)
+    end
   end
 end
