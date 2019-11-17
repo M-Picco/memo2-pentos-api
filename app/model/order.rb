@@ -10,7 +10,7 @@ require_relative '../states/invalid_state'
 class Order
   include ActiveModel::Validations
   attr_reader :state, :type
-  attr_accessor :id, :client, :updated_on, :created_on, :rating, :assigned_to
+  attr_accessor :id, :client, :updated_on, :created_on, :rating, :assigned_to, :commission
   validates :client, presence: true
   validates :rating, numericality: { greater_than_or_equal_to: 1,
                                      less_than_or_equal_to: 5,
@@ -34,6 +34,7 @@ class Order
     raise InvalidMenuError unless VALID_TYPES.include?(data[:type])
 
     @type = data[:type]
+    @commission = data[:commission]
   end
 
   def state=(new_state)

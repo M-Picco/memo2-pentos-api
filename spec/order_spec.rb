@@ -21,6 +21,7 @@ describe Order do
     it { is_expected.to respond_to(:rating) }
     it { is_expected.to respond_to(:type) }
     it { is_expected.to respond_to(:assigned_to) }
+    it { is_expected.to respond_to(:commission) }
   end
 
   describe 'type' do
