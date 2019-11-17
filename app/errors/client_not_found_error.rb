@@ -1,5 +1,5 @@
 class ClientNotFoundError < StandardError
-  def initialize(msg = 'client_not_exist')
+  def initialize(msg = 'not_registered')
     super
   end
 end

@@ -24,7 +24,6 @@ Característica: Registracion de cliente
         Cuando se registra con domicilio "a1" y telefono "4098-0997"
         Entonces obtiene un mensaje de error por domicilio inválido
 
-    @wip
     Escenario: RC5 - Hacer pedido sin estar registrado
         Dado el cliente "jperez"
         Cuando el cliente pide un "menu_individual"
