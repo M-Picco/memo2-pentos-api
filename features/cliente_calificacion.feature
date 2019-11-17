@@ -5,6 +5,7 @@ Característica: Calificacion de Pedidos
   Antecedentes:
     Dado el cliente "jperez"
     Y se registra con domicilio "Cucha Cucha 1234 1 Piso B" y telefono "4123-4123"
+    Y el repartidor "juanmotoneta" está registrado
 
   Escenario: CAP1 - Calificacion exitosa
     Dado que el cliente pidio un "menu_individual"
