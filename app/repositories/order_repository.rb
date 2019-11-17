@@ -26,6 +26,10 @@ class OrderRepository < BaseRepository
     raise OrderNotFoundError
   end
 
+  def orders_created_on(date)
+    load_collection dataset.where(created_on: date)
+  end
+
   protected
 
   def load_object(a_record)

@@ -6,6 +6,7 @@ require_relative '../../../app/states/inpreparation_state'
 require_relative '../../../app/states/ondelivery_state'
 require_relative '../../../app/states/delivered_state'
 require_relative '../../../app/states/invalid_state'
+require 'date'
 
 describe OrderRepository do
   let(:repository) { described_class.new }
@@ -161,4 +162,22 @@ describe OrderRepository do
     end
   end
   # rubocop:enable RSpect/ExampleLength
+
+  describe 'today orders' do
+    it 'should return an order made today' do
+      today = Date.today()
+      order = Order.new(client: client, type: 'menu_individual')
+      repository.save(order)
+      orders = repository.orders_created_on(today)
+      expect(orders[0].id).to eq(order.id)
+    end
+
+    it 'should not return an order if i asked for yesterday orders' do
+      today = Date.today()
+      order = Order.new(client: client, type: 'menu_individual')
+      repository.save(order)
+      orders = repository.orders_created_on(today - 1)
+      expect(orders.empty?).to eq(true)
+    end
+  end
 end
