@@ -45,6 +45,14 @@ A su vez los dias de lluvia las comisiones se incrementan en un 1% (*)
       Entonces la comision 7.5
 
     @wip
+    Escenario: COM4.5 - Comision por menu_individual con excelente calificacion y sin lluvia
+      Dado que el cliente pidio un "menu_individual"
+      Cuando el pedido es entregado por "juanmotoneta"
+      Y el cliente califica con 5
+      Y no llueve
+      Entonces la comision 7
+
+    @wip
     Escenario: COM5 - Comision por menu_familiar con excelente calificacion y con lluvia
       Dado que el cliente pidio un "menu_familiar"
       Cuando el pedido es entregado por "matipatineta"
