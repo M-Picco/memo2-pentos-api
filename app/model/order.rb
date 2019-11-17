@@ -21,9 +21,8 @@ class Order
 
   ALLOWED_STATES = [RecievedState.new, InPreparationState.new,
                     OnDeliveryState.new, DeliveredState.new].freeze
-  VALID_TYPES = %w[menu_individual menu_familiar menu_pareja].freeze
 
-  ORDER_COSTS = { 'menu_individual' => 100, 'menu_pareja' => 175, 'menu_familiar' => 250 }.freeze
+  VALID_TYPES = { 'menu_individual' => 100, 'menu_pareja' => 175, 'menu_familiar' => 250 }.freeze
 
   def initialize(data = {})
     @id = data[:id]
@@ -33,7 +32,7 @@ class Order
     @state = RecievedState.new
     @rating = data[:rating]
 
-    raise InvalidMenuError unless VALID_TYPES.include?(data[:type])
+    raise InvalidMenuError unless VALID_TYPES.key?(data[:type])
 
     @type = data[:type]
     @commission = data[:commission]
@@ -46,7 +45,7 @@ class Order
   end
 
   def cost
-    ORDER_COSTS[@type]
+    VALID_TYPES[@type]
   end
 
   def rating=(new_rating)
