@@ -145,4 +145,16 @@ describe OrderRepository do
     end
     # rubocop:enable RSpect/ExampleLength
   end
+
+  describe 'change commission' do
+    it 'changes the commission of an order in delivered state' do
+      order = Order.new(client: client, type: 'menu_individual')
+      order.state = DeliveredState.new
+      repository.save(order)
+
+      reloaded_order = repository.find(order.id)
+
+      expect(reloaded_order.commission.id).to be > 0
+    end
+  end
 end
