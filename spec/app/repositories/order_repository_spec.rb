@@ -165,19 +165,40 @@ describe OrderRepository do
 
   describe 'today orders' do
     it 'should return an order made today' do
-      today = Date.today()
       order = Order.new(client: client, type: 'menu_individual')
       repository.save(order)
-      orders = repository.orders_created_on(today)
+
+      orders = repository.orders_created_on(Date.today)
+
       expect(orders[0].id).to eq(order.id)
     end
 
     it 'should not return an order if i asked for yesterday orders' do
-      today = Date.today()
       order = Order.new(client: client, type: 'menu_individual')
       repository.save(order)
-      orders = repository.orders_created_on(today - 1)
+
+      orders = repository.orders_created_on(Date.today - 1)
+
       expect(orders.empty?).to eq(true)
+    end
+
+    it 'should not return a non delivered order made today' do
+      order = Order.new(client: client, type: 'menu_individual')
+      repository.save(order)
+
+      orders = repository.delivered_orders_created_on(Date.today)
+
+      expect(orders.empty?).to eq(true)
+    end
+
+    it 'should return a delivered order made today' do
+      order = Order.new(client: client, type: 'menu_individual')
+      order.state = DeliveredState.new
+      repository.save(order)
+
+      orders = repository.delivered_orders_created_on(Date.today)
+
+      expect(orders[0].id).to eq(order.id)
     end
   end
 end
