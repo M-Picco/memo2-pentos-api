@@ -114,7 +114,10 @@ post '/commission/:order_id' do
 
   order = OrderRepository.new.find(order_id)
 
-  { comission_amount: order.commission.amount }.to_json
+  { commission_amount: order.commission.amount }.to_json
+end
+
+post '/weather' do
 end
 
 error(*KNOWN_ERRORS) do |e|

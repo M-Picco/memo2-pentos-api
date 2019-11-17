@@ -24,7 +24,7 @@ end
 
 def cancel_order_url(order_id)
   BASE_URL + "/order/#{order_id}/cancel"
-end
+endchange_order_status_url
 
 def submit_order_url(username)
   CLIENT_BASE_URL + "/#{username}/order"

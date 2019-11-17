@@ -13,11 +13,11 @@ A su vez los dias de lluvia las comisiones se incrementan en un 1% (*)
 
     Antecedentes:
         Dado el cliente "jperez"
+        Y se registra con domicilio "Cucha Cucha 1234 1 Piso B" y telefono "4123-4123"
         Y el repartidor "juanmotoneta"
 
-    @wip
     Escenario: COM1 - Comision por menu_individual con buena calificacion y sin lluvia
-      Dado el cliente pide un "menu_individual"
+      Dado que el cliente pidio un "menu_individual"
       Cuando el pedido es entregado por "juanmotoneta"
       Y el cliente califica con 3
       Y no llueve
