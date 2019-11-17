@@ -41,6 +41,13 @@ describe Order do
     end
   end
 
+  describe 'cost' do
+    it 'should be 100 if is a menu_individual type' do
+      order = described_class.new(client: client, type: 'menu_individual')
+      expect(order.cost).to eq(100)
+    end
+  end
+
   describe 'state' do
     it 'has "received" as initial value' do
       expect(order.state).to eq(RecievedState.new)

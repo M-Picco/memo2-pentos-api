@@ -43,6 +43,10 @@ class Order
     @state.on_enter(self)
   end
 
+  def cost
+    100
+  end
+
   private
 
   def valid_state
