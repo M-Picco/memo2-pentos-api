@@ -55,7 +55,7 @@ put '/order/:order_id/status' do
   repository = OrderRepository.new
 
   order = repository.find_by_id(order_id)
-  order.state = new_status
+  order.change_state(new_status)
 
   raise FailedSaveOperationError, order unless repository.save(order)
 

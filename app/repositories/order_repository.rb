@@ -42,7 +42,8 @@ class OrderRepository < BaseRepository
       client_username: order.client.name,
       state: order.state.state_name,
       rating: order.rating,
-      type: order.type
+      type: order.type,
+      assigned_to: order.assigned_to
     }
   end
 end

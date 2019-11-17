@@ -30,6 +30,7 @@ class Order
     @created_on = data[:created_on]
     @state = RecievedState.new
     @rating = data[:rating]
+    @assigned_to = data[:assigned_to]
 
     raise InvalidMenuError unless VALID_TYPES.include?(data[:type])
 
@@ -39,6 +40,10 @@ class Order
   def state=(new_state)
     valid_transition = ALLOWED_STATES.include?(new_state)
     @state = valid_transition ? new_state : InvalidState.new
+  end
+
+  def change_state(new_state)
+    self.state = new_state
     @state.on_enter(self)
   end
 

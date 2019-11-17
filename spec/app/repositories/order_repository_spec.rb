@@ -88,8 +88,8 @@ describe OrderRepository do
     end
   end
 
+  # rubocop:disable RSpect/ExampleLength
   describe 'change rating' do
-    # rubocop:disable RSpect/ExampleLength
     it 'changes the rating of an order in delivered state' do
       order = Order.new(client: client, type: 'menu_individual')
       order.state = DeliveredState.new
@@ -143,6 +143,22 @@ describe OrderRepository do
 
       expect(reloaded_order.rating).to be_nil
     end
-    # rubocop:enable RSpect/ExampleLength
   end
+
+  describe 'delivery assignment' do
+    it 'should persist the assignment' do
+      order = Order.new(client: client, type: 'menu_individual')
+      repository.save(order)
+
+      delivery = Delivery.new('username' => 'pepemoto')
+      DeliveryRepository.new.save(delivery)
+
+      order.change_state(StatesHelper.create_for('en_entrega'))
+
+      repository.save(order)
+
+      expect(repository.find(order.id).assigned_to).to eq(delivery.username)
+    end
+  end
+  # rubocop:enable RSpect/ExampleLength
 end
