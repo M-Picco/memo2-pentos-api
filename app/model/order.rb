@@ -23,6 +23,8 @@ class Order
                     OnDeliveryState.new, DeliveredState.new].freeze
   VALID_TYPES = %w[menu_individual menu_familiar menu_pareja].freeze
 
+  ORDER_COSTS = { 'menu_individual' => 100, 'menu_pareja' => 175, 'menu_familiar' => 250 }.freeze
+
   def initialize(data = {})
     @id = data[:id]
     @client = data[:client]
@@ -44,10 +46,7 @@ class Order
   end
 
   def cost
-    return 175 if @type == 'menu_pareja'
-    return 250 if @type == 'menu_familiar'
-
-    100
+    ORDER_COSTS[@type]
   end
 
   def rating=(new_rating)
