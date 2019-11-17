@@ -31,7 +31,7 @@ describe Commission do
     end
   end
 
-  describe 'ammount' do
+  describe 'amount' do
     it 'should be 5 when order cost is 100' do
       commision = described_class.new(order_cost: 100)
       expect(commision.amount).to eq(5)
@@ -40,6 +40,15 @@ describe Commission do
     it 'should be 5% of the order cost' do
       order_cost = 200
       commision = described_class.new(order_cost: order_cost)
+      expect(commision.amount).to eq(order_cost * 0.05)
+    end
+  end
+
+  describe 'update amount by rating' do
+    it 'amount dont change if rating is 3' do
+      order_cost = 100
+      commision = described_class.new(order_cost: order_cost)
+      commision.update_by_rating(3)
       expect(commision.amount).to eq(order_cost * 0.05)
     end
   end

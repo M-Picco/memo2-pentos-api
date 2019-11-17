@@ -14,4 +14,6 @@ class Commission
     @updated_on = data[:updated_on]
     @created_on = data[:created_on]
   end
+
+  def update_by_rating(_rating); end
 end
