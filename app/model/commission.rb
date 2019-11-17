@@ -10,7 +10,7 @@ class Commission
   def initialize(data = { order_cost: 0 })
     @id = data[:id]
     @order_cost = data[:order_cost]
-    @amount = 0.05 * @order_cost
+    @amount = data[:amount] || 0.05 * @order_cost
     @updated_on = data[:updated_on]
     @created_on = data[:created_on]
   end
