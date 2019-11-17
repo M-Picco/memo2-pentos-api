@@ -19,7 +19,6 @@ Característica: Asignacion de repartidor
       Cuando el estado cambia a "en_entrega"
       Entonces pedido esta asignado a "juanmotoneta" o a "pepebicicleta"
 
-    @wip
     Escenario: A1 - Menu individual es asignado al repartidor con menos pedidos
       Dado el cliente pide un "menu_familiar"
       Cuando el estado cambia a "en_entrega"

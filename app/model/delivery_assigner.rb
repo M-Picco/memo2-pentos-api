@@ -1,15 +1,29 @@
 require_relative '../repositories/delivery_repository'
 require_relative '../repositories/order_repository'
+require_relative '../repositories/delivery_repository.rb'
+require_relative '../repositories/order_repository'
+require 'date'
 
 class DeliveryAssigner
-  def delivery
-    DeliveryRepository.new.first
+  def delivery_with_fewer_orders
+    # [ [delivery_username, q_delivered_orders] ]
+    orders_delivered.min_by(&:last)[0]
   end
 
   def assign_to(order)
-    order.assigned_to = delivery.username
+    order.assigned_to = delivery_with_fewer_orders
     OrderRepository.new.save(order)
   rescue NoMethodError
     order.assigned_to = nil
+  end
+
+  def orders_delivered
+    today_orders = OrderRepository.new.delivered_orders_created_on(Date.today)
+    deliveries = DeliveryRepository.new.deliveries
+    deliveries = Hash[deliveries.map { |delivery| [delivery, 0] }]
+    today_orders.each do |order|
+      deliveries[order.assigned_to] += 1
+    end
+    deliveries
   end
 end
