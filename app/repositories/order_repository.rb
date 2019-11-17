@@ -3,6 +3,7 @@ require_relative '../errors/order_not_found_error'
 require_relative '../errors/client_has_no_orders_error'
 require_relative '../helpers/states_helper'
 require_relative '../states/delivered_state'
+require_relative '../states/ondelivery_state'
 
 class OrderRepository < BaseRepository
   self.table_name = :orders
@@ -33,6 +34,10 @@ class OrderRepository < BaseRepository
 
   def delivered_orders_created_on(date)
     load_collection dataset.where(created_on: date, state: DeliveredState.new.state_name)
+  end
+
+  def on_delivery_orders_by(username)
+    load_collection dataset.where(assigned_to: username, state: OnDeliveryState.new.state_name)
   end
 
   protected

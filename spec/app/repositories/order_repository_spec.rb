@@ -202,4 +202,26 @@ describe OrderRepository do
       expect(orders[0].id).to eq(order.id)
     end
   end
+  # rubocop:disable RSpect/ExampleLength
+
+  describe 'delivery bag' do
+    let(:order) do
+      Order.new(client: client, type: 'menu_individual',
+                assigned_to: delivery.username)
+    end
+
+    let(:delivery) { Delivery.new('username' => 'pepemoto') }
+
+    it 'should return "en_entrega" orders assigned to delivery' do
+      ClientRepository.new.save(client)
+      DeliveryRepository.new.save(delivery)
+      repository.save(order)
+
+      order.change_state(StatesHelper.create_for('en_entrega'))
+      on_delivery_orders = repository.on_delivery_orders_by(delivery.username)
+
+      expect(on_delivery_orders[0].id).to eq(order.id)
+    end
+  end
+  # rubocop:enable RSpect/ExampleLength
 end
