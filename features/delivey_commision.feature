@@ -22,3 +22,11 @@ A su vez los dias de lluvia las comisiones se incrementan en un 1% (*)
       Y el cliente califica con 3
       Y no llueve
       Entonces la comision 5.0
+    
+    @wip
+    Escenario: COM2 - Comision por menu_parejas con buena calificacion y sin lluvia
+      Dado el cliente pide un "menu_parejas"
+      Cuando el pedido es entregado por "juanmotoneta"
+      Y el cliente califica con 4
+      Y no llueve
+      Entonces la comision 8.75
