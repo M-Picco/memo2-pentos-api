@@ -22,6 +22,7 @@ describe Commission do
       commision = described_class.new
       expect(commision.valid?).to eq true
       expect(commision.errors.empty?).to eq true
+      expect(commision.order_cost.zero?).to eq true
     end
 
     it 'should de invalid when order_cost is negative number' do
