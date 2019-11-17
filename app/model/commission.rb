@@ -15,5 +15,7 @@ class Commission
     @created_on = data[:created_on]
   end
 
-  def update_by_rating(_rating); end
+  def update_by_rating(rating)
+    @amount = 0.03 * @order_cost if rating == 1
+  end
 end
