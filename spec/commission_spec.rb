@@ -14,5 +14,10 @@ describe Commission do
       commision = described_class.new(100)
       expect(commision.amount).to eq(5)
     end
+
+    it 'should be 5% of the order cost' do
+      commision = described_class.new(200)
+      expect(commision.amount).to eq(10)
+    end
   end
 end

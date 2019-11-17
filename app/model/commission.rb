@@ -3,6 +3,6 @@ class Commission
 
   def initialize(order_cost)
     @order_cost = order_cost
-    @amount = 5
+    @amount = 0.05 * order_cost
   end
 end
