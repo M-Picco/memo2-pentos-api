@@ -152,4 +152,12 @@ describe Order do
       expect(order.assigned_to).to eq(delivery.username)
     end
   end
+
+  describe 'commission' do
+    it 'should create when status is in "entregado"' do
+      order.state = StatesHelper.create_for('entregado')
+      expect(order.commission.nil?).to eq false
+      expect(order.commission.id).to be > 0
+    end
+  end
 end
