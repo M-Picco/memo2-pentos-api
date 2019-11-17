@@ -51,6 +51,11 @@ describe Order do
       order = described_class.new(client: client, type: 'menu_pareja')
       expect(order.cost).to eq(175)
     end
+
+    it 'should be 250 if is a menu_familiar type' do
+      order = described_class.new(client: client, type: 'menu_familiar')
+      expect(order.cost).to eq(250)
+    end
   end
 
   describe 'state' do
