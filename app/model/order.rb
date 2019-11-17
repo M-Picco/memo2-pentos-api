@@ -44,6 +44,8 @@ class Order
   end
 
   def cost
+    return 175 if @type == 'menu_pareja'
+
     100
   end
 
