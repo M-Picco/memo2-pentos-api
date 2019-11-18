@@ -22,9 +22,9 @@ describe DeliveryAssigner do
   it 'should return a delivery I save' do
     delivery = Delivery.new('username' => 'pepemoto')
     repository.save(delivery)
-    sorted_delivery = sorting_hat.delivery_with_fewer_orders
+    sorting_hat.assign_to(order)
 
-    expect(sorted_delivery).to eq(delivery.username)
+    expect(order.assigned_to).to eq(delivery.username)
   end
 
   it 'given an order, delivery assigner should assign it a delivery' do
@@ -34,24 +34,6 @@ describe DeliveryAssigner do
     expect(order.assigned_to).not_to eq(nil)
   end
   # rubocop:disable RSpect/ExampleLength
-
-  it 'should return a delivery with his orders deliverd today' do
-    delivery = Delivery.new('username' => 'pepemoto')
-    delivery2 = Delivery.new('username' => 'pepeauto')
-    order = Order.new(client: client, type: 'menu_individual',
-                      assigned_to: delivery.username)
-    order.state = DeliveredState.new
-
-    client_repository.save(client)
-    repository.save(delivery)
-    repository.save(delivery2)
-    orders_repository.save(order)
-
-    # { 'username' => q_orders_delivered}
-    delivery_orders = sorting_hat.orders_delivered
-
-    expect(delivery_orders[delivery.username]).to eq(1)
-  end
 
   it 'should assign the delivery with less delivered orders' do
     delivery = Delivery.new('username' => 'pepemoto')
@@ -124,6 +106,24 @@ describe DeliveryAssigner do
     deliveries = sorting_hat.nearest_full_deliveries_fits(order)
 
     expect(deliveries.size).to eq(2)
+  end
+
+  it 'given an order, delivery assigner should assign the nearest to fill its bag' do
+    client_repository.save(client)
+
+    delivery = Delivery.new('username' => 'pepemoto')
+    delivery2 = Delivery.new('username' => 'pepeauto')
+
+    repository.save(delivery)
+    repository.save(delivery2)
+
+    order.change_state(OnDeliveryState.new)
+
+    orders_repository.save(order)
+    new_order = Order.new(client: client, type: 'menu_familiar')
+
+    sorting_hat.assign_to(new_order)
+    expect(new_order.assigned_to).not_to eq(order.assigned_to)
   end
   # rubocop:enable RSpect/ExampleLength
 end

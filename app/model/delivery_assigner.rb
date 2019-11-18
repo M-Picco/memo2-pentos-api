@@ -2,10 +2,14 @@ require_relative '../repositories/delivery_repository'
 require_relative '../repositories/order_repository'
 require_relative '../repositories/delivery_repository.rb'
 require_relative '../repositories/order_repository'
+require_relative 'delivery_bag'
 require 'date'
 
 class DeliveryAssigner
+  attr_reader :elegible_deliveries
+
   def assign_to(order)
+    @elegible_deliveries = nearest_full_deliveries_fits(order)
     order.assigned_to = delivery_with_fewer_orders
     OrderRepository.new.save(order)
   rescue NoMethodError
@@ -19,8 +23,7 @@ class DeliveryAssigner
 
   def orders_delivered
     today_orders = OrderRepository.new.delivered_orders_created_on(Date.today)
-    deliveries = DeliveryRepository.new.deliveries
-    deliveries = Hash[deliveries.map { |delivery| [delivery, 0] }]
+    deliveries = Hash[@elegible_deliveries.map { |delivery| [delivery, 0] }]
     # increase deliveries count
     today_orders.each do |order|
       deliveries[order.assigned_to] += 1
