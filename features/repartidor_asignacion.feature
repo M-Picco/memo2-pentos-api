@@ -24,21 +24,19 @@ Característica: Asignacion de repartidor
       Cuando el estado cambia a "en_entrega"
       Entonces pedido esta asignado a "juanmotoneta"
 
-    @wip
     Escenario: A2 - menu individual es asignado al repartidor con bolso mas lleno
-      Dado el cliente pide un "menu_individual"
+      Dado que el cliente pidio un "menu_individual"
       Cuando el estado cambia a "en_entrega"
       Entonces pedido esta asignado a "juanmotoneta"
-      Dado el cliente pide otro "menu_pareja"
+      Dado que el cliente pidio un "menu_pareja"
       Cuando el estado cambia a "en_entrega"
       Entonces pedido esta asignado a "juanmotoneta"
 
-   @wip
     Escenario: A3 - Menu familiar es asignado al repartido con bolso vacio
-      Dado el cliente pide un "menu_individual"
+      Dado que el cliente pidio un "menu_individual"
       Cuando el estado cambia a "en_entrega"
       Entonces pedido esta asignado a "juanmotoneta"
-      Cuando el cliente pide un "menu_familiar"
+      Dado que el cliente pidio un "menu_familiar"
       Cuando el estado cambia a "en_entrega"
       Entonces pedido esta asignado a "pepebicicleta"
 

@@ -26,7 +26,7 @@ class DeliveryAssigner
     deliveries = Hash[@elegible_deliveries.map { |delivery| [delivery, 0] }]
     # increase deliveries count
     today_orders.each do |order|
-      deliveries[order.assigned_to] += 1
+      deliveries[order.assigned_to] += 1 if deliveries.keys.include?(order.assigned_to)
     end
     deliveries
   end
