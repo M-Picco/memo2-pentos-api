@@ -158,14 +158,14 @@ describe Order do
     it 'should assign when status is in "en_entrega"' do
       delivery = Delivery.new('username' => 'pepemoto')
       DeliveryRepository.new.save(delivery)
-      order.state = StatesHelper.create_for('en_entrega')
+      order.change_state(StatesHelper.create_for('en_entrega'))
       expect(order.assigned_to).to eq(delivery.username)
     end
   end
 
   describe 'commission' do
     it 'should create when status is in "entregado"' do
-      order.state = StatesHelper.create_for('entregado')
+      order.change_state(StatesHelper.create_for('entregado'))
       expect(order.commission.nil?).to eq false
       expect(order.commission.id).to be > 0
     end
