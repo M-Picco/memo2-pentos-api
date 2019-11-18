@@ -8,4 +8,8 @@ class DeliveryBag
   def load_order(order)
     @size -= order.size
   end
+
+  def fits?(order)
+    (@size - order.size) >= 0
+  end
 end
