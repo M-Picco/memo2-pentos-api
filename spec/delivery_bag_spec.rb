@@ -14,6 +14,7 @@ describe DeliveryBag do
   describe 'load orders' do
     let(:order_indivual) { Order.new(client: client, type: 'menu_individual') }
     let(:order_pareja) { Order.new(client: client, type: 'menu_pareja') }
+    let(:order_familiar) { Order.new(client: client, type: 'menu_familiar') }
 
     let(:client) do
       Client.new('username' => 'jperez', 'phone' => '4123-4123',
@@ -28,6 +29,11 @@ describe DeliveryBag do
     it '"menu_pareja" should decrease bags size by 1' do
       bag.load_order(order_pareja)
       expect(bag.size).to eq(1)
+    end
+
+    it '"menu_familiar" should decrease bags size by 1' do
+      bag.load_order(order_familiar)
+      expect(bag.size).to eq(0)
     end
   end
 end
