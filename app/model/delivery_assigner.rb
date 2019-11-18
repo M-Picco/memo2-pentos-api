@@ -11,7 +11,7 @@ class DeliveryAssigner
   rescue NoMethodError
     order.assigned_to = nil
   end
-  
+
   def delivery_with_fewer_orders
     # [ [delivery_username, q_delivered_orders] ]
     orders_delivered.min_by(&:last)[0]

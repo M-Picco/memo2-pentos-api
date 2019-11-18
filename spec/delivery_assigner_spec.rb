@@ -92,7 +92,7 @@ describe DeliveryAssigner do
   it 'should return nearest delivery to full the bag' do
     delivery = Delivery.new('username' => 'pepemoto')
     delivery2 = Delivery.new('username' => 'pepeauto')
-    
+
     order = Order.new(client: client, type: 'menu_individual',
                       assigned_to: delivery.username)
 
@@ -112,14 +112,14 @@ describe DeliveryAssigner do
   it 'should return all the nearest deliveries to full the bag' do
     delivery = Delivery.new('username' => 'pepemoto')
     delivery2 = Delivery.new('username' => 'pepeauto')
-    
+
     order = Order.new(client: client, type: 'menu_individual')
 
     repository.save(delivery)
     repository.save(delivery2)
- 
+
     client_repository.save(client)
- 
+
     # [ ['delivery_name', bag_size] ]
     deliveries = sorting_hat.nearest_full_deliveries_fits(order)
 
