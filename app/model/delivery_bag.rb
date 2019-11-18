@@ -5,7 +5,7 @@ class DeliveryBag
     @size = 3
   end
 
-  def load_order(_order)
-    @size -= 1
+  def load_order(order)
+    @size -= order.size
   end
 end

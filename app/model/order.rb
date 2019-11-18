@@ -22,6 +22,9 @@ class Order
   ALLOWED_STATES = [RecievedState.new, InPreparationState.new,
                     OnDeliveryState.new, DeliveredState.new].freeze
   VALID_TYPES = %w[menu_individual menu_familiar menu_pareja].freeze
+  ORDERS_SIZE = { 'menu_individual' => 1,
+                  'menu_pareja' => 2,
+                  'menu_familiar' => 3 }.freeze
 
   def initialize(data = {})
     @id = data[:id]
@@ -45,6 +48,10 @@ class Order
   def change_state(new_state)
     self.state = new_state
     @state.on_enter(self)
+  end
+
+  def size
+    ORDERS_SIZE[@type]
   end
 
   private
