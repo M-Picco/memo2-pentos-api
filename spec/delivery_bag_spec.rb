@@ -39,5 +39,10 @@ describe DeliveryBag do
     it 'should fit an empty bag and a menu_familiar order' do
       expect(bag.fits?(order_familiar)).to eq(true)
     end
+
+    it 'should not fit a bag with a menu_familiar and menu_indivual' do
+      bag.load_order(order_familiar)
+      expect(bag.fits?(order_indivual)).to eq(false)
+    end
   end
 end
