@@ -21,9 +21,23 @@ class DeliveryAssigner
     today_orders = OrderRepository.new.delivered_orders_created_on(Date.today)
     deliveries = DeliveryRepository.new.deliveries
     deliveries = Hash[deliveries.map { |delivery| [delivery, 0] }]
+    # increase deliveries count
     today_orders.each do |order|
       deliveries[order.assigned_to] += 1
     end
     deliveries
+  end
+
+  def deliveries_fits(order)
+    deliveries = DeliveryRepository.new.deliveries
+    repository = OrderRepository.new
+    elegible = []
+    deliveries.each do |delivery|
+      delivery_orders = repository.on_delivery_orders_by(delivery)
+      bag = DeliveryBag.new
+      bag.load_orders_from_collection(delivery_orders)
+      elegible.append([delivery, bag.size]) if bag.fits?(order)
+    end
+    elegible
   end
 end

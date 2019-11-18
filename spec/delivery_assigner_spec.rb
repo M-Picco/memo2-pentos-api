@@ -4,6 +4,7 @@ require_relative '../app/repositories/order_repository.rb'
 require_relative '../app/repositories/client_repository.rb'
 require_relative '../app/model/order'
 require_relative '../app/model/client'
+require 'byebug'
 
 describe DeliveryAssigner do
   let(:sorting_hat) { described_class.new }
@@ -66,6 +67,26 @@ describe DeliveryAssigner do
 
     sorting_hat.assign_to(order)
     expect(order.assigned_to).to eq(delivery2.username)
+  end
+
+  it 'should return deliveries that order fits in bag' do
+    delivery = Delivery.new('username' => 'pepemoto')
+    delivery2 = Delivery.new('username' => 'pepeauto')
+
+    order = Order.new(client: client, type: 'menu_familiar',
+                      assigned_to: delivery.username)
+
+    repository.save(delivery)
+    repository.save(delivery2)
+    order.change_state(OnDeliveryState.new)
+
+    client_repository.save(client)
+    orders_repository.save(order)
+
+    # [ ['delivery_name', bag_size] ]
+    deliveries = sorting_hat.deliveries_fits(order)
+
+    expect(deliveries[0][0]).not_to eq order.assigned_to
   end
   # rubocop:enable RSpect/ExampleLength
 end
