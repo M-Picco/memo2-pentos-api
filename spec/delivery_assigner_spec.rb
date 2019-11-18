@@ -88,5 +88,42 @@ describe DeliveryAssigner do
 
     expect(deliveries[0][0]).not_to eq order.assigned_to
   end
+
+  it 'should return nearest delivery to full the bag' do
+    delivery = Delivery.new('username' => 'pepemoto')
+    delivery2 = Delivery.new('username' => 'pepeauto')
+    
+    order = Order.new(client: client, type: 'menu_individual',
+                      assigned_to: delivery.username)
+
+    repository.save(delivery)
+    repository.save(delivery2)
+    order.change_state(OnDeliveryState.new)
+
+    client_repository.save(client)
+    orders_repository.save(order)
+
+    # [ ['delivery_name', bag_size] ]
+    deliveries = sorting_hat.nearest_full_deliveries_fits(order)
+
+    expect(deliveries[0]).to eq(delivery.username)
+  end
+
+  it 'should return all the nearest deliveries to full the bag' do
+    delivery = Delivery.new('username' => 'pepemoto')
+    delivery2 = Delivery.new('username' => 'pepeauto')
+    
+    order = Order.new(client: client, type: 'menu_individual')
+
+    repository.save(delivery)
+    repository.save(delivery2)
+ 
+    client_repository.save(client)
+ 
+    # [ ['delivery_name', bag_size] ]
+    deliveries = sorting_hat.nearest_full_deliveries_fits(order)
+
+    expect(deliveries.size).to eq(2)
+  end
   # rubocop:enable RSpect/ExampleLength
 end
