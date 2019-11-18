@@ -4,7 +4,6 @@ require_relative '../app/repositories/order_repository.rb'
 require_relative '../app/repositories/client_repository.rb'
 require_relative '../app/model/order'
 require_relative '../app/model/client'
-require 'byebug'
 
 describe DeliveryAssigner do
   let(:sorting_hat) { described_class.new }

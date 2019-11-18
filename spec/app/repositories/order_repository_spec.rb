@@ -7,7 +7,6 @@ require_relative '../../../app/states/ondelivery_state'
 require_relative '../../../app/states/delivered_state'
 require_relative '../../../app/states/invalid_state'
 require 'date'
-require 'byebug'
 
 describe OrderRepository do
   let(:repository) { described_class.new }
