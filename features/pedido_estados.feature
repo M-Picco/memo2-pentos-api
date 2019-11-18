@@ -69,6 +69,11 @@ Característica: Creacion y Cambios de estado de Pedidos
       Y consulta el estado
       Entonces el estado es "en_espera"
       
+  Escenario: CEP5 - cambio de estado a un estado invalido
+      Dado que el cliente pidio un "menu_familiar"
+      Cuando el estado cambia a "cocinando_al_vapor"
+      Entonces obtiene un mensaje de error por estado invalido
+
   # Escenario: CANP1 - cancelar pedido recibido
   # Escenario: CANP2 - cancelar pedido en_preparacion
   # Escenario: CANP3 - cancelar pedido en_entrega

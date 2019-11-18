@@ -79,3 +79,9 @@ end
 Dado('el estado cambio a {string}') do |new_status|
   step "el estado cambia a \"#{new_status}\""
 end
+
+Entonces('obtiene un mensaje de error por estado invalido') do
+  expect(@response.status).to eq(400)
+  parsed_response = JSON.parse(@response.body)
+  expect(parsed_response['error']).to eq('invalid_state')
+end
