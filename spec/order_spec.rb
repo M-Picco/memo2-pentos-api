@@ -21,6 +21,7 @@ describe Order do
     it { is_expected.to respond_to(:rating) }
     it { is_expected.to respond_to(:type) }
     it { is_expected.to respond_to(:assigned_to) }
+    it { is_expected.to respond_to(:commission) }
   end
 
   describe 'type' do
@@ -37,6 +38,23 @@ describe Order do
     it 'fails to create an order with an invalid type' do
       expect { described_class.new(client: client, type: 'menu_invalido') }
         .to raise_error(InvalidMenuError)
+    end
+  end
+
+  describe 'cost' do
+    it 'should be 100 if is a menu_individual type' do
+      order = described_class.new(client: client, type: 'menu_individual')
+      expect(order.cost).to eq(100)
+    end
+
+    it 'should be 175 if is a menu_parejas type' do
+      order = described_class.new(client: client, type: 'menu_pareja')
+      expect(order.cost).to eq(175)
+    end
+
+    it 'should be 250 if is a menu_familiar type' do
+      order = described_class.new(client: client, type: 'menu_familiar')
+      expect(order.cost).to eq(250)
     end
   end
 
@@ -142,6 +160,14 @@ describe Order do
       DeliveryRepository.new.save(delivery)
       order.change_state(StatesHelper.create_for('en_entrega'))
       expect(order.assigned_to).to eq(delivery.username)
+    end
+  end
+
+  describe 'commission' do
+    it 'should create when status is in "entregado"' do
+      order.change_state(StatesHelper.create_for('entregado'))
+      expect(order.commission.nil?).to eq false
+      expect(order.commission.id).to be > 0
     end
   end
 end

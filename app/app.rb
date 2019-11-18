@@ -108,6 +108,18 @@ post '/client/:username/order/:order_id/rate' do
   { rating: rating }.to_json
 end
 
+post '/commission/:order_id' do
+  content_type :json
+  order_id = params['order_id']
+
+  order = OrderRepository.new.find_by_id(order_id)
+
+  { commission_amount: order.commission.amount }.to_json
+end
+
+post '/weather' do
+end
+
 error(*KNOWN_ERRORS) do |e|
   status 400
   { error: e.message }.to_json

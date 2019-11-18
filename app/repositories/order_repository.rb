@@ -47,6 +47,9 @@ class OrderRepository < BaseRepository
 
     order.client = ClientRepository.new.find_by_name(a_record[:client_username])
     order.state = StatesHelper.create_for(a_record[:state])
+    unless a_record[:commission].nil?
+      order.commission = CommissionRepository.new.find(a_record[:commission])
+    end
 
     order
   end
@@ -57,7 +60,8 @@ class OrderRepository < BaseRepository
       state: order.state.state_name,
       rating: order.rating,
       type: order.type,
-      assigned_to: order.assigned_to
+      assigned_to: order.assigned_to,
+      commission: order.commission&.id
     }
   end
 end

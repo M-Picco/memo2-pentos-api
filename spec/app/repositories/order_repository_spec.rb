@@ -90,7 +90,7 @@ describe OrderRepository do
     end
   end
 
-  # rubocop:disable RSpect/ExampleLength
+  # rubocop:disable RSpec/ExampleLength
   describe 'change rating' do
     it 'changes the rating of an order in delivered state' do
       order = Order.new(client: client, type: 'menu_individual')
@@ -162,7 +162,7 @@ describe OrderRepository do
       expect(repository.find(order.id).assigned_to).to eq(delivery.username)
     end
   end
-  # rubocop:enable RSpect/ExampleLength
+  # rubocop:enable RSpec/ExampleLength
 
   describe 'today orders' do
     it 'should return an order made today' do
@@ -202,7 +202,6 @@ describe OrderRepository do
       expect(orders[0].id).to eq(order.id)
     end
   end
-  # rubocop:disable RSpect/ExampleLength
 
   describe 'delivery bag' do
     let(:order) do
@@ -211,6 +210,7 @@ describe OrderRepository do
     end
 
     let(:delivery) { Delivery.new('username' => 'pepemoto') }
+    # rubocop:disable RSpec/ExampleLength
 
     it 'should return "en_entrega" orders assigned to delivery' do
       ClientRepository.new.save(client)
@@ -222,6 +222,18 @@ describe OrderRepository do
 
       expect(on_delivery_orders[0].id).to eq(order.id)
     end
+    # rubocop:enable RSpec/ExampleLength
   end
-  # rubocop:enable RSpect/ExampleLength
+
+  describe 'change commission' do
+    it 'changes the commission of an order in delivered state' do
+      order = Order.new(client: client, type: 'menu_individual')
+      order.change_state(DeliveredState.new)
+      repository.save(order)
+
+      reloaded_order = repository.find(order.id)
+
+      expect(reloaded_order.commission.id).to be > 0
+    end
+  end
 end
