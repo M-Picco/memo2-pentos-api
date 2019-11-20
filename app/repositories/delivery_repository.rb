@@ -8,6 +8,10 @@ class DeliveryRepository < BaseRepository
     dataset.map(:username)
   end
 
+  def exists?(delivery_username)
+    dataset.count(username: delivery_username).positive?
+  end
+
   protected
 
   def changeset(delivery)
