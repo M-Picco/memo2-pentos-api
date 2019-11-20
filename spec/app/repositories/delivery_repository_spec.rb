@@ -30,5 +30,11 @@ describe DeliveryRepository do
 
       expect(exists).to eq(true)
     end
+
+    it 'returns false for an inexesisting delivery' do
+      exists = repository.exists?('juanbicicleta')
+
+      expect(exists).to eq(false)
+    end
   end
 end
