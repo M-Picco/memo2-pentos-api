@@ -9,7 +9,7 @@ class DeliveryRepository < BaseRepository
   end
 
   def exists?(delivery_username)
-    dataset.count(username: delivery_username).positive?
+    dataset.where(username: delivery_username).count.positive?
   end
 
   protected

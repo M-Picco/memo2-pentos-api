@@ -36,5 +36,13 @@ describe DeliveryRepository do
 
       expect(exists).to eq(false)
     end
+
+    it 'returns false for an inexesisting delivery with deliveries registered' do
+      delivery = Delivery.new('username' => 'pepemoto')
+      repository.save(delivery)
+      exists = repository.exists?('juanbicicleta')
+
+      expect(exists).to eq(false)
+    end
   end
 end
