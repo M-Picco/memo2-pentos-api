@@ -108,7 +108,7 @@ post '/client/:username/order/:order_id/rate' do
   { rating: rating }.to_json
 end
 
-post '/commission/:order_id' do
+get '/commission/:order_id' do
   content_type :json
   order_id = params['order_id']
 
