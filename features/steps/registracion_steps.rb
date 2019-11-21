@@ -77,8 +77,7 @@ Dado('que el repartidor {string} esta registrado') do |username|
   step 'se registra'
 end
 
-Dado('que el cliente {string} esta registrado con
-      domicilio {string} y telefono {string}') do |username, address, phone|
+Dado('que el cliente {string} esta registrado con domicilio {string} y telefono {string}') do |username, address, phone| # rubocop:disable Metrics/LineLength
   step "el cliente \"#{username}\""
   step "se registra con domicilio \"#{address}\" y telefono \"#{phone}\""
 end

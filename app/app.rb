@@ -10,11 +10,12 @@ require_relative 'errors/order_not_found_error'
 require_relative 'errors/invalid_menu_error'
 require_relative 'errors/client_has_no_orders_error'
 require_relative 'errors/failed_save_operation_error'
+require_relative 'errors/already_registered_error'
 require_relative 'helpers/states_helper'
 
 KNOWN_ERRORS = [OrderNotFoundError, ClientHasNoOrdersError,
                 InvalidMenuError, FailedSaveOperationError,
-                ClientNotFoundError].freeze
+                ClientNotFoundError, AlreadyRegisteredError].freeze
 
 get '/' do
   content_type :json
@@ -24,6 +25,8 @@ end
 post '/client' do
   content_type :json
   params = JSON.parse(request.body.read)
+
+  raise AlreadyRegisteredError if ClientRepository.new.exists?(params['username'])
 
   client = Client.new(params)
 
@@ -81,6 +84,9 @@ end
 post '/delivery' do
   content_type :json
   params = JSON.parse(request.body.read)
+
+  raise AlreadyRegisteredError if DeliveryRepository.new.exists?(params['username'])
+
   delivery = Delivery.new(params)
 
   raise FailedSaveOperationError, delivery unless DeliveryRepository.new.save(delivery)
@@ -108,7 +114,7 @@ post '/client/:username/order/:order_id/rate' do
   { rating: rating }.to_json
 end
 
-post '/commission/:order_id' do
+get '/commission/:order_id' do
   content_type :json
   order_id = params['order_id']
 
