@@ -26,6 +26,8 @@ post '/client' do
   content_type :json
   params = JSON.parse(request.body.read)
 
+  raise AlreadyRegisteredError if ClientRepository.new.exists?(params['username'])
+
   client = Client.new(params)
 
   raise FailedSaveOperationError, client unless ClientRepository.new.save(client)

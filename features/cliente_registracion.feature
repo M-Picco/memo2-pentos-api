@@ -29,7 +29,6 @@ Característica: Registracion de cliente
         Cuando el cliente pide un "menu_individual"
         Entonces obtiene error por no estar registrado
 
-    @wip
     Escenario: RC6 - Registración Repetida
         Dado que el cliente "pedrosi" esta registrado con domicilio "Cucha Cucha 1234 1 Piso B" y telefono "4123-4123"
         Cuando se registra con domicilio "Cucha Cucha 1234 1 Piso B" y telefono "4123-4123"
