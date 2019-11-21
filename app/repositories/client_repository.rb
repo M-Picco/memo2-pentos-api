@@ -14,7 +14,7 @@ class ClientRepository < BaseRepository
   end
 
   def exists?(client_name)
-    dataset.count(username: client_name).positive?
+    dataset.where(username: client_name).count.positive?
   end
 
   protected

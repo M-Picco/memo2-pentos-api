@@ -48,5 +48,15 @@ describe ClientRepository do
 
       expect(exists).to eq(false)
     end
+
+    it 'returns false for an inexesisting client with clients registered' do
+      client = Client.new('username' => 'jperez',
+                          'phone' => '4444-4564', 'address' => 'Av 1234')
+      repository.save(client)
+
+      exists = repository.exists?('jdoe')
+
+      expect(exists).to eq(false)
+    end
   end
 end
