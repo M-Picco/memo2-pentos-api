@@ -17,6 +17,15 @@ KNOWN_ERRORS = [OrderNotFoundError, ClientHasNoOrdersError,
                 InvalidMenuError, FailedSaveOperationError,
                 ClientNotFoundError, AlreadyRegisteredError].freeze
 
+API_KEY = ENV['API_KEY'] || 'zaraza'
+
+before do
+  pass if request.path_info == '/reset'
+
+  key = request.env['api-key']
+  halt 403, { message: 'api-key missing or incorrect' }.to_json if key != API_KEY
+end
+
 get '/' do
   content_type :json
   { content: 'Pentos API' }.to_json
