@@ -22,7 +22,7 @@ API_KEY = ENV['API_KEY'] || 'zaraza'
 before do
   pass if request.path_info == '/reset'
 
-  key = request.env['api-key']
+  key = request.env['api-key'] || request.env['HTTP_API_KEY']
   halt 403, { message: 'api-key missing or incorrect' }.to_json if key != API_KEY
 end
 
