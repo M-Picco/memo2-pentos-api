@@ -20,7 +20,6 @@ Característica: Registracion de repartidor
         Cuando se registra
         Entonces obtiene un error por nombre de usuario invalido
 
-    @wip
     Escenario: RP4 - Registración Repetida
         Dado que el repartidor "juanmotoneta" esta registrado
         Cuando se registra
