@@ -6,6 +6,7 @@ require_relative '../states/inpreparation_state'
 require_relative '../states/ondelivery_state'
 require_relative '../states/delivered_state'
 require_relative '../states/invalid_state'
+require_relative '../states/cancelled_state'
 require_relative '../states/state_names'
 
 class Order
@@ -21,7 +22,8 @@ class Order
   validate :valid_state, :valid_state_for_rating
 
   ALLOWED_STATES = [STATES::RECEIVED, STATES::IN_PREPARATION,
-                    STATES::ON_DELIVERY, STATES::DELIVERED].freeze
+                    STATES::ON_DELIVERY, STATES::DELIVERED,
+                    STATES::CANCELLED].freeze
 
   ORDERS_SIZE = { 'menu_individual' => 1,
                   'menu_pareja' => 2,
@@ -71,6 +73,10 @@ class Order
 
     @commission.update_by_rating(new_rating)
     CommissionRepository.new.save(@commission)
+  end
+
+  def cancel
+    change_state(CancelledState.new)
   end
 
   private
