@@ -139,6 +139,19 @@ get '/commission/:order_id' do
   { commission_amount: order.commission.amount }.to_json
 end
 
+put '/order/:order_id/cancel' do
+  content_type :json
+  order_id = params['order_id']
+
+  repository = OrderRepository.new
+
+  order = repository.find_by_id(order_id)
+  order.cancel
+  repository.save(order)
+
+  status 200
+end
+
 error(*KNOWN_ERRORS) do |e|
   status 400
   { error: e.message }.to_json
