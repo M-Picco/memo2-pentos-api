@@ -1,4 +1,5 @@
 require 'active_model'
+require_relative './weather/non_rainy_weather'
 
 class Commission
   include ActiveModel::Validations
@@ -11,12 +12,15 @@ class Commission
   MIN_PERCENTAGE = 0.03
   MAX_PERCENTAGE = 0.07
 
-  def initialize(data)
+  def initialize(data, weather = NonRainyWeather.new)
     @id = data[:id]
     @order_cost = data[:order_cost] || 0
-    @amount = data[:amount] || BASE_PERCENTAGE * @order_cost
     @updated_on = data[:updated_on]
     @created_on = data[:created_on]
+    @weather = weather
+
+    percentage = @weather.apply_commission_modifier(BASE_PERCENTAGE)
+    @amount = data[:amount] || percentage * @order_cost
   end
 
   def update_by_rating(rating)
