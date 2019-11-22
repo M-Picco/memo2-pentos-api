@@ -60,34 +60,34 @@ describe Order do
 
   describe 'state' do
     it 'has "received" as initial value' do
-      expect(order.state).to eq(RecievedState.new)
+      expect(order.state).to be_a(RecievedState)
     end
 
     it 'allows in_preparation state' do
       order.state = StateFactory.new.create_for('en_preparacion')
 
-      expect(order.state).to eq(InPreparationState.new)
+      expect(order.state).to be_a(InPreparationState)
       expect(order.valid?).to eq(true)
     end
 
     it 'allows delivery state' do
       order.state = StateFactory.new.create_for('en_entrega')
 
-      expect(order.state).to eq(OnDeliveryState.new)
+      expect(order.state).to be_a(OnDeliveryState)
       expect(order.valid?).to eq(true)
     end
 
     it 'allows delivered state' do
       order.state = StateFactory.new.create_for('entregado')
 
-      expect(order.state).to eq(DeliveredState.new)
+      expect(order.state).to be_a(DeliveredState)
       expect(order.valid?).to eq(true)
     end
 
     it 'is invalid when changing to an invalid state' do
       order.state = StateFactory.new.create_for('not_contemplated_state')
 
-      expect(order.state).to eq(InvalidState.new)
+      expect(order.state).to be_a(InvalidState)
       expect(order.valid?).to eq(false)
     end
   end

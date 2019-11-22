@@ -20,8 +20,8 @@ class Order
 
   validate :valid_state, :valid_state_for_rating
 
-  ALLOWED_STATES = [RecievedState.new, InPreparationState.new,
-                    OnDeliveryState.new, DeliveredState.new].freeze
+  ALLOWED_STATES = [STATES::RECEIVED, STATES::IN_PREPARATION,
+                    STATES::ON_DELIVERY, STATES::DELIVERED].freeze
 
   ORDERS_SIZE = { 'menu_individual' => 1,
                   'menu_pareja' => 2,
@@ -47,7 +47,7 @@ class Order
   # rubocop:enable Metrics/AbcSize
 
   def state=(new_state)
-    valid_transition = ALLOWED_STATES.include?(new_state)
+    valid_transition = ALLOWED_STATES.include?(new_state.state_name)
     @state = valid_transition ? new_state : InvalidState.new
   end
 
@@ -82,6 +82,6 @@ class Order
 
   def valid_state_for_rating
     return errors.add(:state_for_rating, 'order_not_delivered') if !@rating.nil? &&
-                                                                   @state != DeliveredState.new
+                                                                   !@state.name?(STATES::DELIVERED)
   end
 end

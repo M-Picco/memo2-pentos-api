@@ -3,7 +3,7 @@ require_relative '../model/delivery_assigner'
 
 class OnDeliveryState < State
   def initialize
-    @state_name = 'en_entrega'
+    @state_name = STATES::ON_DELIVERY
   end
 
   def on_enter(order)
