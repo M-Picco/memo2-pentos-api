@@ -80,7 +80,12 @@ Característica: Creacion y Cambios de estado de Pedidos
       Y consulta el estado
       Entonces el estado es "cancelado"
 
-  # Escenario: CANP2 - cancelar pedido en_preparacion
+  Escenario: CANP2 - cancelar pedido en_preparacion
+      Dado que el cliente pidio un "menu_individual"
+      Y el estado cambio a "en_preparacion"
+      Cuando se cancela el pedido
+      Y consulta el estado
+      Entonces el estado es "cancelado"
   # Escenario: CANP3 - cancelar pedido en_entrega
   # Escenario: CANP4 - cancelar pedido entregado
 
