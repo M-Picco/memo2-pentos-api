@@ -11,13 +11,15 @@ require_relative 'errors/invalid_menu_error'
 require_relative 'errors/client_has_no_orders_error'
 require_relative 'errors/failed_save_operation_error'
 require_relative 'errors/already_registered_error'
+require_relative 'errors/order_not_cancellable_error'
 require_relative 'states/state_factory'
 require_relative 'model/weather/configurable_weather_service'
 require_relative 'model/weather/open_weather_service'
 
 KNOWN_ERRORS = [OrderNotFoundError, ClientHasNoOrdersError,
                 InvalidMenuError, FailedSaveOperationError,
-                ClientNotFoundError, AlreadyRegisteredError].freeze
+                ClientNotFoundError, AlreadyRegisteredError,
+                OrderNotCancellableError].freeze
 
 API_KEY = ENV['API_KEY'] || 'zaraza'
 
