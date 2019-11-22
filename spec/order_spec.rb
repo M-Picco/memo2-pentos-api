@@ -187,5 +187,11 @@ describe Order do
 
       expect(order.state.name?(STATES::CANCELLED)).to eq(true)
     end
+
+    it 'should fail to cancel an order on delivery' do
+      order.change_state(OnDeliveryState.new)
+
+      expect { order.cancel }.to raise_error(OrderNotCancellableError)
+    end
   end
 end

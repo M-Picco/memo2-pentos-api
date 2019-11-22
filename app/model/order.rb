@@ -1,5 +1,6 @@
 require 'active_model'
 require_relative '../errors/invalid_menu_error'
+require_relative '../errors/order_not_cancellable_error'
 require_relative '../states/state_factory'
 require_relative '../states/recieved_state'
 require_relative '../states/inpreparation_state'
@@ -76,6 +77,8 @@ class Order
   end
 
   def cancel
+    raise OrderNotCancellableError if @state.name?(STATES::ON_DELIVERY)
+
     change_state(CancelledState.new)
   end
 
