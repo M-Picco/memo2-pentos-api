@@ -227,7 +227,7 @@ describe OrderRepository do
   describe 'change commission' do
     it 'changes the commission of an order in delivered state' do
       order = Order.new(client: client, type: 'menu_individual')
-      order.change_state(DeliveredState.new)
+      order.change_state(DeliveredState.new(NonRainyWeather.new))
       repository.save(order)
 
       reloaded_order = repository.find(order.id)

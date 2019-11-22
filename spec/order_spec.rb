@@ -165,7 +165,7 @@ describe Order do
 
   describe 'commission' do
     it 'should create when status is in "entregado"' do
-      order.change_state(StateFactory.new.create_for('entregado'))
+      order.change_state(StateFactory.new(NonRainyWeather.new).create_for('entregado'))
       expect(order.commission.nil?).to eq false
       expect(order.commission.id).to be > 0
     end

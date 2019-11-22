@@ -42,17 +42,22 @@ class OrderRepository < BaseRepository
 
   protected
 
+  # rubocop:disable Metrics/AbcSize
   def load_object(a_record)
     order = Order.new(a_record)
 
     order.client = ClientRepository.new.find_by_name(a_record[:client_username])
-    order.state = StateFactory.new.create_for(a_record[:state])
+
     unless a_record[:commission].nil?
       order.commission = CommissionRepository.new.find(a_record[:commission])
     end
 
+    weather = order.commission.nil? ? nil : order.commission.weather
+    order.state = StateFactory.new(weather).create_for(a_record[:state])
+
     order
   end
+  # rubocop:enable Metrics/AbcSize
 
   def changeset(order)
     {

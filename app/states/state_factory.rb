@@ -5,15 +5,19 @@ require_relative '../states/delivered_state'
 require_relative '../states/invalid_state'
 
 class StateFactory
-  STATE_CREATOR = { 'recibido' => RecievedState.new,
-                    'en_preparacion' => InPreparationState.new,
-                    'en_entrega' => OnDeliveryState.new,
-                    'entregado' => DeliveredState.new,
-                    'invalid_state' => InvalidState.new }.freeze
+  STATE_CREATOR = { 'recibido' => proc { |_weather| RecievedState.new },
+                    'en_preparacion' => proc { |_weather| InPreparationState.new },
+                    'en_entrega' => proc { |_weather| OnDeliveryState.new },
+                    'entregado' => proc { |weather| DeliveredState.new(weather) },
+                    'invalid_state' => proc { |_weather| InvalidState.new } }.freeze
+
+  def initialize(weather = nil)
+    @weather = weather
+  end
 
   def create_for(state_name)
     return InvalidState.new unless STATE_CREATOR.include?(state_name)
 
-    STATE_CREATOR[state_name]
+    STATE_CREATOR[state_name].call(@weather)
   end
 end

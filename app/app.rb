@@ -12,6 +12,7 @@ require_relative 'errors/client_has_no_orders_error'
 require_relative 'errors/failed_save_operation_error'
 require_relative 'errors/already_registered_error'
 require_relative 'states/state_factory'
+require_relative 'model/weather/configurable_weather_service'
 
 KNOWN_ERRORS = [OrderNotFoundError, ClientHasNoOrdersError,
                 InvalidMenuError, FailedSaveOperationError,
@@ -62,7 +63,9 @@ put '/order/:order_id/status' do
   body = JSON.parse(request.body.read)
 
   order_id = params['order_id']
-  new_status = StateFactory.new.create_for(body['status'])
+
+  weather = ConfigurableWeatherService.new.weather
+  new_status = StateFactory.new(weather).create_for(body['status'])
 
   repository = OrderRepository.new
 
