@@ -8,4 +8,13 @@ describe CommissionRepository do
     repository.save(commission)
     expect(commission.id).to be > 0
   end
+
+  # it 'saves a commission with rainy weather and loads it' do
+  #   commission = Commission.new({ order_cost: 100 }, RainyWeather.new)
+  #   repository.save(commission)
+
+  #   reloaded_commission = repository.find(commission.id)
+
+  #   expect(reloaded_commission.weather).to be_a(RainyWeather)
+  # end
 end

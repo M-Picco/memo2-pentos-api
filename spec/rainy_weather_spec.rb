@@ -4,6 +4,12 @@ require_relative '../app/model/weather/rainy_weather'
 describe RainyWeather do
   subject(:weather) { described_class.new }
 
+  describe 'name' do
+    it 'has name "lluvioso"' do
+      expect(weather.name).to eq('lluvioso')
+    end
+  end
+
   describe 'apply_commission_modifier' do
     it 'applies the commission modifier of 1%' do
       com = 1.05
