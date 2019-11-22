@@ -26,6 +26,8 @@ class Order
                     STATES::ON_DELIVERY, STATES::DELIVERED,
                     STATES::CANCELLED].freeze
 
+  CANCELLABLE_STATES = [STATES::RECEIVED, STATES::IN_PREPARATION].freeze
+
   ORDERS_SIZE = { 'menu_individual' => 1,
                   'menu_pareja' => 2,
                   'menu_familiar' => 3 }.freeze
@@ -77,7 +79,7 @@ class Order
   end
 
   def cancel
-    raise OrderNotCancellableError if @state.name?(STATES::ON_DELIVERY)
+    raise OrderNotCancellableError unless CANCELLABLE_STATES.include?(@state.state_name)
 
     change_state(CancelledState.new)
   end
