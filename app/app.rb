@@ -13,12 +13,16 @@ require_relative 'errors/failed_save_operation_error'
 require_relative 'errors/already_registered_error'
 require_relative 'states/state_factory'
 require_relative 'model/weather/configurable_weather_service'
+require_relative 'model/weather/open_weather_service'
 
 KNOWN_ERRORS = [OrderNotFoundError, ClientHasNoOrdersError,
                 InvalidMenuError, FailedSaveOperationError,
                 ClientNotFoundError, AlreadyRegisteredError].freeze
 
 API_KEY = ENV['API_KEY'] || 'zaraza'
+
+WEATHER_SERVICE =
+  settings.environment == :production ? OpenWeatherService.new : ConfigurableWeatherService.new
 
 before do
   pass if request.path_info == '/reset'
@@ -64,7 +68,7 @@ put '/order/:order_id/status' do
 
   order_id = params['order_id']
 
-  weather = ConfigurableWeatherService.new.weather
+  weather = WEATHER_SERVICE.weather
   new_status = StateFactory.new(weather).create_for(body['status'])
 
   repository = OrderRepository.new
@@ -135,9 +139,6 @@ get '/commission/:order_id' do
   { commission_amount: order.commission.amount }.to_json
 end
 
-post '/weather' do
-end
-
 error(*KNOWN_ERRORS) do |e|
   status 400
   { error: e.message }.to_json
@@ -149,6 +150,14 @@ if settings.environment != :production
     OrderRepository.new.delete_all
     ClientRepository.new.delete_all
     DeliveryRepository.new.delete_all
+    WEATHER_SERVICE.raining(false)
     status 200
+  end
+
+  post '/weather' do
+    status 200
+    body = JSON.parse(request.body.read)
+
+    WEATHER_SERVICE.raining(body['rain'])
   end
 end
