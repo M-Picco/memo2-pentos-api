@@ -179,5 +179,13 @@ describe Order do
 
       expect(order.state.name?(STATES::CANCELLED)).to eq(true)
     end
+
+    it 'should be possible to cancel an order in preparation' do
+      order.change_state(InPreparationState.new)
+
+      order.cancel
+
+      expect(order.state.name?(STATES::CANCELLED)).to eq(true)
+    end
   end
 end
