@@ -74,7 +74,13 @@ Característica: Creacion y Cambios de estado de Pedidos
       Cuando el estado cambia a "cocinando_al_vapor"
       Entonces obtiene un mensaje de error por estado invalido
 
-  # Escenario: CANP1 - cancelar pedido recibido
+  @wip
+  Escenario: CANP1 - cancelar pedido recibido
+        Dado que el cliente pidio un "menu_individual"
+        Cuando se cancela el pedido
+        Y consulta el estado
+        Entonces el estado es "cancelado"
+
   # Escenario: CANP2 - cancelar pedido en_preparacion
   # Escenario: CANP3 - cancelar pedido en_entrega
   # Escenario: CANP4 - cancelar pedido entregado
