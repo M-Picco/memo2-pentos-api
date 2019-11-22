@@ -14,5 +14,10 @@ describe WeatherFactory do
       weather = factory.create_for('lluvioso')
       expect(weather).to be_a(RainyWeather)
     end
+
+    it 'should return NonRainyWeather as default' do
+      weather = factory.create_for('')
+      expect(weather).to be_a(NonRainyWeather)
+    end
   end
 end
