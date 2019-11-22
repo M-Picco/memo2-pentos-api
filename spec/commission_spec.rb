@@ -20,7 +20,7 @@ describe Commission do
     end
 
     it 'should de valid when order_cost is blank is replaced by zero' do
-      commision = described_class.new
+      commision = described_class.new({})
       expect(commision.valid?).to eq true
       expect(commision.errors.empty?).to eq true
       expect(commision.order_cost.zero?).to eq true
