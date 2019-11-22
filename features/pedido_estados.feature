@@ -93,7 +93,12 @@ Característica: Creacion y Cambios de estado de Pedidos
       Cuando se cancela el pedido
       Entonces recibe un error indicando que no puede cancelar el pedido
 
-  # Escenario: CANP4 - cancelar pedido entregado
+  @wip
+  Escenario: CANP4 - cancelar pedido entregado
+      Dado que el cliente pidio un "menu_individual"
+      Y el estado cambio a "entregado"
+      Cuando se cancela el pedido
+      Entonces recibe un error indicando que no puede cancelar el pedido
 
   # Escenario: CH1 - Consulta historica sin pedido en curso
   # Escenario: CH2 - Consulta historica con pedido en curso
