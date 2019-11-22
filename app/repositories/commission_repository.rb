@@ -6,6 +6,10 @@ class CommissionRepository < BaseRepository
 
   protected
 
+  def load_object(a_record)
+    Commission.new(a_record, NonRainyWeather.new)
+  end
+
   def changeset(commission)
     {
       amount: commission.amount,

@@ -12,7 +12,7 @@ class Commission
   MIN_PERCENTAGE = 0.03
   MAX_PERCENTAGE = 0.07
 
-  def initialize(data, weather = NonRainyWeather.new)
+  def initialize(data, weather)
     @id = data[:id]
     @order_cost = data[:order_cost] || 0
     @updated_on = data[:updated_on]
