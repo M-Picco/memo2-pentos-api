@@ -9,7 +9,8 @@ class StateFactory
                     'en_preparacion' => proc { |_weather| InPreparationState.new },
                     'en_entrega' => proc { |_weather| OnDeliveryState.new },
                     'entregado' => proc { |weather| DeliveredState.new(weather) },
-                    'invalid_state' => proc { |_weather| InvalidState.new } }.freeze
+                    'invalid_state' => proc { |_weather| InvalidState.new },
+                    'cancelado' => proc { |_weather| CancelledState.new } }.freeze
 
   def initialize(weather)
     @weather = weather

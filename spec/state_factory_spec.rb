@@ -41,5 +41,10 @@ describe StateFactory do
       return_state = factory.create_for('invalid_name')
       expect(return_state).to be_a(InvalidState)
     end
+
+    it 'should return CancelledState when I pass "cancelado"' do
+      return_state = factory.create_for('cancelado')
+      expect(return_state).to be_a(CancelledState)
+    end
   end
 end
