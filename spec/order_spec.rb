@@ -172,4 +172,12 @@ describe Order do
       expect(order.commission.id).to be > 0
     end
   end
+
+  describe 'cancel' do
+    it 'should be possible to cancel a received order' do
+      order.cancel
+
+      expect(order.state.name?(STATES::CANCELLED)).to eq(true)
+    end
+  end
 end
