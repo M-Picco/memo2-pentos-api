@@ -3,7 +3,7 @@ require 'active_model'
 class Commission
   include ActiveModel::Validations
 
-  attr_accessor :id, :amount, :order_cost, :updated_on, :created_on
+  attr_accessor :id, :amount, :order_cost, :updated_on, :created_on, :weather
 
   validates :order_cost, numericality: { greater_than_or_equal_to: 0 }
 
