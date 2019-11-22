@@ -1,6 +1,6 @@
 require 'integration_spec_helper'
 require_relative '../../../app/errors/order_not_found_error'
-require_relative '../../../app/helpers/states_helper'
+require_relative '../../../app/states/state_factory'
 require_relative '../../../app/states/recieved_state'
 require_relative '../../../app/states/inpreparation_state'
 require_relative '../../../app/states/ondelivery_state'
@@ -154,7 +154,7 @@ describe OrderRepository do
       delivery = Delivery.new('username' => 'pepemoto')
       DeliveryRepository.new.save(delivery)
 
-      order.change_state(StatesHelper.create_for('en_entrega'))
+      order.change_state(StateFactory.new.create_for('en_entrega'))
 
       repository.save(order)
 
@@ -216,7 +216,7 @@ describe OrderRepository do
       DeliveryRepository.new.save(delivery)
       repository.save(order)
 
-      order.change_state(StatesHelper.create_for('en_entrega'))
+      order.change_state(StateFactory.new.create_for('en_entrega'))
       on_delivery_orders = repository.on_delivery_orders_by(delivery.username)
 
       expect(on_delivery_orders[0].id).to eq(order.id)

@@ -11,7 +11,7 @@ require_relative 'errors/invalid_menu_error'
 require_relative 'errors/client_has_no_orders_error'
 require_relative 'errors/failed_save_operation_error'
 require_relative 'errors/already_registered_error'
-require_relative 'helpers/states_helper'
+require_relative 'states/state_factory'
 
 KNOWN_ERRORS = [OrderNotFoundError, ClientHasNoOrdersError,
                 InvalidMenuError, FailedSaveOperationError,
@@ -62,7 +62,7 @@ put '/order/:order_id/status' do
   body = JSON.parse(request.body.read)
 
   order_id = params['order_id']
-  new_status = StatesHelper.create_for(body['status'])
+  new_status = StateFactory.new.create_for(body['status'])
 
   repository = OrderRepository.new
 

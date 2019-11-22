@@ -1,6 +1,6 @@
 require 'active_model'
 require_relative '../errors/invalid_menu_error'
-require_relative '../helpers/states_helper'
+require_relative '../states/state_factory'
 require_relative '../states/recieved_state'
 require_relative '../states/inpreparation_state'
 require_relative '../states/ondelivery_state'

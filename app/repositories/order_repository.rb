@@ -1,7 +1,7 @@
 require_relative 'base_repository'
 require_relative '../errors/order_not_found_error'
 require_relative '../errors/client_has_no_orders_error'
-require_relative '../helpers/states_helper'
+require_relative '../states/state_factory'
 require_relative '../states/delivered_state'
 require_relative '../states/ondelivery_state'
 
@@ -46,7 +46,7 @@ class OrderRepository < BaseRepository
     order = Order.new(a_record)
 
     order.client = ClientRepository.new.find_by_name(a_record[:client_username])
-    order.state = StatesHelper.create_for(a_record[:state])
+    order.state = StateFactory.new.create_for(a_record[:state])
     unless a_record[:commission].nil?
       order.commission = CommissionRepository.new.find(a_record[:commission])
     end
