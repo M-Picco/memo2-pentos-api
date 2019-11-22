@@ -95,7 +95,7 @@ describe OrderRepository do
   describe 'change rating' do
     it 'changes the rating of an order in delivered state' do
       order = Order.new(client: client, type: 'menu_individual')
-      order.state = DeliveredState.new(weather)
+      order.state = DeliveredState.new
       repository.save(order)
 
       order.rating = 3
@@ -122,7 +122,7 @@ describe OrderRepository do
     it 'does not change the rating of an order with invalid rating
         due to it being above 5' do
       order = Order.new(client: client, type: 'menu_individual')
-      order.state = DeliveredState.new(weather)
+      order.state = DeliveredState.new
       repository.save(order)
 
       order.rating = 6
@@ -136,7 +136,7 @@ describe OrderRepository do
     it 'does not change the rating of an order with invalid rating
         due to it being below 1' do
       order = Order.new(client: client, type: 'menu_individual')
-      order.state = DeliveredState.new(weather)
+      order.state = DeliveredState.new
       repository.save(order)
 
       order.rating = 0
@@ -195,7 +195,7 @@ describe OrderRepository do
 
     it 'should return a delivered order made today' do
       order = Order.new(client: client, type: 'menu_individual')
-      order.state = DeliveredState.new(weather)
+      order.state = DeliveredState.new
       repository.save(order)
 
       orders = repository.delivered_orders_created_on(Date.today)
@@ -229,7 +229,7 @@ describe OrderRepository do
   describe 'change commission' do
     it 'changes the commission of an order in delivered state' do
       order = Order.new(client: client, type: 'menu_individual')
-      order.change_state(DeliveredState.new(weather))
+      order.change_state(OnDeliveryState.new(weather))
       repository.save(order)
 
       reloaded_order = repository.find(order.id)
