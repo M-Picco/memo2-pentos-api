@@ -193,5 +193,11 @@ describe Order do
 
       expect { order.cancel }.to raise_error(OrderNotCancellableError)
     end
+
+    it 'should fail to cancel a delivered order' do
+      order.change_state(DeliveredState.new(weather))
+
+      expect { order.cancel }.to raise_error(OrderNotCancellableError)
+    end
   end
 end
