@@ -67,7 +67,7 @@ describe Commission do
       order_cost = 100
       commision = described_class.new({ order_cost: order_cost }, default_weather)
       commision.update_by_rating(5)
-      expect(commision.amount).to eq(order_cost * 0.07)
+      expect(commision.amount).to eq((order_cost * 0.07).round(2))
     end
   end
 end

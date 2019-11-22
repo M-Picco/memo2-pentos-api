@@ -8,9 +8,10 @@ class Commission
 
   validates :order_cost, numericality: { greater_than_or_equal_to: 0 }
 
+  ROUNDING_DIGITS = 2
+
   BASE_PERCENTAGE = 0.05
-  MIN_PERCENTAGE = 0.03
-  MAX_PERCENTAGE = 0.07
+  RATING_MODIFIER = 0.02
 
   def initialize(data, weather)
     @id = data[:id]
@@ -19,12 +20,23 @@ class Commission
     @created_on = data[:created_on]
     @weather = weather
 
-    percentage = @weather.apply_commission_modifier(BASE_PERCENTAGE)
-    @amount = data[:amount] || percentage * @order_cost
+    @amount = data[:amount] || calculate_amount_with_modifier(BASE_PERCENTAGE)
   end
 
   def update_by_rating(rating)
-    @amount = MIN_PERCENTAGE * @order_cost if rating == 1
-    @amount = MAX_PERCENTAGE * @order_cost if rating == 5
+    modifier = BASE_PERCENTAGE
+
+    modifier -= RATING_MODIFIER if rating == 1
+    modifier += RATING_MODIFIER if rating == 5
+
+    @amount = calculate_amount_with_modifier(modifier)
+  end
+
+  private
+
+  def calculate_amount_with_modifier(modifier)
+    final_modifier = @weather.apply_commission_modifier(modifier)
+
+    (final_modifier * @order_cost).round(ROUNDING_DIGITS)
   end
 end
