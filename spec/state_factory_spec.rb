@@ -7,7 +7,9 @@ require_relative '../app/states/delivered_state'
 require_relative '../app/states/invalid_state'
 
 describe StateFactory do
-  subject(:factory) { described_class.new }
+  subject(:factory) { described_class.new(weather) }
+
+  let(:weather) { double }
 
   describe 'create for' do
     it 'should return RecievedState class when I pass "recibido"' do

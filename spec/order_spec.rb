@@ -9,6 +9,8 @@ require_relative '../app/states/invalid_state'
 describe Order do
   subject(:order) { described_class.new(client: client, type: 'menu_individual') }
 
+  let(:weather) { NonRainyWeather.new }
+
   let(:client) do
     Client.new('username' => 'jperez', 'phone' => '4123-4123',
                'address' => 'Av Paseo Colón 840')
@@ -64,28 +66,28 @@ describe Order do
     end
 
     it 'allows in_preparation state' do
-      order.state = StateFactory.new.create_for('en_preparacion')
+      order.state = StateFactory.new(weather).create_for('en_preparacion')
 
       expect(order.state).to be_a(InPreparationState)
       expect(order.valid?).to eq(true)
     end
 
     it 'allows delivery state' do
-      order.state = StateFactory.new.create_for('en_entrega')
+      order.state = StateFactory.new(weather).create_for('en_entrega')
 
       expect(order.state).to be_a(OnDeliveryState)
       expect(order.valid?).to eq(true)
     end
 
     it 'allows delivered state' do
-      order.state = StateFactory.new.create_for('entregado')
+      order.state = StateFactory.new(weather).create_for('entregado')
 
       expect(order.state).to be_a(DeliveredState)
       expect(order.valid?).to eq(true)
     end
 
     it 'is invalid when changing to an invalid state' do
-      order.state = StateFactory.new.create_for('not_contemplated_state')
+      order.state = StateFactory.new(weather).create_for('not_contemplated_state')
 
       expect(order.state).to be_a(InvalidState)
       expect(order.valid?).to eq(false)
@@ -99,7 +101,7 @@ describe Order do
     end
 
     it 'is valid when rating with 3' do
-      order.state =  StateFactory.new.create_for('entregado')
+      order.state =  StateFactory.new(weather).create_for('entregado')
 
       order.rating = 3
 
@@ -116,7 +118,7 @@ describe Order do
     end
 
     it 'is invalid when rating an order in in_preparation state' do
-      order.state = StateFactory.new.create_for('en_preparacion')
+      order.state = StateFactory.new(weather).create_for('en_preparacion')
 
       order.rating = 3
 
@@ -126,7 +128,7 @@ describe Order do
     end
 
     it 'is invalid when rating an order in delivering state' do
-      order.state =  StateFactory.new.create_for('en_entrega')
+      order.state =  StateFactory.new(weather).create_for('en_entrega')
 
       order.rating = 3
 
@@ -136,7 +138,7 @@ describe Order do
     end
 
     it 'is invalid to rate an order with a value 1' do
-      order.state =  StateFactory.new.create_for('entregado')
+      order.state =  StateFactory.new(weather).create_for('entregado')
 
       order.rating = -1
 
@@ -145,7 +147,7 @@ describe Order do
     end
 
     it 'is invalid to rate an order with a value 6' do
-      order.state =  StateFactory.new.create_for('entregado')
+      order.state =  StateFactory.new(weather).create_for('entregado')
 
       order.rating = 6
 
@@ -158,14 +160,14 @@ describe Order do
     it 'should assign when status is in "en_entrega"' do
       delivery = Delivery.new('username' => 'pepemoto')
       DeliveryRepository.new.save(delivery)
-      order.change_state(StateFactory.new.create_for('en_entrega'))
+      order.change_state(StateFactory.new(weather).create_for('en_entrega'))
       expect(order.assigned_to).to eq(delivery.username)
     end
   end
 
   describe 'commission' do
     it 'should create when status is in "entregado"' do
-      order.change_state(StateFactory.new(NonRainyWeather.new).create_for('entregado'))
+      order.change_state(StateFactory.new(weather).create_for('entregado'))
       expect(order.commission.nil?).to eq false
       expect(order.commission.id).to be > 0
     end

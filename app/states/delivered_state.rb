@@ -4,7 +4,7 @@ require_relative '../model/commission.rb'
 require_relative '../model/weather/non_rainy_weather.rb'
 
 class DeliveredState < State
-  def initialize(weather = nil)
+  def initialize(weather)
     @state_name = STATES::DELIVERED
     @weather = weather
   end

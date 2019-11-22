@@ -11,7 +11,7 @@ class StateFactory
                     'entregado' => proc { |weather| DeliveredState.new(weather) },
                     'invalid_state' => proc { |_weather| InvalidState.new } }.freeze
 
-  def initialize(weather = nil)
+  def initialize(weather)
     @weather = weather
   end
 

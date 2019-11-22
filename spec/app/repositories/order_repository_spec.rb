@@ -11,6 +11,8 @@ require 'date'
 describe OrderRepository do
   let(:repository) { described_class.new }
 
+  let(:weather) { NonRainyWeather.new }
+
   let(:client) do
     client = Client.new('username' => 'jperez', 'phone' => '4123-4123',
                         'address' => 'Av Paseo Colón 840')
@@ -93,7 +95,7 @@ describe OrderRepository do
   describe 'change rating' do
     it 'changes the rating of an order in delivered state' do
       order = Order.new(client: client, type: 'menu_individual')
-      order.state = DeliveredState.new
+      order.state = DeliveredState.new(weather)
       repository.save(order)
 
       order.rating = 3
@@ -120,7 +122,7 @@ describe OrderRepository do
     it 'does not change the rating of an order with invalid rating
         due to it being above 5' do
       order = Order.new(client: client, type: 'menu_individual')
-      order.state = DeliveredState.new
+      order.state = DeliveredState.new(weather)
       repository.save(order)
 
       order.rating = 6
@@ -134,7 +136,7 @@ describe OrderRepository do
     it 'does not change the rating of an order with invalid rating
         due to it being below 1' do
       order = Order.new(client: client, type: 'menu_individual')
-      order.state = DeliveredState.new
+      order.state = DeliveredState.new(weather)
       repository.save(order)
 
       order.rating = 0
@@ -154,7 +156,7 @@ describe OrderRepository do
       delivery = Delivery.new('username' => 'pepemoto')
       DeliveryRepository.new.save(delivery)
 
-      order.change_state(StateFactory.new.create_for('en_entrega'))
+      order.change_state(StateFactory.new(weather).create_for('en_entrega'))
 
       repository.save(order)
 
@@ -193,7 +195,7 @@ describe OrderRepository do
 
     it 'should return a delivered order made today' do
       order = Order.new(client: client, type: 'menu_individual')
-      order.state = DeliveredState.new
+      order.state = DeliveredState.new(weather)
       repository.save(order)
 
       orders = repository.delivered_orders_created_on(Date.today)
@@ -216,7 +218,7 @@ describe OrderRepository do
       DeliveryRepository.new.save(delivery)
       repository.save(order)
 
-      order.change_state(StateFactory.new.create_for('en_entrega'))
+      order.change_state(StateFactory.new(weather).create_for('en_entrega'))
       on_delivery_orders = repository.on_delivery_orders_by(delivery.username)
 
       expect(on_delivery_orders[0].id).to eq(order.id)
@@ -227,7 +229,7 @@ describe OrderRepository do
   describe 'change commission' do
     it 'changes the commission of an order in delivered state' do
       order = Order.new(client: client, type: 'menu_individual')
-      order.change_state(DeliveredState.new(NonRainyWeather.new))
+      order.change_state(DeliveredState.new(weather))
       repository.save(order)
 
       reloaded_order = repository.find(order.id)

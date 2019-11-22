@@ -33,11 +33,11 @@ class OrderRepository < BaseRepository
   end
 
   def delivered_orders_created_on(date)
-    load_collection dataset.where(created_on: date, state: DeliveredState.new.state_name)
+    load_collection dataset.where(created_on: date, state: STATES::DELIVERED)
   end
 
   def on_delivery_orders_by(username)
-    load_collection dataset.where(assigned_to: username, state: OnDeliveryState.new.state_name)
+    load_collection dataset.where(assigned_to: username, state: STATES::ON_DELIVERY)
   end
 
   protected
