@@ -6,6 +6,7 @@ require_relative '../states/inpreparation_state'
 require_relative '../states/ondelivery_state'
 require_relative '../states/delivered_state'
 require_relative '../states/invalid_state'
+require_relative '../states/state_names'
 
 class Order
   include ActiveModel::Validations
@@ -75,7 +76,7 @@ class Order
   private
 
   def valid_state
-    valid_state = @state != InvalidState.new
+    valid_state = !@state.name?(STATES::INVALID)
     errors.add(:state, 'invalid_state') unless valid_state
   end
 
