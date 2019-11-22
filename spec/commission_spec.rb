@@ -35,39 +35,81 @@ describe Commission do
     end
   end
 
-  describe 'amount' do
-    it 'should be 5 when order cost is 100' do
-      commision = described_class.new({ order_cost: 100 }, default_weather)
-      expect(commision.amount).to eq(5)
+  describe 'non rainy weather' do
+    describe 'amount' do
+      it 'should be 5 when order cost is 100' do
+        commision = described_class.new({ order_cost: 100 }, default_weather)
+        expect(commision.amount).to eq(5)
+      end
+
+      it 'should be 5% of the order cost' do
+        order_cost = 200
+        commision = described_class.new({ order_cost: order_cost }, default_weather)
+        expect(commision.amount).to eq(order_cost * 0.05)
+      end
     end
 
-    it 'should be 5% of the order cost' do
-      order_cost = 200
-      commision = described_class.new({ order_cost: order_cost }, default_weather)
-      expect(commision.amount).to eq(order_cost * 0.05)
+    describe 'update amount by rating' do
+      it 'amount does not change from 6% if rating is 3' do
+        order_cost = 100
+        commision = described_class.new({ order_cost: order_cost }, default_weather)
+        commision.update_by_rating(3)
+        expect(commision.amount).to eq(order_cost * 0.05)
+      end
+
+      it 'amount changes to 3% if rating is 1' do
+        order_cost = 100
+        commision = described_class.new({ order_cost: order_cost }, default_weather)
+        commision.update_by_rating(1)
+        expect(commision.amount).to eq(order_cost * 0.03)
+      end
+
+      it 'amount changes to 7% if rating is 5' do
+        order_cost = 100
+        commision = described_class.new({ order_cost: order_cost }, default_weather)
+        commision.update_by_rating(5)
+        expect(commision.amount).to eq((order_cost * 0.07).round(2))
+      end
     end
   end
 
-  describe 'update amount by rating' do
-    it 'amount dont change if rating is 3' do
-      order_cost = 100
-      commision = described_class.new({ order_cost: order_cost }, default_weather)
-      commision.update_by_rating(3)
-      expect(commision.amount).to eq(order_cost * 0.05)
+  describe 'rainy weather' do
+    let(:rainy_weather) { RainyWeather.new }
+
+    describe 'amount' do
+      it 'should be 6 when order cost is 100' do
+        commision = described_class.new({ order_cost: 100 }, rainy_weather)
+        expect(commision.amount).to eq(6)
+      end
+
+      it 'should be 6% of the order cost' do
+        order_cost = 200
+        commision = described_class.new({ order_cost: order_cost }, rainy_weather)
+        expect(commision.amount).to eq(order_cost * 0.06)
+      end
     end
 
-    it 'amount change to 3% if rating is 1' do
-      order_cost = 100
-      commision = described_class.new({ order_cost: order_cost }, default_weather)
-      commision.update_by_rating(1)
-      expect(commision.amount).to eq(order_cost * 0.03)
-    end
+    describe 'update amount by rating' do
+      it 'amount does not change from 6% if rating is 3' do
+        order_cost = 100
+        commision = described_class.new({ order_cost: order_cost }, rainy_weather)
+        commision.update_by_rating(3)
+        expect(commision.amount).to eq(order_cost * 0.06)
+      end
 
-    it 'amount change to 7% if rating is 5' do
-      order_cost = 100
-      commision = described_class.new({ order_cost: order_cost }, default_weather)
-      commision.update_by_rating(5)
-      expect(commision.amount).to eq((order_cost * 0.07).round(2))
+      it 'amount changes to 4% if rating is 1' do
+        order_cost = 100
+        commision = described_class.new({ order_cost: order_cost }, rainy_weather)
+        commision.update_by_rating(1)
+        expect(commision.amount).to eq(order_cost * 0.04)
+      end
+
+      it 'amount changes to 8% if rating is 5' do
+        order_cost = 100
+        commision = described_class.new({ order_cost: order_cost }, rainy_weather)
+        commision.update_by_rating(5)
+        expect(commision.amount).to eq(order_cost * 0.08)
+      end
     end
   end
 end
