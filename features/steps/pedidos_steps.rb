@@ -51,10 +51,26 @@ Entonces('obtiene un mensaje de error indicando que la orden no existe') do
   expect(parsed_response['error']).to eq('order not exist')
 end
 
+Entonces('obtiene un mensaje de error por estado invalido') do
+  expect(@response.status).to eq(400)
+  parsed_response = JSON.parse(@response.body)
+  expect(parsed_response['error']).to eq('invalid_state')
+end
+
 Cuando('el estado cambia a {string}') do |new_status|
   @request = {}
   @request['status'] = new_status
   @response = Faraday.put(change_order_status_url(@order_id), @request.to_json, header)
+end
+
+Cuando('se cancela el pedido') do
+  @response = Faraday.put(cancel_order_url(@order_id), {}.to_json, header)
+end
+
+Entonces('recibe un error indicando que no puede cancelar el pedido') do
+  expect(@response.status).to eq(400)
+  parsed_response = JSON.parse(@response.body)
+  expect(parsed_response['error']).to eq('cannot_cancel')
 end
 
 Entonces('obtiene error por pedido inválido') do
@@ -78,10 +94,4 @@ end
 
 Dado('el estado cambio a {string}') do |new_status|
   step "el estado cambia a \"#{new_status}\""
-end
-
-Entonces('obtiene un mensaje de error por estado invalido') do
-  expect(@response.status).to eq(400)
-  parsed_response = JSON.parse(@response.body)
-  expect(parsed_response['error']).to eq('invalid_state')
 end
