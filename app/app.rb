@@ -12,14 +12,10 @@ require_relative 'errors/client_has_no_orders_error'
 require_relative 'errors/failed_save_operation_error'
 require_relative 'errors/already_registered_error'
 require_relative 'errors/order_not_cancellable_error'
+require_relative 'errors/domain_error'
 require_relative 'states/state_factory'
 require_relative 'model/weather/configurable_weather_service'
 require_relative 'model/weather/open_weather_service'
-
-KNOWN_ERRORS = [OrderNotFoundError, ClientHasNoOrdersError,
-                InvalidMenuError, FailedSaveOperationError,
-                ClientNotFoundError, AlreadyRegisteredError,
-                OrderNotCancellableError].freeze
 
 API_KEY = ENV['API_KEY'] || 'zaraza'
 
@@ -154,7 +150,7 @@ put '/order/:order_id/cancel' do
   status 200
 end
 
-error(*KNOWN_ERRORS) do |e|
+error DomainError do |e|
   status 400
   { error: e.message }.to_json
 end
