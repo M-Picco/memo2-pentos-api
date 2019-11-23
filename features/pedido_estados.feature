@@ -106,7 +106,15 @@ Característica: Creacion y Cambios de estado de Pedidos
         Cuando se cancela el pedido
         Entonces recibe un error indicando que no puede cancelar el pedido
 
-  # Escenario: CH1 - Consulta historica sin pedido en curso
+  @wip
+  Escenario: CH1 - Consulta historica sin pedido en curso
+      Dado que el cliente pidio un "menu_individual"
+      Y el pedido es entregado por "juanmotoneta"
+      Cuando se consultan los pedidos historicos
+      Entonces hay un solo pedido historico
+      Y hay un pedido de "menu_individual" con id unico entregado por "juanmotoneta" con fecha correcta
+
+
   # Escenario: CH2 - Consulta historica con pedido en curso
 
   # Escenario: CT1 - Consulta con tiempo de entrega estimado menu_individual y lluvia
