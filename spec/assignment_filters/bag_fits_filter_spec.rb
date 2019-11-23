@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'byebug'
 
 describe BagFitsFilter do
   let(:filter) { described_class.new }
@@ -17,7 +18,7 @@ describe BagFitsFilter do
   it 'should filters Deliveries that theirs bag fits the order' do
     DeliveryRepository.new.save(delivery)
     DeliveryRepository.new.save(delivery2)
-    order.change_state(OnDeliveryState.new)
+    order.state = OnDeliveryState.new
     ClientRepository.new.save(client)
     OrderRepository.new.save(order)
 
@@ -29,7 +30,7 @@ describe BagFitsFilter do
   it 'should called NearestFullFilter class' do
     DeliveryRepository.new.save(delivery)
     DeliveryRepository.new.save(delivery2)
-    order.change_state(OnDeliveryState.new)
+    order.state = OnDeliveryState.new
     ClientRepository.new.save(client)
     OrderRepository.new.save(order)
 

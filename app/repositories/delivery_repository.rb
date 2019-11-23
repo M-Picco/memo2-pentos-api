@@ -5,7 +5,7 @@ class DeliveryRepository < BaseRepository
   self.model_class = 'Delivery'
 
   def deliveries
-    dataset.map(:username)
+    load_collection dataset
   end
 
   def exists?(delivery_username)

@@ -10,14 +10,14 @@ describe DeliveryRepository do
   end
   # rubocop:disable RSpect/ExampleLength
 
-  it 'should return a list with delivery usernames' do
+  it 'should return a list with Deliveries' do
     delivery = Delivery.new('username' => 'pepemoto')
     delivery2 = Delivery.new('username' => 'pepemonopatin')
     repository.save(delivery)
     repository.save(delivery2)
 
-    expect(repository.deliveries.include?(delivery.username)).to eq true
-    expect(repository.deliveries.include?(delivery2.username)).to eq true
+    expect(repository.deliveries[0].id).to eq delivery.id
+    expect(repository.deliveries[1].id).to eq delivery2.id
   end
   # rubocop:enable RSpect/ExampleLength
 
