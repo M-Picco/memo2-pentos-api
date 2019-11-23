@@ -15,4 +15,8 @@ class NullCommission
   end
 
   def update_by_rating(_rating); end
+
+  def valid?
+    false
+  end
 end

@@ -8,6 +8,7 @@ describe NullCommission do
     it { is_expected.to respond_to(:weather) }
     it { is_expected.to respond_to(:id) }
     it { is_expected.to respond_to(:update_by_rating) }
+    it { is_expected.to respond_to(:valid?) }
   end
 
   describe 'amount' do
@@ -29,6 +30,12 @@ describe NullCommission do
       id = commision.id
 
       expect(id).to eq(-1)
+    end
+  end
+
+  describe 'valid?' do
+    it 'should be false' do
+      expect(commision.valid?).to eq(false)
     end
   end
 end
