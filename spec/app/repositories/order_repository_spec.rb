@@ -7,6 +7,7 @@ require_relative '../../../app/states/ondelivery_state'
 require_relative '../../../app/states/delivered_state'
 require_relative '../../../app/states/invalid_state'
 require 'date'
+require 'json'
 
 describe OrderRepository do
   let(:repository) { described_class.new }
@@ -206,17 +207,17 @@ describe OrderRepository do
 
   describe 'historical orders' do
     it 'should return nothing if there are not orders' do
-      orders = repository.historical_orders
+      orders = repository.historical_orders(client.name)
       expect(orders.size).to eq 0
     end
 
+    # rubocop:disable RSpec/ExampleLength
     it 'should return orders if there are orders' do
       order = Order.new(client: client, type: 'menu_individual')
       order.state = DeliveredState.new
       repository.save(order)
 
-      orders = repository.historical_orders
-
+      orders = repository.historical_orders(client.name)
       expect(orders.size).to eq 1
     end
   end
@@ -228,7 +229,6 @@ describe OrderRepository do
     end
 
     let(:delivery) { Delivery.new('username' => 'pepemoto') }
-    # rubocop:disable RSpec/ExampleLength
 
     it 'should return "en_entrega" orders assigned to delivery' do
       ClientRepository.new.save(client)

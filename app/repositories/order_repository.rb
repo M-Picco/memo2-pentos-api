@@ -47,7 +47,7 @@ class OrderRepository < BaseRepository
     load_collection dataset.where(assigned_to: username, state: STATES::ON_DELIVERY)
   end
 
-  def historical_orders
+  def historical_orders(_user_name)
     load_collection dataset
   end
 
