@@ -7,6 +7,7 @@ require_relative 'repositories/client_repository.rb'
 require_relative 'repositories/order_repository.rb'
 require_relative 'repositories/delivery_repository.rb'
 require_relative 'errors/order_not_found_error'
+require_relative 'errors/order_not_delivered_error'
 require_relative 'errors/invalid_menu_error'
 require_relative 'errors/client_has_no_orders_error'
 require_relative 'errors/failed_save_operation_error'
@@ -17,7 +18,8 @@ require_relative 'model/weather/open_weather_service'
 
 KNOWN_ERRORS = [OrderNotFoundError, ClientHasNoOrdersError,
                 InvalidMenuError, FailedSaveOperationError,
-                ClientNotFoundError, AlreadyRegisteredError].freeze
+                ClientNotFoundError, AlreadyRegisteredError,
+                OrderNotDeliveredError].freeze
 
 API_KEY = ENV['API_KEY'] || 'zaraza'
 

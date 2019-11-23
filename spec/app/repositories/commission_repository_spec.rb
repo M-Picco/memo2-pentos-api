@@ -9,12 +9,20 @@ describe CommissionRepository do
     expect(commission.id).to be > 0
   end
 
-  it 'saves a commission with rainy weather and loads it' do
-    commission = Commission.new({ order_cost: 100 }, RainyWeather.new)
-    repository.save(commission)
+  describe 'find_by_id' do
+    it 'saves a commission with rainy weather and loads it' do
+      commission = Commission.new({ order_cost: 100 }, RainyWeather.new)
+      repository.save(commission)
 
-    reloaded_commission = repository.find(commission.id)
+      reloaded_commission = repository.find_by_id(commission.id)
 
-    expect(reloaded_commission.weather).to be_a(RainyWeather)
+      expect(reloaded_commission.weather).to be_a(RainyWeather)
+    end
+
+    it 'returns a NullCommission if no commissions are found' do
+      commission = repository.find_by_id(-1)
+
+      expect(commission).to be_a(NullCommission)
+    end
   end
 end

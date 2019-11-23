@@ -1,9 +1,16 @@
 require_relative 'base_repository'
+require_relative '../model/null_commission'
 require_relative '../model/weather/weather_factory'
 
 class CommissionRepository < BaseRepository
   self.table_name = :commissions
   self.model_class = 'Commission'
+
+  def find_by_id(id)
+    find(id)
+  rescue Sequel::NoMatchingRow
+    NullCommission.new
+  end
 
   protected
 
