@@ -9,4 +9,8 @@ class NullCommission
   def weather
     NonRainyWeather.new
   end
+
+  def id
+    -1
+  end
 end

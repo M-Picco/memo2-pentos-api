@@ -6,6 +6,7 @@ describe NullCommission do
   describe 'model' do
     it { is_expected.to respond_to(:amount) }
     it { is_expected.to respond_to(:weather) }
+    it { is_expected.to respond_to(:id) }
   end
 
   describe 'amount' do
@@ -19,6 +20,14 @@ describe NullCommission do
       weather = commision.weather
 
       expect(weather).to be_a(NonRainyWeather)
+    end
+  end
+
+  describe 'id' do
+    it 'should return -1' do
+      id = commision.id
+
+      expect(id).to eq(-1)
     end
   end
 end
