@@ -64,3 +64,8 @@ A su vez los dias de lluvia las comisiones se incrementan en un 1% (*)
       Cuando el pedido es entregado por "juanmotoneta"
       Y el cliente califica con 1
       Entonces la comision 10.0
+
+    Escenario: COM7 - Comision por pedido no entregado
+      Dado que el cliente pidio un "menu_familiar"
+      Cuando consulta la comision
+      Entonces recibe un error indicando que el pedido no fue entregado

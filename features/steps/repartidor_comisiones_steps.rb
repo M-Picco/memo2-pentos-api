@@ -17,6 +17,16 @@ Cuando('no llueve') do
   expect(@response.status).to eq(200)
 end
 
+Cuando('consulta la comision') do
+  @response = Faraday.get(query_commission_url(@order_id), {}, header)
+end
+
+Entonces('recibe un error indicando que el pedido no fue entregado') do
+  expect(@response.status).to eq(400)
+  parsed_response = JSON.parse(@response.body)
+  expect(parsed_response['error']).to eq('order_not_delivered')
+end
+
 Entonces('se registra la calificacion') do
   expect(@response.status).to eq(200)
   parsed_response = JSON.parse(@response.body)
