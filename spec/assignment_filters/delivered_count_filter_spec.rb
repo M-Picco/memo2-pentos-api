@@ -26,5 +26,16 @@ describe DeliveredCountFilter do
     expect(deliveries.first.delivered_count).to eq 1
     expect(deliveries[1].delivered_count).to eq 0
   end
+
+  it 'should called LessDelivered class' do
+    DeliveryRepository.new.save(delivery)
+    DeliveryRepository.new.save(delivery2)
+    order.change_state(DeliveredState.new)
+    ClientRepository.new.save(client)
+    OrderRepository.new.save(order)
+
+    expect(filter.next_filter).to receive(:run).with([delivery, delivery2], order)
+    filter.run([delivery, delivery2], order)
+  end
   # rubocop:enable RSpec/ExampleLength
 end

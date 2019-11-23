@@ -21,4 +21,12 @@ describe LessDeliveredFilter do
     selected_delivery = filter.apply([delivery, delivery2], order)
     expect(selected_delivery.id).to eq delivery2.id
   end
+
+  it 'should end the chain' do
+    DeliveryRepository.new.save(delivery)
+    DeliveryRepository.new.save(delivery2)
+
+    expect(filter.apply([delivery, delivery2], order))
+      .to eq filter.run([delivery, delivery2], order)
+  end
 end

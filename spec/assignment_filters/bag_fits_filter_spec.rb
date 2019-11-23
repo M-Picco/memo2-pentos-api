@@ -25,5 +25,16 @@ describe BagFitsFilter do
     delivery_selected = filter.apply([delivery, delivery2], order)
     expect(delivery_selected.first.id).to eq delivery2.id
   end
+
+  it 'should called NearestFullFilter class' do
+    DeliveryRepository.new.save(delivery)
+    DeliveryRepository.new.save(delivery2)
+    order.change_state(OnDeliveryState.new)
+    ClientRepository.new.save(client)
+    OrderRepository.new.save(order)
+
+    expect(filter.next_filter).to receive(:run).with([delivery2], order)
+    filter.run([delivery, delivery2], order)
+  end
   # rubocop:enable RSpec/ExampleLength
 end

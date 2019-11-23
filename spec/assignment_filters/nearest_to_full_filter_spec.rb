@@ -26,5 +26,17 @@ describe NearestToFullFilter do
     delivery_selected = filter.apply([delivery, delivery2], order)
     expect(delivery_selected.first.id).to eq delivery.id
   end
+
+  it 'should called DeliveredCount class' do
+    DeliveryRepository.new.save(delivery)
+    DeliveryRepository.new.save(delivery2)
+    delivery.bag = DeliveryBag.new
+    delivery2.bag = DeliveryBag.new
+
+    delivery.bag.load_orders_from_collection([order])
+
+    expect(filter.next_filter).to receive(:run).with([delivery], order)
+    filter.run([delivery, delivery2], order)
+  end
   # rubocop:enable RSpec/ExampleLength
 end

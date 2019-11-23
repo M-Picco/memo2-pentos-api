@@ -1,4 +1,11 @@
-class DeliveredCountFilter
+require_relative 'less_delivered_filter'
+require_relative 'filter'
+
+class DeliveredCountFilter < Filter
+  def initialize
+    @next_filter = LessDeliveredFilter.new
+  end
+
   def apply(deliveries, _order)
     orders_repo = OrderRepository.new
     day = Date.today
