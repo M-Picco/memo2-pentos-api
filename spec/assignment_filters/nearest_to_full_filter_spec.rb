@@ -14,7 +14,7 @@ describe NearestToFullFilter do
   end
   # rubocop:disable RSpec/ExampleLength
 
-  it 'should filters Deliveries that theirs bag fits the order' do
+  it 'should filters Deliveries that are nearest to full their bag' do
     DeliveryRepository.new.save(delivery)
     DeliveryRepository.new.save(delivery2)
     delivery.bag = DeliveryBag.new
