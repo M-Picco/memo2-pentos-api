@@ -29,5 +29,11 @@ describe OrderHelper do
       expect(order_parse.key?(:menu)).to eq true
       expect(order_parse[:menu]).to eq order.type
     end
+
+    it 'should return hash with assigned information' do
+      order_parse = helper.parse(order)
+      expect(order_parse.key?(:assigned_to)).to eq true
+      expect(order_parse[:assigned_to]).to eq order.assigned_to
+    end
   end
 end
