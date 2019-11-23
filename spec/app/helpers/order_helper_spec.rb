@@ -8,7 +8,8 @@ describe OrderHelper do
     ClientRepository.new.save(client)
     order = Order.new(client: client, type: 'menu_individual')
     OrderRepository.new.save(order)
-    order
+
+    OrderRepository.new.find_by_id(order.id)
   end
 
   describe 'parse' do
@@ -34,6 +35,12 @@ describe OrderHelper do
       order_parse = helper.parse(order)
       expect(order_parse.key?(:assigned_to)).to eq true
       expect(order_parse[:assigned_to]).to eq order.assigned_to
+    end
+
+    it 'should return hash with created date information' do
+      order_parse = helper.parse(order)
+      expect(order_parse.key?(:date)).to eq true
+      expect(order_parse[:date]).to eq order.created_on.to_s
     end
   end
 end
