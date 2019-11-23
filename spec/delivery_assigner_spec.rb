@@ -61,7 +61,7 @@ describe DeliveryAssigner do
     repository.save(delivery)
     repository.save(delivery2)
 
-    order.change_state(OnDeliveryState.new)
+    order.change_state(OnDeliveryState.new(weather))
 
     orders_repository.save(order)
     new_order = Order.new(client: client, type: 'menu_familiar')
