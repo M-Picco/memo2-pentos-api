@@ -211,7 +211,6 @@ describe OrderRepository do
       expect(orders.size).to eq 0
     end
 
-    # rubocop:disable RSpec/ExampleLength
     it 'should return orders if there are orders' do
       order = Order.new(client: client, type: 'menu_individual')
       order.state = DeliveredState.new
@@ -219,6 +218,15 @@ describe OrderRepository do
 
       orders = repository.historical_orders(client.name)
       expect(orders.size).to eq 1
+    end
+
+    it 'should not return orders if the client does not have orders' do
+      order = Order.new(client: client, type: 'menu_individual')
+      order.state = DeliveredState.new
+      repository.save(order)
+
+      orders = repository.historical_orders('juanSalaz')
+      expect(orders.size).to eq 0
     end
   end
 
@@ -230,6 +238,7 @@ describe OrderRepository do
 
     let(:delivery) { Delivery.new('username' => 'pepemoto') }
 
+    # rubocop:disable RSpec/ExampleLength
     it 'should return "en_entrega" orders assigned to delivery' do
       ClientRepository.new.save(client)
       DeliveryRepository.new.save(delivery)
@@ -240,7 +249,6 @@ describe OrderRepository do
 
       expect(on_delivery_orders[0].id).to eq(order.id)
     end
-    # rubocop:enable RSpec/ExampleLength
   end
 
   describe 'change commission' do
@@ -253,5 +261,6 @@ describe OrderRepository do
 
       expect(reloaded_order.commission.id).to be > 0
     end
+    # rubocop:enable RSpec/ExampleLength
   end
 end
