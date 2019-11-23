@@ -23,5 +23,11 @@ describe OrderHelper do
       expect(order_parse.key?(:id)).to eq true
       expect(order_parse[:id]).to eq order.id
     end
+
+    it 'should return hash with menu information' do
+      order_parse = helper.parse(order)
+      expect(order_parse.key?(:menu)).to eq true
+      expect(order_parse[:menu]).to eq order.type
+    end
   end
 end
