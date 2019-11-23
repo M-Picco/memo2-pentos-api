@@ -13,4 +13,6 @@ class NullCommission
   def id
     -1
   end
+
+  def update_by_rating(_rating); end
 end

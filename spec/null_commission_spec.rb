@@ -7,6 +7,7 @@ describe NullCommission do
     it { is_expected.to respond_to(:amount) }
     it { is_expected.to respond_to(:weather) }
     it { is_expected.to respond_to(:id) }
+    it { is_expected.to respond_to(:update_by_rating) }
   end
 
   describe 'amount' do
