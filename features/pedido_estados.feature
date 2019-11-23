@@ -113,8 +113,12 @@ Característica: Creacion y Cambios de estado de Pedidos
       Entonces hay un solo pedido historico
       Y hay un pedido de "menu_individual" con id unico entregado por "juanmotoneta" con fecha correcta
 
-
-  # Escenario: CH2 - Consulta historica con pedido en curso
+  @wip
+  Escenario: CH2 - Consulta historica con pedido en curso
+      Dado que el cliente pidio un "menu_individual"
+      Y el estado cambia a "en_entrega"
+      Cuando se consultan los pedidos historicos
+      Entonces no hay ningun pedido en el registro
 
   # Escenario: CT1 - Consulta con tiempo de entrega estimado menu_individual y lluvia
   # Escenario: CT2 - Consulta con tiempo de entrega estimado menu_individual y sin lluvia
