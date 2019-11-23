@@ -174,7 +174,7 @@ if settings.environment != :production
     WEATHER_SERVICE.raining(body['rain'])
   end
 
-  get 'client/:username/order/historical' do
+  get '/client/:username/historical' do
     status 200
     client_username = params['username']
 
@@ -187,7 +187,7 @@ if settings.environment != :production
   def parse_historical(orders)
     historical = []
     orders.each do |order|
-      historical << parse(order)
+      historical << OrderHelper.new.parse(order)
     end
     historical
   end
