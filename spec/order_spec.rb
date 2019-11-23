@@ -189,13 +189,13 @@ describe Order do
     end
 
     it 'should fail to cancel an order on delivery' do
-      order.change_state(OnDeliveryState.new)
+      order.change_state(OnDeliveryState.new(weather))
 
       expect { order.cancel }.to raise_error(OrderNotCancellableError)
     end
 
     it 'should fail to cancel a delivered order' do
-      order.change_state(DeliveredState.new(weather))
+      order.change_state(DeliveredState.new)
 
       expect { order.cancel }.to raise_error(OrderNotCancellableError)
     end
