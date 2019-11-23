@@ -10,6 +10,9 @@ class Commission
 
   ROUNDING_DIGITS = 2
 
+  MIN_RATING = 1
+  MAX_RATING = 5
+
   BASE_PERCENTAGE = 0.05
   RATING_MODIFIER = 0.02
 
@@ -26,8 +29,8 @@ class Commission
   def update_by_rating(rating)
     modifier = BASE_PERCENTAGE
 
-    modifier -= RATING_MODIFIER if rating == 1
-    modifier += RATING_MODIFIER if rating == 5
+    modifier -= RATING_MODIFIER if rating == MIN_RATING
+    modifier += RATING_MODIFIER if rating == MAX_RATING
 
     @amount = calculate_amount_with_modifier(modifier)
   end
