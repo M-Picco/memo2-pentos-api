@@ -4,6 +4,7 @@ require_relative '../app/repositories/order_repository.rb'
 require_relative '../app/repositories/client_repository.rb'
 require_relative '../app/model/order'
 require_relative '../app/model/client'
+require_relative '../app/states/waiting_state'
 
 describe DeliveryAssigner do
   let(:order) { Order.new(client: client, type: 'menu_individual') }
@@ -71,4 +72,16 @@ describe DeliveryAssigner do
     expect(new_order.assigned_to).not_to eq(order.assigned_to)
   end
   # rubocop:enable RSpect/ExampleLength
+
+  it 'should change order status to "waiting" when there are no deliveries' do
+    sorting_hat.assign_to(order)
+
+    expect(order.state).to be_a(WaitingState)
+  end
+
+  it 'should not assigned when there are no deliveries' do
+    sorting_hat.assign_to(order)
+
+    expect(order.assigned_to).to eq(nil)
+  end
 end
