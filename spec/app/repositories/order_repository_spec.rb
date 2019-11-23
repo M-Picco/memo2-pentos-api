@@ -209,6 +209,16 @@ describe OrderRepository do
       orders = repository.historical_orders
       expect(orders.size).to eq 0
     end
+
+    it 'should return orders if there are orders' do
+      order = Order.new(client: client, type: 'menu_individual')
+      order.state = DeliveredState.new
+      repository.save(order)
+
+      orders = repository.historical_orders
+
+      expect(orders.size).to eq 1
+    end
   end
 
   describe 'delivery bag' do
