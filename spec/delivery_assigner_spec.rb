@@ -78,4 +78,10 @@ describe DeliveryAssigner do
 
     expect(order.state).to be_a(WaitingState)
   end
+
+  it 'should not assigned when there are no deliveries' do
+    sorting_hat.assign_to(order)
+
+    expect(order.assigned_to).to eq(nil)
+  end
 end

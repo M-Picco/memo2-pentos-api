@@ -19,7 +19,7 @@ class DeliveryAssigner
     elected_delivery = @filter.run(deliveries, order)
     order.assigned_to = elected_delivery.username
   rescue NoDeliveryAvailableError
-    order.assigned_to = elected_delivery
+    order.assigned_to = nil
     order.change_state(WaitingState.new)
   ensure
     OrderRepository.new.save(order)
