@@ -3,7 +3,7 @@ require 'active_model'
 class Delivery
   include ActiveModel::Validations
 
-  attr_accessor :id, :username, :updated_on, :created_on
+  attr_accessor :id, :username, :updated_on, :created_on, :bag
 
   validates :username, presence: { message: 'invalid_username' },
                        length: { minimum: 5, maximum: 19, message: 'invalid_username' }

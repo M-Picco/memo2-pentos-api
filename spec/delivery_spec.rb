@@ -8,6 +8,7 @@ describe Delivery do
     it { is_expected.to respond_to(:username) }
     it { is_expected.to respond_to(:created_on) }
     it { is_expected.to respond_to(:updated_on) }
+    it { is_expected.to respond_to(:bag) }
   end
 
   describe 'valid?' do
