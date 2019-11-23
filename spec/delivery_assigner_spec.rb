@@ -10,6 +10,7 @@ describe DeliveryAssigner do
   let(:repository) { DeliveryRepository.new }
   let(:orders_repository) { OrderRepository.new }
   let(:client_repository) { ClientRepository.new }
+  let(:weather) { NonRainyWeather.new }
 
   let(:client) do
     Client.new('username' => 'jperez', 'phone' => '4123-4123',
@@ -59,7 +60,7 @@ describe DeliveryAssigner do
 
     repository.save(delivery)
     repository.save(delivery2)
-    order.change_state(OnDeliveryState.new)
+    order.change_state(OnDeliveryState.new(weather))
 
     client_repository.save(client)
     orders_repository.save(order)
@@ -79,7 +80,7 @@ describe DeliveryAssigner do
 
     repository.save(delivery)
     repository.save(delivery2)
-    order.change_state(OnDeliveryState.new)
+    order.change_state(OnDeliveryState.new(weather))
 
     client_repository.save(client)
     orders_repository.save(order)
@@ -116,7 +117,7 @@ describe DeliveryAssigner do
     repository.save(delivery)
     repository.save(delivery2)
 
-    order.change_state(OnDeliveryState.new)
+    order.change_state(OnDeliveryState.new(weather))
 
     orders_repository.save(order)
     new_order = Order.new(client: client, type: 'menu_familiar')
