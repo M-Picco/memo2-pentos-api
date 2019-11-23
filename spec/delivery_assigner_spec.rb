@@ -40,7 +40,7 @@ describe DeliveryAssigner do
     delivery2 = Delivery.new('username' => 'pepeauto')
     order = Order.new(client: client, type: 'menu_individual',
                       assigned_to: delivery.username)
-    order.state = DeliveredState.new(weather)
+    order.state = DeliveredState.new
 
     client_repository.save(client)
     repository.save(delivery)
@@ -60,7 +60,7 @@ describe DeliveryAssigner do
 
     repository.save(delivery)
     repository.save(delivery2)
-    order.change_state(OnDeliveryState.new)
+    order.change_state(OnDeliveryState.new(weather))
 
     client_repository.save(client)
     orders_repository.save(order)
@@ -80,7 +80,7 @@ describe DeliveryAssigner do
 
     repository.save(delivery)
     repository.save(delivery2)
-    order.change_state(OnDeliveryState.new)
+    order.change_state(OnDeliveryState.new(weather))
 
     client_repository.save(client)
     orders_repository.save(order)
@@ -117,7 +117,7 @@ describe DeliveryAssigner do
     repository.save(delivery)
     repository.save(delivery2)
 
-    order.change_state(OnDeliveryState.new)
+    order.change_state(OnDeliveryState.new(weather))
 
     orders_repository.save(order)
     new_order = Order.new(client: client, type: 'menu_familiar')
