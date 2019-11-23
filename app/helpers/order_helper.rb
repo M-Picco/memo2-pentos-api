@@ -1,5 +1,7 @@
 class OrderHelper
-  def parse(_order)
-    {}
+  def parse(order)
+    return {} if order.nil?
+
+    { id: order.id }
   end
 end
