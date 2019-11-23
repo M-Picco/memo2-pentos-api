@@ -6,18 +6,20 @@ require_relative '../app/model/order'
 require_relative '../app/model/client'
 
 describe DeliveryAssigner do
-  let(:sorting_hat) { described_class.new }
-  let(:repository) { DeliveryRepository.new }
-  let(:orders_repository) { OrderRepository.new }
-  let(:client_repository) { ClientRepository.new }
-  let(:weather) { NonRainyWeather.new }
-
+  let(:order) { Order.new(client: client, type: 'menu_individual') }
   let(:client) do
     Client.new('username' => 'jperez', 'phone' => '4123-4123',
                'address' => 'Av Paseo Colón 840')
   end
+  let(:client_repository) { ClientRepository.new }
+  let(:orders_repository) { OrderRepository.new }
+  let(:repository) { DeliveryRepository.new }
+  let(:sorting_hat) { described_class.new }
+  let(:weather) { NonRainyWeather.new }
 
-  let(:order) { Order.new(client: client, type: 'menu_individual') }
+  describe 'model' do
+    it { is_expected.to respond_to(:filter) }
+  end
 
   it 'should return a delivery I save' do
     delivery = Delivery.new('username' => 'pepemoto')
@@ -49,63 +51,6 @@ describe DeliveryAssigner do
 
     sorting_hat.assign_to(order)
     expect(order.assigned_to).to eq(delivery2.username)
-  end
-
-  it 'should return deliveries that order fits in bag' do
-    delivery = Delivery.new('username' => 'pepemoto')
-    delivery2 = Delivery.new('username' => 'pepeauto')
-
-    order = Order.new(client: client, type: 'menu_familiar',
-                      assigned_to: delivery.username)
-
-    repository.save(delivery)
-    repository.save(delivery2)
-    order.change_state(OnDeliveryState.new(weather))
-
-    client_repository.save(client)
-    orders_repository.save(order)
-
-    # [ ['delivery_name', bag_size] ]
-    deliveries = sorting_hat.deliveries_fits(order)
-
-    expect(deliveries[0][0]).not_to eq order.assigned_to
-  end
-
-  it 'should return nearest delivery to full the bag' do
-    delivery = Delivery.new('username' => 'pepemoto')
-    delivery2 = Delivery.new('username' => 'pepeauto')
-
-    order = Order.new(client: client, type: 'menu_individual',
-                      assigned_to: delivery.username)
-
-    repository.save(delivery)
-    repository.save(delivery2)
-    order.change_state(OnDeliveryState.new(weather))
-
-    client_repository.save(client)
-    orders_repository.save(order)
-
-    # [ ['delivery_name', bag_size] ]
-    deliveries = sorting_hat.nearest_full_deliveries_fits(order)
-
-    expect(deliveries[0]).to eq(delivery.username)
-  end
-
-  it 'should return all the nearest deliveries to full the bag' do
-    delivery = Delivery.new('username' => 'pepemoto')
-    delivery2 = Delivery.new('username' => 'pepeauto')
-
-    order = Order.new(client: client, type: 'menu_individual')
-
-    repository.save(delivery)
-    repository.save(delivery2)
-
-    client_repository.save(client)
-
-    # [ ['delivery_name', bag_size] ]
-    deliveries = sorting_hat.nearest_full_deliveries_fits(order)
-
-    expect(deliveries.size).to eq(2)
   end
 
   it 'given an order, delivery assigner should assign the nearest to fill its bag' do

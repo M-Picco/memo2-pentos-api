@@ -36,6 +36,12 @@ class OrderRepository < BaseRepository
     load_collection dataset.where(created_on: date, state: STATES::DELIVERED)
   end
 
+  def delivered_count_for(username, date)
+    dataset.where(created_on: date,
+                  state: DeliveredState.new.state_name,
+                  assigned_to: username).count
+  end
+
   def on_delivery_orders_by(username)
     load_collection dataset.where(assigned_to: username, state: STATES::ON_DELIVERY)
   end
