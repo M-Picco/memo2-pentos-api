@@ -15,6 +15,7 @@ describe DeliveryAssigner do
   let(:orders_repository) { OrderRepository.new }
   let(:repository) { DeliveryRepository.new }
   let(:sorting_hat) { described_class.new }
+  let(:weather) { NonRainyWeather.new }
 
   describe 'model' do
     it { is_expected.to respond_to(:filter) }
@@ -61,7 +62,7 @@ describe DeliveryAssigner do
     repository.save(delivery)
     repository.save(delivery2)
 
-    order.change_state(OnDeliveryState.new)
+    order.change_state(OnDeliveryState.new(weather))
 
     orders_repository.save(order)
     new_order = Order.new(client: client, type: 'menu_familiar')

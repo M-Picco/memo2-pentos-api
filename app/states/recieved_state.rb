@@ -2,6 +2,6 @@ require_relative 'state'
 
 class RecievedState < State
   def initialize
-    @state_name = 'recibido'
+    @state_name = STATES::RECEIVED
   end
 end

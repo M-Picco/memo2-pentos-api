@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'byebug'
 
 describe BagFitsFilter do
   let(:filter) { described_class.new }
@@ -13,12 +12,13 @@ describe BagFitsFilter do
     Client.new('username' => 'jperez', 'phone' => '4123-4123',
                'address' => 'Av Paseo Colón 840')
   end
+  let(:weather) { NonRainyWeather.new }
   # rubocop:disable RSpec/ExampleLength
 
   it 'should filters Deliveries that theirs bag fits the order' do
     DeliveryRepository.new.save(delivery)
     DeliveryRepository.new.save(delivery2)
-    order.state = OnDeliveryState.new
+    order.state = OnDeliveryState.new(weather)
     ClientRepository.new.save(client)
     OrderRepository.new.save(order)
 
@@ -30,7 +30,7 @@ describe BagFitsFilter do
   it 'should called NearestFullFilter class' do
     DeliveryRepository.new.save(delivery)
     DeliveryRepository.new.save(delivery2)
-    order.state = OnDeliveryState.new
+    order.state = OnDeliveryState.new(weather)
     ClientRepository.new.save(client)
     OrderRepository.new.save(order)
 

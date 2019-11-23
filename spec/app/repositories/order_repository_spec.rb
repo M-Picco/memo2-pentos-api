@@ -1,6 +1,6 @@
 require 'integration_spec_helper'
 require_relative '../../../app/errors/order_not_found_error'
-require_relative '../../../app/helpers/states_helper'
+require_relative '../../../app/states/state_factory'
 require_relative '../../../app/states/recieved_state'
 require_relative '../../../app/states/inpreparation_state'
 require_relative '../../../app/states/ondelivery_state'
@@ -10,6 +10,8 @@ require 'date'
 
 describe OrderRepository do
   let(:repository) { described_class.new }
+
+  let(:weather) { NonRainyWeather.new }
 
   let(:client) do
     client = Client.new('username' => 'jperez', 'phone' => '4123-4123',
@@ -154,7 +156,7 @@ describe OrderRepository do
       delivery = Delivery.new('username' => 'pepemoto')
       DeliveryRepository.new.save(delivery)
 
-      order.change_state(StatesHelper.create_for('en_entrega'))
+      order.change_state(StateFactory.new(weather).create_for('en_entrega'))
 
       repository.save(order)
 
@@ -216,7 +218,7 @@ describe OrderRepository do
       DeliveryRepository.new.save(delivery)
       repository.save(order)
 
-      order.change_state(StatesHelper.create_for('en_entrega'))
+      order.change_state(StateFactory.new(weather).create_for('en_entrega'))
       on_delivery_orders = repository.on_delivery_orders_by(delivery.username)
 
       expect(on_delivery_orders[0].id).to eq(order.id)
@@ -227,7 +229,7 @@ describe OrderRepository do
   describe 'change commission' do
     it 'changes the commission of an order in delivered state' do
       order = Order.new(client: client, type: 'menu_individual')
-      order.change_state(DeliveredState.new)
+      order.change_state(OnDeliveryState.new(weather))
       repository.save(order)
 
       reloaded_order = repository.find(order.id)
