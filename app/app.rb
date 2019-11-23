@@ -12,14 +12,11 @@ require_relative 'errors/invalid_menu_error'
 require_relative 'errors/client_has_no_orders_error'
 require_relative 'errors/failed_save_operation_error'
 require_relative 'errors/already_registered_error'
+require_relative 'errors/order_not_cancellable_error'
+require_relative 'errors/domain_error'
 require_relative 'states/state_factory'
 require_relative 'model/weather/configurable_weather_service'
 require_relative 'model/weather/open_weather_service'
-
-KNOWN_ERRORS = [OrderNotFoundError, ClientHasNoOrdersError,
-                InvalidMenuError, FailedSaveOperationError,
-                ClientNotFoundError, AlreadyRegisteredError,
-                OrderNotDeliveredError].freeze
 
 API_KEY = ENV['API_KEY'] || 'zaraza'
 
@@ -141,7 +138,20 @@ get '/commission/:order_id' do
   { commission_amount: order.commission.amount }.to_json
 end
 
-error(*KNOWN_ERRORS) do |e|
+put '/order/:order_id/cancel' do
+  content_type :json
+  order_id = params['order_id']
+
+  repository = OrderRepository.new
+
+  order = repository.find_by_id(order_id)
+  order.cancel
+  repository.save(order)
+
+  status 200
+end
+
+error DomainError do |e|
   status 400
   { error: e.message }.to_json
 end

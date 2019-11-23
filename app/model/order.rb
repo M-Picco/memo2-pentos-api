@@ -1,11 +1,13 @@
 require 'active_model'
 require_relative '../errors/invalid_menu_error'
+require_relative '../errors/order_not_cancellable_error'
 require_relative '../states/state_factory'
 require_relative '../states/recieved_state'
 require_relative '../states/inpreparation_state'
 require_relative '../states/ondelivery_state'
 require_relative '../states/delivered_state'
 require_relative '../states/invalid_state'
+require_relative '../states/cancelled_state'
 require_relative '../states/state_names'
 
 class Order
@@ -21,7 +23,10 @@ class Order
   validate :valid_state, :valid_state_for_rating
 
   ALLOWED_STATES = [STATES::RECEIVED, STATES::IN_PREPARATION,
-                    STATES::ON_DELIVERY, STATES::DELIVERED].freeze
+                    STATES::ON_DELIVERY, STATES::DELIVERED,
+                    STATES::CANCELLED].freeze
+
+  CANCELLABLE_STATES = [STATES::RECEIVED, STATES::IN_PREPARATION].freeze
 
   ORDERS_SIZE = { 'menu_individual' => 1,
                   'menu_pareja' => 2,
@@ -71,6 +76,12 @@ class Order
 
     @commission.update_by_rating(new_rating)
     CommissionRepository.new.save(@commission)
+  end
+
+  def cancel
+    raise OrderNotCancellableError unless CANCELLABLE_STATES.include?(@state.state_name)
+
+    change_state(CancelledState.new)
   end
 
   private

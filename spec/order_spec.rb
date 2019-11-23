@@ -172,4 +172,32 @@ describe Order do
       expect(order.commission.id).to be > 0
     end
   end
+
+  describe 'cancel' do
+    it 'should be possible to cancel a received order' do
+      order.cancel
+
+      expect(order.state.name?(STATES::CANCELLED)).to eq(true)
+    end
+
+    it 'should be possible to cancel an order in preparation' do
+      order.change_state(InPreparationState.new)
+
+      order.cancel
+
+      expect(order.state.name?(STATES::CANCELLED)).to eq(true)
+    end
+
+    it 'should fail to cancel an order on delivery' do
+      order.change_state(OnDeliveryState.new(weather))
+
+      expect { order.cancel }.to raise_error(OrderNotCancellableError)
+    end
+
+    it 'should fail to cancel a delivered order' do
+      order.change_state(DeliveredState.new)
+
+      expect { order.cancel }.to raise_error(OrderNotCancellableError)
+    end
+  end
 end

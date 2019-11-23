@@ -1,4 +1,6 @@
-class FailedSaveOperationError < StandardError
+require_relative './domain_error'
+
+class FailedSaveOperationError < DomainError
   def initialize(entity)
     super
     @entity = entity
