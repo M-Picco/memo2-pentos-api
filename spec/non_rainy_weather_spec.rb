@@ -10,11 +10,11 @@ describe NonRainyWeather do
     end
   end
 
-  describe 'apply_commission_modifier' do
+  describe 'apply_modifier' do
     it 'applies the commission modifier of 0%' do
       com = 1.05
 
-      final_com = weather.apply_commission_modifier(com)
+      final_com = weather.apply_modifier(com)
 
       expect(final_com).to eq(com)
     end

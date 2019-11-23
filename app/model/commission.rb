@@ -38,7 +38,7 @@ class Commission
   private
 
   def calculate_amount_with_modifier(modifier)
-    final_modifier = @weather.apply_commission_modifier(modifier)
+    final_modifier = @weather.apply_modifier(modifier)
 
     (final_modifier * @order_cost).round(ROUNDING_DIGITS)
   end

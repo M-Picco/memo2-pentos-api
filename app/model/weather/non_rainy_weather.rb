@@ -3,7 +3,7 @@ class NonRainyWeather
     'no_lluvioso'
   end
 
-  def apply_commission_modifier(commission)
-    commission
+  def apply_modifier(base_percentage)
+    base_percentage
   end
 end

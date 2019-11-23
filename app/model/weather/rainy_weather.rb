@@ -3,7 +3,7 @@ class RainyWeather
     'lluvioso'
   end
 
-  def apply_commission_modifier(commission)
-    commission + 0.01
+  def apply_modifier(base_percentage)
+    base_percentage + 0.01
   end
 end
