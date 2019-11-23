@@ -204,6 +204,13 @@ describe OrderRepository do
     end
   end
 
+  describe 'historical orders' do
+    it 'should return nothing if there are not orders' do
+      orders = repository.historical_orders
+      expect(orders.size).to eq 0
+    end
+  end
+
   describe 'delivery bag' do
     let(:order) do
       Order.new(client: client, type: 'menu_individual',
