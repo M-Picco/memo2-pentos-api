@@ -1,68 +1,38 @@
-Dado('el repartidor {string}') do |string|
+Given('client orders a {string}') do |menu|
+  @request = { 'item': menu }
 end
 
-Cuando('el cliente pide un {string}') do |_menu|
-  order_url = format(ORDER_BASE_URL, @request['username'])
-  @response = Faraday.post(order_url, @request.to_json, header)
+When('the client submits the order') do
+  @response = Faraday.post(SUBMIT_ORDER_URL, @request.to_json, 'Content-Type' => 'application/json')
 end
 
-Entonces('obtiene numero de pedido único') do
-  expect(@response.status).to eq(200)
-  parsed_response = JSON.parse(@response.body)
-  @order_id = parsed_response['order_id']
-  expect(@order_id).to be > 0 # rubocop:disable Style/NumericPredicate
+When('the client queries the order status') do
+  order_id = @order_submitted['id']
+  @response = Faraday.get(QUERY_ORDER_URL + '/' + order_id.to_s)
 end
 
-Dado('que el cliente pidio un {string}') do |nombre_pedido|
-  step "el cliente pide un \"#{nombre_pedido}\""
-  step 'obtiene numero de pedido único'
+Given('client has submitted an order for a {string}') do |menu|
+  step "client orders a \"#{menu}\""
+  step 'the client submits the order'
+  @order_submitted = JSON.parse(@response.body)
 end
 
-Cuando('el estado cambia a {string}') do |new_status|
-  @request = {}
-  @request['status'] = new_status
-  @response = Faraday.put(change_order_status_url(@order_id), @request.to_json, header)
+When('the client cancels the order') do
+  order_id = @order_submitted['id']
+  @response = Faraday.put(cancel_order_url(order_id))
 end
 
-Cuando('consulta el estado') do
-  @response = Faraday.get(query_order_status_url(@username, @order_id), {}, header)
+And('the order id is {int}') do |order_id|
+  response = JSON.parse(@response.body)
+  expect(response['id']).to eq(order_id)
 end
 
-Entonces('el estado es {string}') do |expected_status|
-  expect(@response.status).to eq(200)
-  parsed_response = JSON.parse(@response.body)
-  order_status = parsed_response['order_status']
-  expect(order_status).to eq(expected_status)
+And('the order status is {string}') do |status|
+  response = JSON.parse(@response.body)
+  expect(response['status']).to eq(status)
 end
 
-Dado('que el cliente no hizo pedidos') do
-end
-
-Cuando('consulta el estado de un pedido') do
-  @response = Faraday.get(query_order_status_url(@username, 1), {}, header)
-end
-
-Entonces('obtiene un mensaje indicando que no realizo pedidos') do
-  expect(@response.status).to eq(400)
-  parsed_response = JSON.parse(@response.body)
-  expect(parsed_response['error']).to eq('there are no orders')
-end
-
-Dado('otro cliente') do
-  @request = {}
-  step 'el cliente "pgonzalez"'
-  step 'se registra con domicilio "Santa Fe 4321 3 Piso A" y telefono "4098-0997"'
-end
-
-Cuando('consulta el estado de un pedido que no hizo el') do
-  @current_client = @username
-  step 'otro cliente'
-  step 'que el cliente pidio un "menu_individual"'
-  @response = Faraday.get(query_order_status_url(@current_client, @order_id), {}, header)
-end
-
-Entonces('obtiene un mensaje de error indicando que la orden no existe') do
-  expect(@response.status).to eq(400)
-  parsed_response = JSON.parse(@response.body)
-  expect(parsed_response['error']).to eq('order not exist')
+When('the order status is changed to {string}') do |new_status|
+  order_id = @order_submitted['id']
+  @response = Faraday.put(change_order_status_url(order_id, new_status))
 end

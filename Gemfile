@@ -15,13 +15,13 @@ gem 'sinatra'
 
 # Component requirements
 gem 'activemodel', require: 'active_model'
+gem 'faraday'
 gem 'json'
 gem 'pg', '~> 0.18'
 gem 'sequel'
 
 group :development, :test do
   gem 'cucumber'
-  gem 'faraday'
   gem 'rack-test', require: 'rack/test'
   gem 'rspec'
   gem 'rubocop', require: false
