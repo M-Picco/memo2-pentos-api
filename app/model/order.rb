@@ -35,7 +35,9 @@ class Order
 
   VALID_TYPES = { 'menu_individual' => 100, 'menu_pareja' => 175, 'menu_familiar' => 250 }.freeze
 
-  BASE_TIME = { 'menu_individual' => 20 }.freeze
+  BASE_TIME = { 'menu_individual' => 20,
+                'menu_pareja' => 25,
+                'menu_familiar' => 30 }.freeze
 
   # rubocop:disable Metrics/AbcSize
   def initialize(data = {})

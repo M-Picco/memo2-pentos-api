@@ -36,3 +36,11 @@ When('the order status is changed to {string}') do |new_status|
   order_id = @order_submitted['id']
   @response = Faraday.put(change_order_status_url(order_id, new_status))
 end
+
+Then('el tiempo estimado de entrega es de {int} minutos') do |minutes|
+  step 'consulta el estado'
+  expect(@response.status).to eq(200)
+  parsed_response = JSON.parse(@response.body)
+  estimated_delivery_time = parsed_response['estimated_delivery_time']
+  expect(estimated_delivery_time).to eq(minutes)
+end

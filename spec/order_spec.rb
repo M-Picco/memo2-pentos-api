@@ -213,5 +213,15 @@ describe Order do
       order = described_class.new(client: client, type: 'menu_individual')
       expect(order.estimated_time).to eq(20)
     end
+
+    it 'should be 25 minutes when order type is menu_pareja' do
+      order = described_class.new(client: client, type: 'menu_pareja')
+      expect(order.estimated_time).to eq(25)
+    end
+
+    it 'should be 35 minutes when order type is menu_individual' do
+      order = described_class.new(client: client, type: 'menu_familiar')
+      expect(order.estimated_time).to eq(30)
+    end
   end
 end

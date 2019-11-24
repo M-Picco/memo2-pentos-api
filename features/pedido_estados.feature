@@ -132,12 +132,12 @@ Característica: Creacion y Cambios de estado de Pedidos
       Dado que el cliente pidio un "menu_individual"
       Y llueve
       Entonces el tiempo estimado de entrega es de 25 minutos
-  @wip
+
   Escenario: CT2 - Consulta con tiempo de entrega estimado menu_individual y sin lluvia
       Dado que el cliente pidio un "menu_individual"
       Y no llueve
       Entonces el tiempo estimado de entrega es de 20 minutos
-  @wip
+
   Escenario: CT3.1 - Consulta con tiempo de entrega estimado menu_familiar y sin lluvia
       Dado que el cliente pidio un "menu_familiar"
       Y no llueve
@@ -147,7 +147,7 @@ Característica: Creacion y Cambios de estado de Pedidos
       Dado que el cliente pidio un "menu_familiar"
       Y llueve
       Entonces el tiempo estimado de entrega es de 35 minutos
-  @wip
+
   Escenario: CT4.1 - Consulta con tiempo de entrega estimado menu_pareja y sin lluvia
       Dado que el cliente pidio un "menu_pareja"
       Y no llueve
