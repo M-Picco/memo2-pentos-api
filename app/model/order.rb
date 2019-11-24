@@ -35,6 +35,8 @@ class Order
 
   VALID_TYPES = { 'menu_individual' => 100, 'menu_pareja' => 175, 'menu_familiar' => 250 }.freeze
 
+  BASE_TIME = { 'menu_individual' => 20 }.freeze
+
   # rubocop:disable Metrics/AbcSize
   def initialize(data = {})
     @id = data[:id]
@@ -49,7 +51,7 @@ class Order
 
     @type = data[:type]
     @commission = data[:commission]
-    @estimated_time = data[:estimated_time]
+    @estimated_time = data[:estimated_time] || BASE_TIME[@type]
   end
   # rubocop:enable Metrics/AbcSize
 

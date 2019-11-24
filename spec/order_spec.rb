@@ -207,4 +207,11 @@ describe Order do
       expect { order.cancel }.to raise_error(OrderNotCancellableError)
     end
   end
+
+  describe 'estimated time' do
+    it 'should be 20 minutes when order type is menu_individual' do
+      order = described_class.new(client: client, type: 'menu_individual')
+      expect(order.estimated_time).to eq(20)
+    end
+  end
 end
