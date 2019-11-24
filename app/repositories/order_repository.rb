@@ -51,6 +51,10 @@ class OrderRepository < BaseRepository
     load_collection dataset.where(client_username: client_username, state: STATES::DELIVERED)
   end
 
+  def last_delivered_orders(menu_type, number)
+    load_collection dataset.where(type: menu_type, state: STATES::DELIVERED).limit(number)
+  end
+
   protected
 
   def load_object(a_record)
