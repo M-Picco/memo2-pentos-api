@@ -24,6 +24,7 @@ describe Order do
     it { is_expected.to respond_to(:type) }
     it { is_expected.to respond_to(:assigned_to) }
     it { is_expected.to respond_to(:commission) }
+    it { is_expected.to respond_to(:delivered_on) }
   end
 
   describe 'type' do
@@ -221,6 +222,16 @@ describe Order do
     it 'should be 20 minutes when order type is menu_individual' do
       order = described_class.new(client: client, type: 'menu_familiar')
       expect(order.base_time).to eq(20)
+    end
+  end
+
+  describe 'delivered_time' do
+    it 'should have created as Time ' do
+      order = described_class.new(client: client, type: 'menu_individual')
+      OrderRepository.new.save(order)
+      ClientRepository.new.save(client)
+      reloaded_order = OrderRepository.new.find_by_id(order.id)
+      expect(reloaded_order.created_on).to be_a(Time)
     end
   end
 end

@@ -40,7 +40,7 @@ describe OrderHelper do
     it 'should return hash with created date information' do
       order_parse = helper.parse(order)
       expect(order_parse.key?(:date)).to eq true
-      expect(order_parse[:date]).to eq order.created_on.to_s
+      expect(order_parse[:date]).to eq order.created_on.to_date.to_s
     end
   end
 end

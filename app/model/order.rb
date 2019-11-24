@@ -14,7 +14,7 @@ class Order
   include ActiveModel::Validations
   attr_reader :state, :type, :rating
   attr_accessor :id, :client, :updated_on, :created_on, :assigned_to, :commission,
-                :estimated_time
+                :estimated_time, :delivered_on
   validates :client, presence: true
   validates :rating, numericality: { greater_than_or_equal_to: 1,
                                      less_than_or_equal_to: 5,
@@ -54,6 +54,7 @@ class Order
     @weather = data[:weather]
     @type = data[:type]
     @commission = data[:commission]
+    @delivered_on = data[:delivered_on]
   end
   # rubocop:enable Metrics/AbcSize
 

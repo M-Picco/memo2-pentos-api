@@ -30,15 +30,15 @@ class OrderRepository < BaseRepository
   end
 
   def orders_created_on(date)
-    load_collection dataset.where(created_on: date)
+    load_collection dataset.where(created_on: date..(date + 1))
   end
 
   def delivered_orders_created_on(date)
-    load_collection dataset.where(created_on: date, state: STATES::DELIVERED)
+    load_collection dataset.where(created_on: date..(date + 1), state: STATES::DELIVERED)
   end
 
   def delivered_count_for(username, date)
-    dataset.where(created_on: date,
+    dataset.where(created_on: date..(date + 1),
                   state: DeliveredState.new.state_name,
                   assigned_to: username).count
   end
@@ -74,7 +74,7 @@ class OrderRepository < BaseRepository
       type: order.type,
       assigned_to: order.assigned_to,
       commission: order.commission&.id,
-      estimated_time: order.estimated_time
+      delivered_on: order.delivered_on
     }
   end
 end

@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'byebug'
 
 describe DeliveredCountFilter do
   let(:filter) { described_class.new }
