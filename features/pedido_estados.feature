@@ -119,6 +119,16 @@ Característica: Creacion y Cambios de estado de Pedidos
       Cuando se consultan los pedidos historicos
       Entonces no hay ningun pedido en el registro
 
+  Escenario: CH3 - Consulta historica con pedidos multiples
+    Dado que el cliente pidio un "menu_individual"
+    Y el pedido es entregado por "juanmotoneta"
+    Y que el cliente pidio un "menu_pareja"
+    Y el pedido es entregado por "juanmotoneta"
+    Cuando se consultan los pedidos historicos
+    Entonces hay dos pedidos historicos
+    Y hay un pedido de "menu_individual" con id unico entregado por "juanmotoneta" con fecha correcta
+    Y hay un pedido de "menu_pareja" con id unico entregado por "juanmotoneta" con fecha correcta
+
   # Escenario: CT1 - Consulta con tiempo de entrega estimado menu_individual y lluvia
   # Escenario: CT2 - Consulta con tiempo de entrega estimado menu_individual y sin lluvia
   # Escenario: CT3 - Consulta con tiempo de entrega estimado menu_familiar y lluvia
