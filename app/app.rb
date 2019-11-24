@@ -185,10 +185,8 @@ if settings.environment != :production
   end
 
   def parse_historical(orders)
-    historical = []
-    orders.each do |order|
-      historical << OrderHelper.new.parse(order)
+    orders.map do |order|
+      OrderHelper.new.parse(order)
     end
-    historical
   end
 end

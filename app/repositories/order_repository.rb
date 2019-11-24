@@ -48,8 +48,7 @@ class OrderRepository < BaseRepository
   end
 
   def historical_orders(client_username)
-    load_collection dataset.where(client_username: client_username)
-                           .where(state: STATES::DELIVERED)
+    load_collection dataset.where(client_username: client_username, state: STATES::DELIVERED)
   end
 
   protected
