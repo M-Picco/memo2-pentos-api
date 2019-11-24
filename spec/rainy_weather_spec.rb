@@ -19,4 +19,14 @@ describe RainyWeather do
       expect(final_com).to eq(1.06)
     end
   end
+
+  describe 'apply time modifier' do
+    it 'applies the time modifier of 5 minutes' do
+      time = 20
+
+      final_time = weather.apply_time_modifier(time)
+
+      expect(final_time).to eq(time + 5)
+    end
+  end
 end
