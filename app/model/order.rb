@@ -51,9 +51,10 @@ class Order
 
     raise InvalidMenuError unless VALID_TYPES.key?(data[:type])
 
+    @weather = data[:weather]
     @type = data[:type]
     @commission = data[:commission]
-    @estimated_time = data[:estimated_time] || BASE_TIME[@type]
+    @estimated_time = data[:estimated_time] || calculate_estimated
   end
   # rubocop:enable Metrics/AbcSize
 
@@ -88,6 +89,14 @@ class Order
     raise OrderNotCancellableError unless CANCELLABLE_STATES.include?(@state.state_name)
 
     change_state(CancelledState.new)
+  end
+
+  def calculate_estimated
+    if @weather
+      @weather.apply_time_modifier(BASE_TIME[@type])
+    else
+      BASE_TIME[@type]
+    end
   end
 
   private
