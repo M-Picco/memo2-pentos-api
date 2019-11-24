@@ -271,6 +271,16 @@ describe OrderRepository do
 
       expect(orders.size).to eq 0
     end
+
+    it 'should not return on delivery order' do
+      order = Order.new(client: client, type: 'menu_familiar')
+      order.state = OnDeliveryState.new(weather)
+      repository.save(order)
+
+      orders = repository.historical_orders(client.name)
+
+      expect(orders.size).to eq 0
+    end
   end
 
   describe 'delivery bag' do
