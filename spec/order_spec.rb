@@ -249,4 +249,11 @@ describe Order do
       expect(reloaded_order.duration).to eq(5)
     end
   end
+
+  describe 'delivered time' do
+    it 'delivered state should set delivered time' do
+      order.change_state(DeliveredState.new)
+      expect(order.delivered_on).not_to eq(nil)
+    end
+  end
 end
