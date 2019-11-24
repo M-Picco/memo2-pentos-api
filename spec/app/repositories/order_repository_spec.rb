@@ -252,6 +252,15 @@ describe OrderRepository do
       expect(orders.size).to eq 1
       expect(orders[0].id).to eq order_two.id
     end
+
+    it 'should not return recieved order' do
+      order = Order.new(client: client, type: 'menu_familiar')
+      repository.save(order)
+
+      orders = repository.historical_orders(client.name)
+
+      expect(orders.size).to eq 0
+    end
   end
 
   describe 'delivery bag' do
