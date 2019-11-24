@@ -7,6 +7,7 @@ require_relative '../../../app/states/ondelivery_state'
 require_relative '../../../app/states/delivered_state'
 require_relative '../../../app/states/invalid_state'
 require 'date'
+require 'json'
 
 describe OrderRepository do
   let(:repository) { described_class.new }
@@ -15,6 +16,13 @@ describe OrderRepository do
 
   let(:client) do
     client = Client.new('username' => 'jperez', 'phone' => '4123-4123',
+                        'address' => 'Av Paseo Colón 840')
+    ClientRepository.new.save(client)
+    client
+  end
+
+  let(:client_two) do
+    client = Client.new('username' => 'flopez', 'phone' => '4123-4123',
                         'address' => 'Av Paseo Colón 840')
     ClientRepository.new.save(client)
     client
@@ -204,6 +212,77 @@ describe OrderRepository do
     end
   end
 
+  # rubocop:disable RSpec/ExampleLength
+  describe 'historical orders' do
+    it 'should return nothing if there are not orders' do
+      orders = repository.historical_orders(client.name)
+      expect(orders.size).to eq 0
+    end
+
+    it 'should return orders if there are orders' do
+      order = Order.new(client: client, type: 'menu_individual')
+      order.state = DeliveredState.new
+      repository.save(order)
+
+      orders = repository.historical_orders(client.name)
+      expect(orders.size).to eq 1
+      expect(orders[0].id).to eq order.id
+    end
+
+    it 'should not return orders if the client does not have orders' do
+      order = Order.new(client: client, type: 'menu_individual')
+      order.state = DeliveredState.new
+      repository.save(order)
+
+      orders = repository.historical_orders('juanSalaz')
+      expect(orders.size).to eq 0
+    end
+
+    it "should return only the client's orders" do
+      order = Order.new(client: client, type: 'menu_individual')
+      order.state = DeliveredState.new
+      repository.save(order)
+
+      order_two = Order.new(client: client_two, type: 'menu_familiar')
+      order_two.state = DeliveredState.new
+      repository.save(order_two)
+
+      orders = repository.historical_orders(client_two.name)
+
+      expect(orders.size).to eq 1
+      expect(orders[0].id).to eq order_two.id
+    end
+
+    it 'should not return recieved order' do
+      order = Order.new(client: client, type: 'menu_familiar')
+      repository.save(order)
+
+      orders = repository.historical_orders(client.name)
+
+      expect(orders.size).to eq 0
+    end
+
+    it 'should not return in preparation order' do
+      order = Order.new(client: client, type: 'menu_familiar')
+      order.state = InPreparationState.new
+      repository.save(order)
+
+      orders = repository.historical_orders(client.name)
+
+      expect(orders.size).to eq 0
+    end
+
+    it 'should not return on delivery order' do
+      order = Order.new(client: client, type: 'menu_familiar')
+      order.state = OnDeliveryState.new(weather)
+      repository.save(order)
+
+      orders = repository.historical_orders(client.name)
+
+      expect(orders.size).to eq 0
+    end
+  end
+
   describe 'delivery bag' do
     let(:order) do
       Order.new(client: client, type: 'menu_individual',
@@ -211,7 +290,6 @@ describe OrderRepository do
     end
 
     let(:delivery) { Delivery.new('username' => 'pepemoto') }
-    # rubocop:disable RSpec/ExampleLength
 
     it 'should return "en_entrega" orders assigned to delivery' do
       ClientRepository.new.save(client)
@@ -223,7 +301,6 @@ describe OrderRepository do
 
       expect(on_delivery_orders[0].id).to eq(order.id)
     end
-    # rubocop:enable RSpec/ExampleLength
   end
 
   describe 'change commission' do
@@ -236,5 +313,6 @@ describe OrderRepository do
 
       expect(reloaded_order.commission.id).to be > 0
     end
+    # rubocop:enable RSpec/ExampleLength
   end
 end

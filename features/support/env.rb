@@ -46,6 +46,10 @@ def header
   { 'Content-Type' => 'application/json', 'api-key' => API_KEY }
 end
 
+def historical_orders_url(username)
+  CLIENT_BASE_URL + "/#{username}/historical"
+end
+
 def app
   Sinatra::Application
 end
