@@ -17,6 +17,7 @@ require_relative 'errors/domain_error'
 require_relative 'states/state_factory'
 require_relative 'model/weather/configurable_weather_service'
 require_relative 'model/weather/open_weather_service'
+require_relative 'helpers/order_helper'
 
 API_KEY = ENV['API_KEY'] || 'zaraza'
 
@@ -171,5 +172,21 @@ if settings.environment != :production
     body = JSON.parse(request.body.read)
 
     WEATHER_SERVICE.raining(body['rain'])
+  end
+
+  get '/client/:username/historical' do
+    status 200
+    client_username = params['username']
+
+    orders = OrderRepository.new.historical_orders(client_username)
+    historical_orders = parse_historical(orders)
+
+    historical_orders.to_json
+  end
+
+  def parse_historical(orders)
+    orders.map do |order|
+      OrderHelper.new.parse(order)
+    end
   end
 end
