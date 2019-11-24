@@ -18,6 +18,7 @@ require_relative 'states/state_factory'
 require_relative 'model/weather/configurable_weather_service'
 require_relative 'model/weather/open_weather_service'
 require_relative 'helpers/order_helper'
+require_relative 'model/time_estimator'
 
 API_KEY = ENV['API_KEY'] || 'zaraza'
 
@@ -54,11 +55,8 @@ post '/client/:username/order' do
 
   body = JSON.parse(request.body.read)
 
-  weather = WEATHER_SERVICE.weather
-
   client = ClientRepository.new.find_by_name(params['username'])
-  order = Order.new(client: client, type: body['order'],
-                    weather: weather)
+  order = Order.new(client: client, type: body['order'])
 
   raise FailedSaveOperationError, order unless OrderRepository.new.save(order)
 
@@ -91,12 +89,13 @@ get '/client/:username/order/:order_id' do
   raise ClientNotFoundError unless ClientRepository.new.exists?(username)
   raise ClientHasNoOrdersError unless OrderRepository.new.has_orders?(username)
 
+  weather = WEATHER_SERVICE.weather
   order_id = params['order_id']
 
   order = OrderRepository.new.find_for_user(order_id, username)
   response = { order_status: order.state.state_name,
                assigned_to: order.assigned_to,
-               estimated_delivery_time: order.estimated_time }
+               estimated_delivery_time: TimeEstimator.new.estimate(order, weather) }
 
   response.to_json
 end

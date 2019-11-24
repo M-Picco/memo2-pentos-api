@@ -35,9 +35,9 @@ class Order
 
   VALID_TYPES = { 'menu_individual' => 100, 'menu_pareja' => 175, 'menu_familiar' => 250 }.freeze
 
-  BASE_TIME = { 'menu_individual' => 20,
-                'menu_pareja' => 25,
-                'menu_familiar' => 30 }.freeze
+  BASE_TIME = { 'menu_individual' => 10,
+                'menu_pareja' => 15,
+                'menu_familiar' => 20 }.freeze
 
   # rubocop:disable Metrics/AbcSize
   def initialize(data = {})
@@ -54,7 +54,6 @@ class Order
     @weather = data[:weather]
     @type = data[:type]
     @commission = data[:commission]
-    @estimated_time = data[:estimated_time] || calculate_estimated
   end
   # rubocop:enable Metrics/AbcSize
 
@@ -89,14 +88,6 @@ class Order
     raise OrderNotCancellableError unless CANCELLABLE_STATES.include?(@state.state_name)
 
     change_state(CancelledState.new)
-  end
-
-  def calculate_estimated
-    if @weather
-      @weather.apply_time_modifier(BASE_TIME[@type])
-    else
-      BASE_TIME[@type]
-    end
   end
 
   def base_time

@@ -24,7 +24,6 @@ describe Order do
     it { is_expected.to respond_to(:type) }
     it { is_expected.to respond_to(:assigned_to) }
     it { is_expected.to respond_to(:commission) }
-    it { is_expected.to respond_to(:estimated_time) }
   end
 
   describe 'type' do
@@ -208,41 +207,20 @@ describe Order do
     end
   end
 
-  describe 'estimated time' do
-    it 'should be 20 minutes when order type is menu_individual' do
+  describe 'base time' do
+    it 'should be 10 minutes when order type is menu_individual' do
       order = described_class.new(client: client, type: 'menu_individual')
-      expect(order.estimated_time).to eq(20)
+      expect(order.base_time).to eq(10)
     end
 
-    it 'should be 25 minutes when order type is menu_pareja' do
+    it 'should be 15 minutes when order type is menu_pareja' do
       order = described_class.new(client: client, type: 'menu_pareja')
-      expect(order.estimated_time).to eq(25)
+      expect(order.base_time).to eq(15)
     end
 
-    it 'should be 30 minutes when order type is menu_individual' do
+    it 'should be 20 minutes when order type is menu_individual' do
       order = described_class.new(client: client, type: 'menu_familiar')
-      expect(order.estimated_time).to eq(30)
-    end
-
-    it 'should be 25 minutes when order type is menu_individual and its raining' do
-      weather = RainyWeather.new
-      order = described_class.new(client: client, type: 'menu_individual',
-                                  weather: weather)
-      expect(order.estimated_time).to eq(25)
-    end
-
-    it 'should be 30 minutes when order type is menu_pareja and its raining' do
-      weather = RainyWeather.new
-      order = described_class.new(client: client, type: 'menu_pareja',
-                                  weather: weather)
-      expect(order.estimated_time).to eq(30)
-    end
-
-    it 'should be 35 minutes when order type is menu_familiar and its raining' do
-      weather = RainyWeather.new
-      order = described_class.new(client: client, type: 'menu_familiar',
-                                  weather: weather)
-      expect(order.estimated_time).to eq(35)
+      expect(order.base_time).to eq(20)
     end
   end
 end

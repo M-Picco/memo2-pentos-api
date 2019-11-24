@@ -315,16 +315,4 @@ describe OrderRepository do
     end
     # rubocop:enable RSpec/ExampleLength
   end
-
-  describe 'estimated time' do
-    it 'should persist estimated_time' do
-      order = Order.new(client: client, type: 'menu_individual')
-      order.estimated_time = 20
-      repository.save(order)
-
-      reloaded_order = repository.find_by_id(order.id)
-
-      expect(reloaded_order.estimated_time).to eq(order.estimated_time)
-    end
-  end
 end
