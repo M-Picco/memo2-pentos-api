@@ -199,5 +199,11 @@ describe Order do
 
       expect { order.cancel }.to raise_error(OrderNotCancellableError)
     end
+
+    it 'should fail to cancel a waiting order' do
+      order.change_state(WaitingState.new)
+
+      expect { order.cancel }.to raise_error(OrderNotCancellableError)
+    end
   end
 end
