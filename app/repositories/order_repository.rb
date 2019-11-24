@@ -52,7 +52,10 @@ class OrderRepository < BaseRepository
   end
 
   def last_delivered_orders(menu_type, number)
-    load_collection dataset.where(type: menu_type, state: STATES::DELIVERED).limit(number)
+    load_collection dataset
+      .where(type: menu_type, state: STATES::DELIVERED)
+      .order(Sequel.desc(:delivered_on))
+      .limit(number)
   end
 
   protected
