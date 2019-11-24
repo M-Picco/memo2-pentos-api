@@ -99,6 +99,10 @@ class Order
     end
   end
 
+  def base_time
+    BASE_TIME[@type]
+  end
+
   private
 
   def valid_state
