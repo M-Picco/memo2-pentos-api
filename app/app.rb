@@ -54,8 +54,11 @@ post '/client/:username/order' do
 
   body = JSON.parse(request.body.read)
 
+  weather = WEATHER_SERVICE.weather
+
   client = ClientRepository.new.find_by_name(params['username'])
-  order = Order.new(client: client, type: body['order'])
+  order = Order.new(client: client, type: body['order'],
+                    weather: weather)
 
   raise FailedSaveOperationError, order unless OrderRepository.new.save(order)
 

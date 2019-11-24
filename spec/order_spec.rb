@@ -219,7 +219,7 @@ describe Order do
       expect(order.estimated_time).to eq(25)
     end
 
-    it 'should be 35 minutes when order type is menu_individual' do
+    it 'should be 30 minutes when order type is menu_individual' do
       order = described_class.new(client: client, type: 'menu_familiar')
       expect(order.estimated_time).to eq(30)
     end
@@ -229,6 +229,20 @@ describe Order do
       order = described_class.new(client: client, type: 'menu_individual',
                                   weather: weather)
       expect(order.estimated_time).to eq(25)
+    end
+
+    it 'should be 30 minutes when order type is menu_pareja and its raining' do
+      weather = RainyWeather.new
+      order = described_class.new(client: client, type: 'menu_pareja',
+                                  weather: weather)
+      expect(order.estimated_time).to eq(30)
+    end
+
+    it 'should be 35 minutes when order type is menu_familiar and its raining' do
+      weather = RainyWeather.new
+      order = described_class.new(client: client, type: 'menu_familiar',
+                                  weather: weather)
+      expect(order.estimated_time).to eq(35)
     end
   end
 end
