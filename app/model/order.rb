@@ -95,6 +95,10 @@ class Order
     BASE_TIME[@type]
   end
 
+  def duration
+    (@delivered_on - @created_on) / 60.0 # in minutes
+  end
+
   private
 
   def valid_state

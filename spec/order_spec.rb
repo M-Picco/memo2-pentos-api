@@ -227,11 +227,26 @@ describe Order do
 
   describe 'delivered_time' do
     it 'should have created as Time ' do
-      order = described_class.new(client: client, type: 'menu_individual')
       OrderRepository.new.save(order)
       ClientRepository.new.save(client)
       reloaded_order = OrderRepository.new.find_by_id(order.id)
       expect(reloaded_order.created_on).to be_a(Time)
+    end
+
+    it 'should have delivered_on as Time ' do
+      order.delivered_on = Time.now
+      OrderRepository.new.save(order)
+      ClientRepository.new.save(client)
+      reloaded_order = OrderRepository.new.find_by_id(order.id)
+      expect(reloaded_order.delivered_on).to be_a(Time)
+    end
+
+    it 'should be deliverd_time - created_time' do
+      OrderRepository.new.save(order)
+      ClientRepository.new.save(client)
+      reloaded_order = OrderRepository.new.find_by_id(order.id)
+      reloaded_order.delivered_on = reloaded_order.created_on + (60 * 5)
+      expect(reloaded_order.duration).to eq(5)
     end
   end
 end
