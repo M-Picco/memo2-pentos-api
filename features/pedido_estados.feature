@@ -57,7 +57,6 @@ Característica: Creacion y Cambios de estado de Pedidos
       Y consulta el estado
       Entonces el estado es "entregado"
 
-  @wip
   Escenario: CEP4 - cambio de estado de en_preparacion a en_entrega cuando no hay repartidores disponibles
       Dado que el cliente pidio un "menu_familiar"
       Y el estado cambia a "en_entrega"
@@ -99,7 +98,6 @@ Característica: Creacion y Cambios de estado de Pedidos
       Cuando se cancela el pedido
       Entonces recibe un error indicando que no puede cancelar el pedido
 
-  @wip
   Escenario: CANP5 - cancelar pedido en_espera
         Dado que el cliente pidio un "menu_individual"
         Y el estado cambio a "en_espera"
