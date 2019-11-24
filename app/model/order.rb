@@ -49,6 +49,7 @@ class Order
 
     @type = data[:type]
     @commission = data[:commission]
+    @estimated_time = data[:estimated_time]
   end
   # rubocop:enable Metrics/AbcSize
 

@@ -73,7 +73,8 @@ class OrderRepository < BaseRepository
       rating: order.rating,
       type: order.type,
       assigned_to: order.assigned_to,
-      commission: order.commission&.id
+      commission: order.commission&.id,
+      estimated_time: order.estimated_time
     }
   end
 end
