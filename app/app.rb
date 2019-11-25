@@ -15,9 +15,11 @@ require_relative 'errors/already_registered_error'
 require_relative 'errors/order_not_cancellable_error'
 require_relative 'errors/domain_error'
 require_relative 'states/state_factory'
+require_relative 'states/delivered_state'
 require_relative 'model/weather/configurable_weather_service'
 require_relative 'model/weather/open_weather_service'
 require_relative 'helpers/order_helper'
+require_relative 'model/time_estimator'
 
 API_KEY = ENV['API_KEY'] || 'zaraza'
 
@@ -88,11 +90,13 @@ get '/client/:username/order/:order_id' do
   raise ClientNotFoundError unless ClientRepository.new.exists?(username)
   raise ClientHasNoOrdersError unless OrderRepository.new.has_orders?(username)
 
+  weather = WEATHER_SERVICE.weather
   order_id = params['order_id']
 
   order = OrderRepository.new.find_for_user(order_id, username)
   response = { order_status: order.state.state_name,
-               assigned_to: order.assigned_to }
+               assigned_to: order.assigned_to,
+               estimated_delivery_time: TimeEstimator.new.estimate(order, weather) }
 
   response.to_json
 end
@@ -152,6 +156,12 @@ put '/order/:order_id/cancel' do
   status 200
 end
 
+def parse_historical(orders)
+  orders.map do |order|
+    OrderHelper.new.parse(order)
+  end
+end
+
 error DomainError do |e|
   status 400
   { error: e.message }.to_json
@@ -184,9 +194,16 @@ if settings.environment != :production
     historical_orders.to_json
   end
 
-  def parse_historical(orders)
-    orders.map do |order|
-      OrderHelper.new.parse(order)
-    end
+  put '/order/:order_id/delivered_on_time' do
+    status 200
+    order_id = params['order_id']
+    body = JSON.parse(request.body.read)
+    minutes = body['minutes']
+
+    order = OrderRepository.new.find_by_id(order_id)
+    order.change_state(DeliveredState.new)
+    order.delivered_on = order.created_on + (60 * minutes)
+
+    OrderRepository.new.save(order)
   end
 end

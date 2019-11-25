@@ -13,7 +13,8 @@ require_relative '../states/state_names'
 class Order
   include ActiveModel::Validations
   attr_reader :state, :type, :rating
-  attr_accessor :id, :client, :updated_on, :created_on, :assigned_to, :commission
+  attr_accessor :id, :client, :updated_on, :created_on, :assigned_to, :commission,
+                :estimated_time, :delivered_on
   validates :client, presence: true
   validates :rating, numericality: { greater_than_or_equal_to: 1,
                                      less_than_or_equal_to: 5,
@@ -34,6 +35,10 @@ class Order
 
   VALID_TYPES = { 'menu_individual' => 100, 'menu_pareja' => 175, 'menu_familiar' => 250 }.freeze
 
+  BASE_TIME = { 'menu_individual' => 10,
+                'menu_pareja' => 15,
+                'menu_familiar' => 20 }.freeze
+
   # rubocop:disable Metrics/AbcSize
   def initialize(data = {})
     @id = data[:id]
@@ -46,8 +51,10 @@ class Order
 
     raise InvalidMenuError unless VALID_TYPES.key?(data[:type])
 
+    @weather = data[:weather]
     @type = data[:type]
     @commission = data[:commission]
+    @delivered_on = data[:delivered_on]
   end
   # rubocop:enable Metrics/AbcSize
 
@@ -82,6 +89,14 @@ class Order
     raise OrderNotCancellableError unless CANCELLABLE_STATES.include?(@state.state_name)
 
     change_state(CancelledState.new)
+  end
+
+  def base_time
+    BASE_TIME[@type]
+  end
+
+  def duration
+    (@delivered_on - @created_on) / 60.0 # in minutes
   end
 
   private

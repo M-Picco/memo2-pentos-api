@@ -30,15 +30,15 @@ class OrderRepository < BaseRepository
   end
 
   def orders_created_on(date)
-    load_collection dataset.where(created_on: date)
+    load_collection dataset.where(created_on: date..(date + 1))
   end
 
   def delivered_orders_created_on(date)
-    load_collection dataset.where(created_on: date, state: STATES::DELIVERED)
+    load_collection dataset.where(created_on: date..(date + 1), state: STATES::DELIVERED)
   end
 
   def delivered_count_for(username, date)
-    dataset.where(created_on: date,
+    dataset.where(created_on: date..(date + 1),
                   state: DeliveredState.new.state_name,
                   assigned_to: username).count
   end
@@ -49,6 +49,13 @@ class OrderRepository < BaseRepository
 
   def historical_orders(client_username)
     load_collection dataset.where(client_username: client_username, state: STATES::DELIVERED)
+  end
+
+  def last_delivered_orders(menu_type, number)
+    load_collection dataset
+      .where(type: menu_type, state: STATES::DELIVERED)
+      .order(Sequel.desc(:delivered_on))
+      .limit(number)
   end
 
   protected
@@ -73,7 +80,8 @@ class OrderRepository < BaseRepository
       rating: order.rating,
       type: order.type,
       assigned_to: order.assigned_to,
-      commission: order.commission&.id
+      commission: order.commission&.id,
+      delivered_on: order.delivered_on
     }
   end
 end

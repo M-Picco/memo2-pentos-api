@@ -127,8 +127,42 @@ Característica: Creacion y Cambios de estado de Pedidos
     Y hay un pedido de "menu_individual" con id unico entregado por "juanmotoneta" con fecha correcta
     Y hay un pedido de "menu_pareja" con id unico entregado por "juanmotoneta" con fecha correcta
 
-  # Escenario: CT1 - Consulta con tiempo de entrega estimado menu_individual y lluvia
-  # Escenario: CT2 - Consulta con tiempo de entrega estimado menu_individual y sin lluvia
-  # Escenario: CT3 - Consulta con tiempo de entrega estimado menu_familiar y lluvia
-  # Escenario: CT4 - Consulta con tiempo de entrega estimado menu_pareja y lluvia
-  
+  Escenario: CT1 - Consulta con tiempo de entrega estimado menu_individual y con lluvia
+      Dado que el cliente pidio un "menu_individual"
+      Y llueve
+      Entonces el tiempo estimado de entrega es de 25 minutos
+
+  Escenario: CT2 - Consulta con tiempo de entrega estimado menu_individual y sin lluvia
+      Dado que el cliente pidio un "menu_individual"
+      Y no llueve
+      Entonces el tiempo estimado de entrega es de 20 minutos
+
+  Escenario: CT3.1 - Consulta con tiempo de entrega estimado menu_familiar y sin lluvia
+      Dado que el cliente pidio un "menu_familiar"
+      Y no llueve
+      Entonces el tiempo estimado de entrega es de 30 minutos
+
+  Escenario: CT3.2 - Consulta con tiempo de entrega estimado menu_familiar y con lluvia
+      Dado que el cliente pidio un "menu_familiar"
+      Y llueve
+      Entonces el tiempo estimado de entrega es de 35 minutos
+      
+  Escenario: CT4.1 - Consulta con tiempo de entrega estimado menu_pareja y sin lluvia
+      Dado que el cliente pidio un "menu_pareja"
+      Y no llueve
+      Entonces el tiempo estimado de entrega es de 25 minutos
+
+  Escenario: CT4.2 - Consulta con tiempo de entrega estimado menu_pareja y con lluvia
+      Dado que el cliente pidio un "menu_pareja"
+      Y llueve
+      Entonces el tiempo estimado de entrega es de 30 minutos
+
+  Escenario: CT5 - Consulta con tiempo de entrega estimado por pedidos anteriores
+      Dado que el cliente pidio un "menu_individual"
+      Y se entrego en 5 minutos
+      Y que el cliente pidio un "menu_individual"
+      Y se entrego en 30 minutos
+      Y que el cliente pidio un "menu_individual"
+      Y se entrego en 10 minutos
+      Y que el cliente pidio un "menu_individual"
+      Entonces el tiempo estimado de entrega es de 15 minutos

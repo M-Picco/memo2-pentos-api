@@ -24,6 +24,7 @@ describe Order do
     it { is_expected.to respond_to(:type) }
     it { is_expected.to respond_to(:assigned_to) }
     it { is_expected.to respond_to(:commission) }
+    it { is_expected.to respond_to(:delivered_on) }
   end
 
   describe 'type' do
@@ -204,6 +205,55 @@ describe Order do
       order.change_state(WaitingState.new)
 
       expect { order.cancel }.to raise_error(OrderNotCancellableError)
+    end
+  end
+
+  describe 'base time' do
+    it 'should be 10 minutes when order type is menu_individual' do
+      order = described_class.new(client: client, type: 'menu_individual')
+      expect(order.base_time).to eq(10)
+    end
+
+    it 'should be 15 minutes when order type is menu_pareja' do
+      order = described_class.new(client: client, type: 'menu_pareja')
+      expect(order.base_time).to eq(15)
+    end
+
+    it 'should be 20 minutes when order type is menu_individual' do
+      order = described_class.new(client: client, type: 'menu_familiar')
+      expect(order.base_time).to eq(20)
+    end
+  end
+
+  describe 'delivered_time' do
+    it 'should have created as Time ' do
+      OrderRepository.new.save(order)
+      ClientRepository.new.save(client)
+      reloaded_order = OrderRepository.new.find_by_id(order.id)
+      expect(reloaded_order.created_on).to be_a(Time)
+    end
+
+    it 'should have delivered_on as Time ' do
+      order.delivered_on = Time.now
+      OrderRepository.new.save(order)
+      ClientRepository.new.save(client)
+      reloaded_order = OrderRepository.new.find_by_id(order.id)
+      expect(reloaded_order.delivered_on).to be_a(Time)
+    end
+
+    it 'should be deliverd_time - created_time' do
+      OrderRepository.new.save(order)
+      ClientRepository.new.save(client)
+      reloaded_order = OrderRepository.new.find_by_id(order.id)
+      reloaded_order.delivered_on = reloaded_order.created_on + (60 * 5)
+      expect(reloaded_order.duration).to eq(5)
+    end
+  end
+
+  describe 'delivered time' do
+    it 'delivered state should set delivered time' do
+      order.change_state(DeliveredState.new)
+      expect(order.delivered_on).not_to eq(nil)
     end
   end
 end

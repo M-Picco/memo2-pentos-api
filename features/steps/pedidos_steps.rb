@@ -95,3 +95,17 @@ end
 Dado('el estado cambio a {string}') do |new_status|
   step "el estado cambia a \"#{new_status}\""
 end
+
+Then('el tiempo estimado de entrega es de {int} minutos') do |minutes|
+  step 'consulta el estado'
+  expect(@response.status).to eq(200)
+  parsed_response = JSON.parse(@response.body)
+  estimated_delivery_time = parsed_response['estimated_delivery_time']
+  expect(estimated_delivery_time).to eq(minutes)
+end
+
+Dado('se entrego en {int} minutos') do |minutes|
+  @request = {}
+  @request['minutes'] = minutes
+  Faraday.put(delivered_on_time_url(@order_id), @request.to_json, header)
+end
