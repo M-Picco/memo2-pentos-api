@@ -328,6 +328,18 @@ describe OrderRepository do
       expect(result.size).to eq(1)
     end
 
+    it 'returns two delivered order of the same type' do
+      order = Order.new(client: client, type: 'menu_individual')
+      order.change_state(DeliveredState.new)
+      order2 = Order.new(client: client, type: 'menu_individual')
+      order2.change_state(DeliveredState.new)
+      repository.save(order)
+      repository.save(order2)
+
+      result = repository.last_delivered_orders('menu_individual', 2)
+      expect(result.size).to eq(2)
+    end
+
     it 'returns the last delivered order of the same type' do
       order = Order.new(client: client, type: 'menu_individual')
       order.change_state(DeliveredState.new)
