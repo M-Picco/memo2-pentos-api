@@ -156,6 +156,12 @@ put '/order/:order_id/cancel' do
   status 200
 end
 
+def parse_historical(orders)
+  orders.map do |order|
+    OrderHelper.new.parse(order)
+  end
+end
+
 error DomainError do |e|
   status 400
   { error: e.message }.to_json
@@ -199,11 +205,5 @@ if settings.environment != :production
     order.delivered_on = order.created_on + (60 * minutes)
 
     OrderRepository.new.save(order)
-  end
-
-  def parse_historical(orders)
-    orders.map do |order|
-      OrderHelper.new.parse(order)
-    end
   end
 end
