@@ -20,7 +20,6 @@ require_relative 'model/weather/configurable_weather_service'
 require_relative 'model/weather/open_weather_service'
 require_relative 'helpers/order_helper'
 require_relative 'model/time_estimator'
-require 'byebug'
 
 API_KEY = ENV['API_KEY'] || 'zaraza'
 
