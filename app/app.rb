@@ -15,10 +15,12 @@ require_relative 'errors/already_registered_error'
 require_relative 'errors/order_not_cancellable_error'
 require_relative 'errors/domain_error'
 require_relative 'states/state_factory'
+require_relative 'states/delivered_state'
 require_relative 'model/weather/configurable_weather_service'
 require_relative 'model/weather/open_weather_service'
 require_relative 'helpers/order_helper'
 require_relative 'model/time_estimator'
+require 'byebug'
 
 API_KEY = ENV['API_KEY'] || 'zaraza'
 
@@ -185,6 +187,19 @@ if settings.environment != :production
     historical_orders = parse_historical(orders)
 
     historical_orders.to_json
+  end
+
+  put '/order/:order_id/delivered_on_time' do
+    status 200
+    order_id = params['order_id']
+    body = JSON.parse(request.body.read)
+    minutes = body['minutes']
+
+    order = OrderRepository.new.find_by_id(order_id)
+    order.change_state(DeliveredState.new)
+    order.delivered_on = order.created_on + (60 * minutes)
+
+    OrderRepository.new.save(order)
   end
 
   def parse_historical(orders)

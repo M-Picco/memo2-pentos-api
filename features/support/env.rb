@@ -42,6 +42,10 @@ def rate_order_url(username, order_id)
   CLIENT_BASE_URL + "/#{username}/order/#{order_id}/rate"
 end
 
+def delivered_on_time_url(order_id)
+  BASE_URL + "/order/#{order_id}/delivered_on_time"
+end
+
 def header
   { 'Content-Type' => 'application/json', 'api-key' => API_KEY }
 end

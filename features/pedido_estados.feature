@@ -157,13 +157,12 @@ Característica: Creacion y Cambios de estado de Pedidos
       Y llueve
       Entonces el tiempo estimado de entrega es de 30 minutos
 
-  @wip
   Escenario: CT5 - Consulta con tiempo de entrega estimado por pedidos anteriores
       Dado que el cliente pidio un "menu_individual"
       Y se entrego en 5 minutos
-      Y que el cliente pidio un "menu_pareja"
+      Y que el cliente pidio un "menu_individual"
       Y se entrego en 30 minutos
-      Y que el cliente pidio un "menu_familiar"
+      Y que el cliente pidio un "menu_individual"
       Y se entrego en 10 minutos
       Y que el cliente pidio un "menu_individual"
       Entonces el tiempo estimado de entrega es de 15 minutos
