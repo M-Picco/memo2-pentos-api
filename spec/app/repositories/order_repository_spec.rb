@@ -352,5 +352,16 @@ describe OrderRepository do
       expect(result[0].id).to eq(order2.id)
     end
   end
+
+  describe 'on_delivery time' do
+    it 'should persist on_delivery time' do
+      order = Order.new(client: client, type: 'menu_individual')
+      date = Time.now.round
+      order.on_delivery_time = date
+      repository.save(order)
+      reloaded_order = repository.find_by_id(order.id)
+      expect(reloaded_order.on_delivery_time).to eq date
+    end
+  end
   # rubocop:enable RSpec/ExampleLength
 end

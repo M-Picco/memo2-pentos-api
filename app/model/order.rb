@@ -55,6 +55,7 @@ class Order
     @type = data[:type]
     @commission = data[:commission]
     @delivered_on = data[:delivered_on]
+    @on_delivery_time = data[:on_delivery_time]
   end
   # rubocop:enable Metrics/AbcSize
 

@@ -81,7 +81,8 @@ class OrderRepository < BaseRepository
       type: order.type,
       assigned_to: order.assigned_to,
       commission: order.commission&.id,
-      delivered_on: order.delivered_on
+      delivered_on: order.delivered_on,
+      on_delivery_time: order.on_delivery_time
     }
   end
 end
