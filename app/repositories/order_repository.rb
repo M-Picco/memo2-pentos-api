@@ -58,6 +58,13 @@ class OrderRepository < BaseRepository
       .limit(number)
   end
 
+  def last_on_delivery_by(username)
+    load_object dataset
+      .where(assigned_to: username, state: STATES::ON_DELIVERY)
+      .order(Sequel.desc(:on_delivery_time))
+      .limit(1).first
+  end
+
   protected
 
   def load_object(a_record)

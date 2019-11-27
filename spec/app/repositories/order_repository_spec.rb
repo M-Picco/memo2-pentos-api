@@ -354,6 +354,35 @@ describe OrderRepository do
   end
 
   describe 'on_delivery time' do
+    let(:order_two) do
+      delivery = Delivery.new('username' => 'pepemoto')
+      DeliveryRepository.new.save(delivery)
+
+      order = Order.new(client: client, type: 'menu_individual')
+      date = Time.now.round
+      order.on_delivery_time = date + (30 * 60)
+      order.change_state(OnDeliveryState.new(weather))
+
+      order
+    end
+    let(:order) do
+      delivery = Delivery.new('username' => 'pepemoto')
+      DeliveryRepository.new.save(delivery)
+
+      order = Order.new(client: client, type: 'menu_individual')
+      order.on_delivery_time = date
+      order.change_state(OnDeliveryState.new(weather))
+
+      repository.save(order)
+      order
+    end
+    let(:delivery) do
+      delivery = Delivery.new('username' => 'pepemoto')
+      DeliveryRepository.new.save(delivery)
+      delivery
+    end
+    let(:date) { Time.now.round }
+
     it 'should persist on_delivery time' do
       order = Order.new(client: client, type: 'menu_individual')
       date = Time.now.round
@@ -362,6 +391,15 @@ describe OrderRepository do
       reloaded_order = repository.find_by_id(order.id)
       expect(reloaded_order.on_delivery_time).to eq date
     end
+
+    # rubocop:enable RSpec/ExampleLength
+
+    it 'returns the most recient order of a delivery name' do
+      repository.save(order)
+      repository.save(order_two)
+      selected_order = repository.last_on_delivery_by(delivery.username)
+      expect(selected_order.size).to eq 1
+      expect(selected_order.id).to eq order_two.id
+    end
   end
-  # rubocop:enable RSpec/ExampleLength
 end
