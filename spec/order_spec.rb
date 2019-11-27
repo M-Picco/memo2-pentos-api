@@ -25,6 +25,7 @@ describe Order do
     it { is_expected.to respond_to(:assigned_to) }
     it { is_expected.to respond_to(:commission) }
     it { is_expected.to respond_to(:delivered_on) }
+    it { is_expected.to respond_to(:on_delivery_time) }
   end
 
   describe 'type' do
