@@ -360,8 +360,8 @@ describe OrderRepository do
 
       order = Order.new(client: client, type: 'menu_individual')
       date = Time.now.round
-      order.on_delivery_time = date + (30 * 60)
       order.change_state(OnDeliveryState.new(weather))
+      order.on_delivery_time = date + (30 * 60)
 
       order
     end
@@ -370,8 +370,8 @@ describe OrderRepository do
       DeliveryRepository.new.save(delivery)
 
       order = Order.new(client: client, type: 'menu_individual')
-      order.on_delivery_time = date
       order.change_state(OnDeliveryState.new(weather))
+      order.on_delivery_time = date
 
       repository.save(order)
       order

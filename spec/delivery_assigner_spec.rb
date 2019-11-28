@@ -5,6 +5,8 @@ require_relative '../app/repositories/client_repository.rb'
 require_relative '../app/model/order'
 require_relative '../app/model/client'
 require_relative '../app/states/waiting_state'
+require 'date'
+require 'byebug'
 
 describe DeliveryAssigner do
   let(:order) { Order.new(client: client, type: 'menu_individual') }
@@ -71,7 +73,6 @@ describe DeliveryAssigner do
     sorting_hat.assign_to(new_order)
     expect(new_order.assigned_to).not_to eq(order.assigned_to)
   end
-  # rubocop:enable RSpect/ExampleLength
 
   it 'should change order status to "waiting" when there are no deliveries' do
     sorting_hat.assign_to(order)
@@ -84,4 +85,22 @@ describe DeliveryAssigner do
 
     expect(order.assigned_to).to eq(nil)
   end
+
+  it 'should not assigned if are deliveries waiting more than 10 minutes' do
+    date = Time.now.round
+    delivery = Delivery.new('username' => 'pepemoto')
+
+    repository.save(delivery)
+    client_repository.save(client)
+
+    order.change_state(OnDeliveryState.new(weather))
+    order.on_delivery_time = date - (10 * 60)
+    orders_repository.save(order)
+
+    repository.save(delivery)
+
+    sorting_hat.assign_to(order)
+    expect(order.assigned_to).to eq(nil)
+  end
+  # rubocop:enable RSpect/ExampleLength
 end

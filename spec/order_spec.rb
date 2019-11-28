@@ -256,5 +256,10 @@ describe Order do
       order.change_state(DeliveredState.new)
       expect(order.delivered_on).not_to eq(nil)
     end
+
+    it 'should set on_delivery_time when OnDeliveryStatus is set' do
+      order.change_state(OnDeliveryState.new(weather))
+      expect(order.on_delivery_time).not_to eq(nil)
+    end
   end
 end
