@@ -25,6 +25,10 @@ describe WaitingTimeFilter do
     filter.apply([delivery], order)
     expect(delivery.waiting_time).to eq(20)
   end
-
   # rubocop:enable RSpec/ExampleLength
+
+  it 'should assign 0 waiting time when delivery has no orders' do
+    filter.apply([delivery], order)
+    expect(delivery.waiting_time).to eq(0)
+  end
 end

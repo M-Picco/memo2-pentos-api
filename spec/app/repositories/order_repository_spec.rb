@@ -401,5 +401,10 @@ describe OrderRepository do
       expect(selected_order.size).to eq 1
       expect(selected_order.id).to eq order_two.id
     end
+
+    it 'raises error if delivery has no orders' do
+      expect { repository.last_on_delivery_by(delivery.username) }
+        .to raise_error(DeliveryHasNoOrdersError)
+    end
   end
 end
