@@ -13,5 +13,6 @@ class OnDeliveryState < State
     commission = Commission.new({ order_cost: order.cost }, @weather)
     CommissionRepository.new.save(commission)
     order.commission = commission
+    order.on_delivery_time = Time.now.round
   end
 end

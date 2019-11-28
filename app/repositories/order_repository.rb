@@ -2,6 +2,7 @@ require_relative 'base_repository'
 require_relative '../model/null_commission'
 require_relative '../errors/order_not_found_error'
 require_relative '../errors/client_has_no_orders_error'
+require_relative '../errors/delivery_has_no_orders_error'
 require_relative '../states/state_factory'
 require_relative '../states/delivered_state'
 require_relative '../states/ondelivery_state'
@@ -58,6 +59,15 @@ class OrderRepository < BaseRepository
       .limit(number)
   end
 
+  def last_on_delivery_by(username)
+    load_object dataset
+      .where(assigned_to: username, state: STATES::ON_DELIVERY)
+      .order(Sequel.desc(:on_delivery_time))
+      .limit(1).first
+  rescue NoMethodError
+    raise DeliveryHasNoOrdersError
+  end
+
   protected
 
   def load_object(a_record)
@@ -81,7 +91,8 @@ class OrderRepository < BaseRepository
       type: order.type,
       assigned_to: order.assigned_to,
       commission: order.commission&.id,
-      delivered_on: order.delivered_on
+      delivered_on: order.delivered_on,
+      on_delivery_time: order.on_delivery_time
     }
   end
 end

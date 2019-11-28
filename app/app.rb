@@ -206,4 +206,16 @@ if settings.environment != :production
 
     OrderRepository.new.save(order)
   end
+
+  put '/delivery/:username/waiting_time' do
+    status 200
+    username = params['username']
+    body = JSON.parse(request.body.read)
+    minutes = body['minutes']
+
+    order = OrderRepository.new.last_on_delivery_by(username)
+    order.on_delivery_time = order.on_delivery_time - (minutes * 60)
+
+    OrderRepository.new.save(order)
+  end
 end

@@ -25,6 +25,7 @@ describe Order do
     it { is_expected.to respond_to(:assigned_to) }
     it { is_expected.to respond_to(:commission) }
     it { is_expected.to respond_to(:delivered_on) }
+    it { is_expected.to respond_to(:on_delivery_time) }
   end
 
   describe 'type' do
@@ -254,6 +255,11 @@ describe Order do
     it 'delivered state should set delivered time' do
       order.change_state(DeliveredState.new)
       expect(order.delivered_on).not_to eq(nil)
+    end
+
+    it 'should set on_delivery_time when OnDeliveryStatus is set' do
+      order.change_state(OnDeliveryState.new(weather))
+      expect(order.on_delivery_time).not_to eq(nil)
     end
   end
 end
