@@ -208,6 +208,7 @@ if settings.environment != :production
   end
 
   put '/delivery/:username/waiting_time' do
+    content_type :json
     status 200
     username = params['username']
     body = JSON.parse(request.body.read)
