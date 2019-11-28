@@ -46,6 +46,10 @@ def delivered_on_time_url(order_id)
   BASE_URL + "/order/#{order_id}/delivered_on_time"
 end
 
+def waiting_time_url(username)
+  BASE_URL + "/delivery/#{username}/waiting_time"
+end
+
 def header
   { 'Content-Type' => 'application/json', 'api-key' => API_KEY }
 end

@@ -24,8 +24,8 @@ Entonces('pedido esta asignado a {string} o a {string}') do |repartidor1, repart
   expect([repartidor1, repartidor2].include?(assigned_to)).to eq true
 end
 
-Cuando('string} pasa {int} minutos esperando el llenado de su bolso') do |repartidor, minutos|
+Cuando('{string} pasa {int} minutos esperando el llenado de su bolso') do |repartidor, minutos|
   @request = {}
   @request['minutes'] = minutos
-  Faraday.put(waiting_time(repartidor), @request.to_json, header)
+  Faraday.put(waiting_time_url(repartidor), @request.to_json, header)
 end

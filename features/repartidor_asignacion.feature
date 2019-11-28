@@ -39,10 +39,12 @@ Característica: Asignacion de repartidor
       Dado que el cliente pidio un "menu_familiar"
       Cuando el estado cambia a "en_entrega"
       Entonces pedido esta asignado a "pepebicicleta"
-@wip
+
     Escenario: AA1 - Repartido espera a lo sumo 10 minutos el llenado de su bolso
-      Dado el cliente pide un "menu_individual"
+      Dado que el cliente pidio un "menu_individual"
       Cuando el estado cambia a "en_entrega"
       Entonces pedido esta asignado a "juanmotoneta"
       Cuando "juanmotoneta" pasa 10 minutos esperando el llenado de su bolso
-      Entonces "juanmotoneta" comienza la entrega
+      Dado que el cliente pidio un "menu_pareja"
+      Cuando el estado cambia a "en_entrega"
+      Entonces pedido esta asignado a "pepebicicleta"
