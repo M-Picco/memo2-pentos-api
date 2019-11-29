@@ -6,8 +6,6 @@ class Commission
 
   attr_accessor :id, :amount, :order_cost, :updated_on, :created_on, :weather
 
-  validates :order_cost, numericality: { greater_than_or_equal_to: 0 }
-
   ROUNDING_DIGITS = 2
 
   MIN_RATING = 1
@@ -18,6 +16,9 @@ class Commission
 
   def initialize(data, weather)
     @id = data[:id]
+
+    raise InvalidParameterError, 'invalid_cost' if (data[:order_cost] || 0).negative?
+
     @order_cost = data[:order_cost] || 0
     @updated_on = data[:updated_on]
     @created_on = data[:created_on]

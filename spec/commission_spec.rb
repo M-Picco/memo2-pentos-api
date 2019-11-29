@@ -14,7 +14,7 @@ describe Commission do
     it { is_expected.to respond_to(:weather) }
   end
 
-  describe 'valid?' do
+  describe 'creation' do
     it 'should de valid when order_cost is positive number' do
       commision = described_class.new({ order_cost: 100 }, default_weather)
       expect(commision.valid?).to eq true
@@ -28,10 +28,10 @@ describe Commission do
       expect(commision.order_cost.zero?).to eq true
     end
 
-    it 'should de invalid when order_cost is negative number' do
-      commision = described_class.new({ order_cost: -1 }, default_weather)
-      expect(commision.valid?).to eq false
-      expect(commision.errors).to have_key(:order_cost)
+    it 'should raise InvalidParameterError when order_cost is negative number' do
+      expect do
+        described_class.new({ order_cost: -1 }, default_weather)
+      end.to raise_error('invalid_cost')
     end
   end
 
