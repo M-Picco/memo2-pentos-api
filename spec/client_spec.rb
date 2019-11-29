@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Client do
-  subject(:client) { described_class.new({}) }
+  subject(:client) { described_class.new(username: 'pentos1234') }
 
   describe 'model' do
     it { is_expected.to respond_to(:id) }
@@ -18,25 +18,32 @@ describe Client do
       expect(user.errors.empty?).to eq true
     end
 
-    it 'should be invalid when username is blank' do
-      client = described_class.new(username: '', phone: '4123-4123',
-                                   address: 'Av Paseo Colón 840')
-      expect(client.valid?).to eq false
-      expect(client.errors).to have_key(:name)
+    it 'should raise InvalidParameterException when username is nil' do
+      expect do
+        described_class.new(phone: '4123-4123',
+                            address: 'Av Paseo Colón 840')
+      end.to raise_error('invalid_username')
+    end
+
+    it 'should raise InvalidParameterException when username is blank' do
+      expect do
+        described_class.new(username: '', phone: '4123-4123',
+                            address: 'Av Paseo Colón 840')
+      end.to raise_error('invalid_username')
     end
 
     it "should be invalid when name contains '#?!' characters" do
-      client = described_class.new(username: '#pe?_!', phone: '4123-4123',
-                                   address: 'Av Paseo Colón 840')
-      expect(client.valid?).to eq false
-      expect(client.errors).to have_key(:name)
+      expect do
+        described_class.new(username: '#pe?_!', phone: '4123-4123',
+                            address: 'Av Paseo Colón 840')
+      end.to raise_error('invalid_username')
     end
 
     it 'should be invalid when name contains a blank space' do
-      client = described_class.new(username: 'pe luna', phone: '4123-4123',
-                                   address: 'Av Paseo Colón 840')
-      expect(client.valid?).to eq false
-      expect(client.errors).to have_key(:name)
+      expect do
+        described_class.new(username: 'pe luna', phone: '4123-4123',
+                            address: 'Av Paseo Colón 840')
+      end.to raise_error('invalid_username')
     end
 
     it 'should be invalid when phone is blank' do
