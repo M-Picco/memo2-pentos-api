@@ -8,8 +8,9 @@ class Client
   VALID_NAME_REGEX = /\A[_A-z0-9]*((-)*[_A-z0-9])*\Z/.freeze
   VALID_PHONE_REGEX = /\A(\d)+-?(\d)+\Z/.freeze
 
-  validates :address, presence: true, length: { minimum: 5, message: 'invalid_address' }
+  MIN_ADDRESS_LENGTH = 5
 
+  # rubocop:disable Metrics/AbcSize
   def initialize(data = {})
     @id = data[:id]
 
@@ -21,10 +22,13 @@ class Client
 
     @phone = data[:phone]
 
+    raise InvalidParameterError, 'invalid_address' unless valid_address?(data[:address])
+
     @address = data[:address]
     @updated_on = data[:updated_on]
     @created_on = data[:created_on]
   end
+  # rubocop:enable Metrics/AbcSize
 
   def username?(username)
     @name == username
@@ -38,5 +42,9 @@ class Client
 
   def valid_phone?(phone)
     !phone.blank? && VALID_PHONE_REGEX.match?(phone)
+  end
+
+  def valid_address?(address)
+    !address.blank? && address.size >= MIN_ADDRESS_LENGTH
   end
 end

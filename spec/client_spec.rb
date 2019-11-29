@@ -1,7 +1,10 @@
 require 'spec_helper'
 
 describe Client do
-  subject(:client) { described_class.new(username: 'pentos1234', phone: '4123-4123') }
+  subject(:client) do
+    described_class.new(username: 'pentos1234', phone: '4123-4123',
+                        address: 'Av Paseo Colón 840')
+  end
 
   describe 'model' do
     it { is_expected.to respond_to(:id) }
@@ -60,18 +63,18 @@ describe Client do
       end.to raise_error('invalid_phone')
     end
 
-    it 'should be invalid when address is blank' do
-      client = described_class.new(username: 'pentos123', phone: '4123-412',
-                                   address: '')
-      expect(client.valid?).to eq false
-      expect(client.errors).to have_key(:address)
+    it 'should raise InvalidParameterError when address is blank' do
+      expect do
+        described_class.new(username: 'pentos123', phone: '4123-412',
+                            address: '')
+      end .to raise_error('invalid_address')
     end
 
-    it 'should be invalid when address size is less than 3' do
-      client = described_class.new(username: 'pentos123', phone: '4123-4127',
-                                   address: 'a1')
-      expect(client.valid?).to eq false
-      expect(client.errors).to have_key(:address)
+    it 'should raise InvalidParameterError when address size is less than 5' do
+      expect do
+        described_class.new(username: 'pentos123', phone: '4123-4127',
+                            address: 'a1')
+      end .to raise_error('invalid_address')
     end
   end
 end
