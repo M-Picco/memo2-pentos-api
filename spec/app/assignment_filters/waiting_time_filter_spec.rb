@@ -3,7 +3,7 @@ require 'byebug'
 
 describe WaitingTimeFilter do
   let(:filter) { described_class.new }
-  let(:delivery) { Delivery.new('username' => 'pepemoto') }
+  let(:delivery) { Delivery.new(username: 'pepemoto') }
 
   let(:client) do
     Client.new(username: 'jperez', phone: '4123-4123',

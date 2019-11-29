@@ -4,12 +4,12 @@ require 'byebug'
 describe LimitWaitingTimeFilter do
   let(:filter) { described_class.new }
   let(:delivery) do
-    Delivery.new('username' => 'pepemoto',
-                 'waiting_time' => 5)
+    Delivery.new(username: 'pepemoto',
+                 waiting_time: 5)
   end
   let(:delivery2) do
-    Delivery.new('username' => 'pepemoto',
-                 'waiting_time' => 10)
+    Delivery.new(username: 'pepemoto',
+                 waiting_time: 10)
   end
   let(:client) do
     client = Client.new(username: 'jperez', phone: '4123-4123',

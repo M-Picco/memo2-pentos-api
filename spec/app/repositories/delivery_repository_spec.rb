@@ -4,15 +4,15 @@ describe DeliveryRepository do
   let(:repository) { described_class.new }
 
   it 'create new delivery' do
-    delivery = Delivery.new('username' => 'pepemoto')
+    delivery = Delivery.new(username: 'pepemoto')
     repository.save(delivery)
     expect(delivery.id).to be > 0
   end
   # rubocop:disable RSpect/ExampleLength
 
   it 'should return a list with Deliveries' do
-    delivery = Delivery.new('username' => 'pepemoto')
-    delivery2 = Delivery.new('username' => 'pepemonopatin')
+    delivery = Delivery.new(username: 'pepemoto')
+    delivery2 = Delivery.new(username: 'pepemonopatin')
     repository.save(delivery)
     repository.save(delivery2)
 
@@ -23,7 +23,7 @@ describe DeliveryRepository do
 
   describe 'exists' do
     it 'returns true for an existing delivery' do
-      delivery = Delivery.new('username' => 'pepemoto')
+      delivery = Delivery.new(username: 'pepemoto')
       repository.save(delivery)
 
       exists = repository.exists?('pepemoto')
@@ -38,7 +38,7 @@ describe DeliveryRepository do
     end
 
     it 'returns false for an inexesisting delivery with deliveries registered' do
-      delivery = Delivery.new('username' => 'pepemoto')
+      delivery = Delivery.new(username: 'pepemoto')
       repository.save(delivery)
       exists = repository.exists?('juanbicicleta')
 

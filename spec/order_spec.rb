@@ -133,7 +133,7 @@ describe Order do
 
   describe 'delivery assigment' do
     it 'should assign when status is in "en_entrega"' do
-      delivery = Delivery.new('username' => 'pepemoto')
+      delivery = Delivery.new(username: 'pepemoto')
       DeliveryRepository.new.save(delivery)
       order.change_state(StateFactory.new(weather).create_for('en_entrega'))
       expect(order.assigned_to).to eq(delivery.username)

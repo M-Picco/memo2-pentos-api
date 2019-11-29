@@ -119,7 +119,7 @@ describe OrderRepository do
       order = Order.new(client: client, type: 'menu_individual')
       repository.save(order)
 
-      delivery = Delivery.new('username' => 'pepemoto')
+      delivery = Delivery.new(username: 'pepemoto')
       DeliveryRepository.new.save(delivery)
 
       order.change_state(StateFactory.new(weather).create_for('en_entrega'))
@@ -247,7 +247,7 @@ describe OrderRepository do
                 assigned_to: delivery.username)
     end
 
-    let(:delivery) { Delivery.new('username' => 'pepemoto') }
+    let(:delivery) { Delivery.new(username: 'pepemoto') }
 
     it 'should return "en_entrega" orders assigned to delivery' do
       ClientRepository.new.save(client)
@@ -313,7 +313,7 @@ describe OrderRepository do
 
   describe 'on_delivery time' do
     let(:order_two) do
-      delivery = Delivery.new('username' => 'pepemoto')
+      delivery = Delivery.new(username: 'pepemoto')
       DeliveryRepository.new.save(delivery)
 
       order = Order.new(client: client, type: 'menu_individual')
@@ -324,7 +324,7 @@ describe OrderRepository do
       order
     end
     let(:order) do
-      delivery = Delivery.new('username' => 'pepemoto')
+      delivery = Delivery.new(username: 'pepemoto')
       DeliveryRepository.new.save(delivery)
 
       order = Order.new(client: client, type: 'menu_individual')
@@ -335,7 +335,7 @@ describe OrderRepository do
       order
     end
     let(:delivery) do
-      delivery = Delivery.new('username' => 'pepemoto')
+      delivery = Delivery.new(username: 'pepemoto')
       DeliveryRepository.new.save(delivery)
       delivery
     end

@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe BagFitsFilter do
   let(:filter) { described_class.new }
-  let(:delivery) { Delivery.new('username' => 'pepemoto') }
-  let(:delivery2) { Delivery.new('username' => 'pepeauto') }
+  let(:delivery) { Delivery.new(username: 'pepemoto') }
+  let(:delivery2) { Delivery.new(username: 'pepeauto') }
   let(:order) do
     Order.new(client: client, type: 'menu_familiar',
               assigned_to: delivery.username)

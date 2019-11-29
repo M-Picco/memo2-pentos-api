@@ -109,7 +109,7 @@ post '/delivery' do
 
   raise AlreadyRegisteredError if DeliveryRepository.new.exists?(params['username'])
 
-  delivery = Delivery.new(params)
+  delivery = Delivery.new(username: params['username'])
 
   raise FailedSaveOperationError, delivery unless DeliveryRepository.new.save(delivery)
 

@@ -8,15 +8,12 @@ class Delivery
 
   validates :username, presence: { message: 'invalid_username' },
                        length: { minimum: 5, maximum: 19, message: 'invalid_username' }
-
-  # rubocop:disable Metrics/CyclomaticComplexity
   def initialize(data = {})
-    @id = data['id'] || data[:id]
-    @username = data['username'] || data[:username]
-    @updated_on = data['updated_on'] || data[:updated_on]
-    @created_on = data['created_on'] || data[:created_on]
-    @delivered_count = data['delivered_count'] || 0
-    @waiting_time = data['waiting_time'] || 0
+    @id = data[:id]
+    @username = data[:username]
+    @updated_on = data[:updated_on]
+    @created_on = data[:created_on]
+    @delivered_count = data[:delivered_count] || 0
+    @waiting_time = data[:waiting_time] || 0
   end
-  # rubocop:enable Metrics/CyclomaticComplexity
 end
