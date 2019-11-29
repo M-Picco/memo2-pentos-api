@@ -7,7 +7,6 @@ require_relative '../states/recieved_state'
 require_relative '../states/inpreparation_state'
 require_relative '../states/ondelivery_state'
 require_relative '../states/delivered_state'
-require_relative '../states/invalid_state'
 require_relative '../states/cancelled_state'
 require_relative '../states/state_names'
 

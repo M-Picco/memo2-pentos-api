@@ -4,7 +4,6 @@ require_relative '../app/states/recieved_state'
 require_relative '../app/states/inpreparation_state'
 require_relative '../app/states/ondelivery_state'
 require_relative '../app/states/delivered_state'
-require_relative '../app/states/invalid_state'
 
 describe Order do
   subject(:order) { described_class.new(client: client, type: 'menu_individual') }
@@ -83,12 +82,6 @@ describe Order do
       order.state = StateFactory.new(weather).create_for('entregado')
 
       expect(order.state).to be_a(DeliveredState)
-    end
-
-    it 'is invalid when changing to an invalid state' do
-      invalid_state = StateFactory.new(weather).create_for('not_contemplated_state')
-
-      expect { order.state = invalid_state }.to raise_error('invalid_state')
     end
   end
 

@@ -5,7 +5,6 @@ require_relative '../../../app/states/recieved_state'
 require_relative '../../../app/states/inpreparation_state'
 require_relative '../../../app/states/ondelivery_state'
 require_relative '../../../app/states/delivered_state'
-require_relative '../../../app/states/invalid_state'
 require 'date'
 require 'json'
 
