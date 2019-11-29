@@ -11,8 +11,14 @@ describe LimitWaitingTimeFilter do
     Delivery.new('username' => 'pepemoto',
                  'waiting_time' => 10)
   end
+  let(:client) do
+    client = Client.new('username' => 'jperez', 'phone' => '4123-4123',
+                        'address' => 'Av Paseo Colón 840')
+    ClientRepository.new.save(client)
+    client
+  end
   let(:order) do
-    Order.new(type: 'menu_pareja')
+    Order.new(client: client, type: 'menu_pareja')
   end
 
   it 'should filter deliveries with waiting time less than 10 minutes' do

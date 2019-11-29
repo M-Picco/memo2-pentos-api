@@ -16,7 +16,6 @@ class Order
   attr_reader :state, :type, :rating
   attr_accessor :id, :client, :updated_on, :created_on, :assigned_to, :commission,
                 :estimated_time, :delivered_on, :on_delivery_time
-  validates :client, presence: true
 
   ALLOWED_STATES = [STATES::RECEIVED, STATES::IN_PREPARATION,
                     STATES::ON_DELIVERY, STATES::DELIVERED,
@@ -40,6 +39,9 @@ class Order
   # rubocop:disable Metrics/AbcSize
   def initialize(data = {})
     @id = data[:id]
+
+    raise InvalidParameterError, 'invalid_client' if data[:client].nil?
+
     @client = data[:client]
     @updated_on = data[:updated_on]
     @created_on = data[:created_on]

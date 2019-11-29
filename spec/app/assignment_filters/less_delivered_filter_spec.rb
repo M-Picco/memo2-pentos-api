@@ -10,8 +10,14 @@ describe LessDeliveredFilter do
     Delivery.new('username' => 'pepeauto',
                  'delivered_count' => 0)
   end
+  let(:client) do
+    client = Client.new('username' => 'jperez', 'phone' => '4123-4123',
+                        'address' => 'Av Paseo Colón 840')
+    ClientRepository.new.save(client)
+    client
+  end
   let(:order) do
-    Order.new(type: 'menu_pareja')
+    Order.new(client: client, type: 'menu_pareja')
   end
 
   it 'should add delivered count to deliveries ' do
