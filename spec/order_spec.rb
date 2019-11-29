@@ -110,22 +110,16 @@ describe Order do
       expect { order.rating = 3 }.to raise_error('order_not_delivered')
     end
 
-    it 'is invalid to rate an order with a value 1' do
-      order.state =  StateFactory.new(weather).create_for('entregado')
+    it 'raises InvalidParameterError when trying to rate an order with a value below 1' do
+      order.state = StateFactory.new(weather).create_for('entregado')
 
-      order.rating = -1
-
-      expect(order.valid?).to eq(false)
-      expect(order.errors.messages.first[1].first).to eq('invalid_rating')
+      expect { order.rating = -1 }.to raise_error('invalid_rating')
     end
 
-    it 'is invalid to rate an order with a value 6' do
-      order.state =  StateFactory.new(weather).create_for('entregado')
+    it 'raises InvalidParameterError when trying to rate an order with a value above 5' do
+      order.state = StateFactory.new(weather).create_for('entregado')
 
-      order.rating = 6
-
-      expect(order.valid?).to eq(false)
-      expect(order.errors.messages.first[1].first).to eq('invalid_rating')
+      expect { order.rating = 6 }.to raise_error('invalid_rating')
     end
   end
 

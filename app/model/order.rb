@@ -17,10 +17,6 @@ class Order
   attr_accessor :id, :client, :updated_on, :created_on, :assigned_to, :commission,
                 :estimated_time, :delivered_on, :on_delivery_time
   validates :client, presence: true
-  validates :rating, numericality: { greater_than_or_equal_to: 1,
-                                     less_than_or_equal_to: 5,
-                                     message: 'invalid_rating' },
-                     allow_nil: true
 
   ALLOWED_STATES = [STATES::RECEIVED, STATES::IN_PREPARATION,
                     STATES::ON_DELIVERY, STATES::DELIVERED,
@@ -37,6 +33,9 @@ class Order
   BASE_TIME = { 'menu_individual' => 10,
                 'menu_pareja' => 15,
                 'menu_familiar' => 20 }.freeze
+
+  MIN_RATING = 1
+  MAX_RATING = 5
 
   # rubocop:disable Metrics/AbcSize
   def initialize(data = {})
@@ -82,6 +81,9 @@ class Order
   def rating=(new_rating)
     raise InvalidOperationError, 'order_not_delivered' if !new_rating.nil? &&
                                                           !@state.name?(STATES::DELIVERED)
+    unless (MIN_RATING..MAX_RATING).include?(new_rating)
+      raise InvalidParameterError, 'invalid_rating'
+    end
 
     @rating = new_rating
 
