@@ -15,16 +15,9 @@ describe Commission do
   end
 
   describe 'creation' do
-    it 'should de valid when order_cost is positive number' do
-      commision = described_class.new({ order_cost: 100 }, default_weather)
-      expect(commision.valid?).to eq true
-      expect(commision.errors.empty?).to eq true
-    end
-
-    it 'should de valid when order_cost is blank is replaced by zero' do
+    it 'should use zero as cost if nothing is supplied' do
       commision = described_class.new({}, default_weather)
-      expect(commision.valid?).to eq true
-      expect(commision.errors.empty?).to eq true
+
       expect(commision.order_cost.zero?).to eq true
     end
 

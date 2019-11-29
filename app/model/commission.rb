@@ -1,9 +1,6 @@
-require 'active_model'
 require_relative './weather/non_rainy_weather'
 
 class Commission
-  include ActiveModel::Validations
-
   attr_accessor :id, :amount, :order_cost, :updated_on, :created_on, :weather
 
   ROUNDING_DIGITS = 2
