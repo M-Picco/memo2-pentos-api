@@ -83,6 +83,14 @@ describe Order do
 
       expect(order.state).to be_a(DeliveredState)
     end
+
+    it 'initializes with a state received through constructor' do
+      delivered_state = StateFactory.new(weather).create_for('entregado')
+
+      order = described_class.new(client: client, type: 'menu_individual', state: delivered_state)
+
+      expect(order.state).to be_a(DeliveredState)
+    end
   end
 
   describe 'rating' do

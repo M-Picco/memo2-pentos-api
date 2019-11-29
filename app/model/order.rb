@@ -43,7 +43,7 @@ class Order
     @client = data[:client]
     @updated_on = data[:updated_on]
     @created_on = data[:created_on]
-    @state = RecievedState.new
+    @state = data[:state] || RecievedState.new
     @rating = data[:rating]
     @assigned_to = data[:assigned_to]
 
