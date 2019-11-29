@@ -6,8 +6,8 @@ describe WaitingTimeFilter do
   let(:delivery) { Delivery.new('username' => 'pepemoto') }
 
   let(:client) do
-    Client.new('username' => 'jperez', 'phone' => '4123-4123',
-               'address' => 'Av Paseo Colón 840')
+    Client.new(username: 'jperez', phone: '4123-4123',
+               address: 'Av Paseo Colón 840')
   end
   let(:order) do
     Order.new(client: client, type: 'menu_pareja',

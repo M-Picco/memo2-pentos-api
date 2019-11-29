@@ -15,12 +15,12 @@ class Client
   validates :address, presence: true, length: { minimum: 5, message: 'invalid_address' }
 
   def initialize(data = {})
-    @id = data['id'] || data[:id]
-    @name = data['username'] || data[:username]
-    @phone = data['phone']
-    @address = data['address']
-    @updated_on = data['updated_on']
-    @created_on = data['created_on']
+    @id = data[:id]
+    @name = data[:username]
+    @phone = data[:phone]
+    @address = data[:address]
+    @updated_on = data[:updated_on]
+    @created_on = data[:created_on]
   end
 
   def username?(username)

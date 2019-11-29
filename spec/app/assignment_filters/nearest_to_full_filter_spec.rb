@@ -9,8 +9,8 @@ describe NearestToFullFilter do
               assigned_to: delivery.username)
   end
   let(:client) do
-    Client.new('username' => 'jperez', 'phone' => '4123-4123',
-               'address' => 'Av Paseo Colón 840')
+    Client.new(username: 'jperez', phone: '4123-4123',
+               address: 'Av Paseo Colón 840')
   end
   # rubocop:disable RSpec/ExampleLength
 

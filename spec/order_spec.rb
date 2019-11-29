@@ -11,8 +11,8 @@ describe Order do
   let(:weather) { NonRainyWeather.new }
 
   let(:client) do
-    Client.new('username' => 'jperez', 'phone' => '4123-4123',
-               'address' => 'Av Paseo Colón 840')
+    Client.new(username: 'jperez', phone: '4123-4123',
+               address: 'Av Paseo Colón 840')
   end
 
   describe 'model' do

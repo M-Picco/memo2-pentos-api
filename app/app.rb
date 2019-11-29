@@ -44,7 +44,9 @@ post '/client' do
 
   raise AlreadyRegisteredError if ClientRepository.new.exists?(params['username'])
 
-  client = Client.new(params)
+  client = Client.new(username: params['username'],
+                      phone: params['phone'],
+                      address: params['address'])
 
   raise FailedSaveOperationError, client unless ClientRepository.new.save(client)
 

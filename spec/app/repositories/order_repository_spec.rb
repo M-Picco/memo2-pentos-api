@@ -14,15 +14,15 @@ describe OrderRepository do
   let(:weather) { NonRainyWeather.new }
 
   let(:client) do
-    client = Client.new('username' => 'jperez', 'phone' => '4123-4123',
-                        'address' => 'Av Paseo Colón 840')
+    client = Client.new(username: 'jperez', phone: '4123-4123',
+                        address: 'Av Paseo Colón 840')
     ClientRepository.new.save(client)
     client
   end
 
   let(:client_two) do
-    client = Client.new('username' => 'flopez', 'phone' => '4123-4123',
-                        'address' => 'Av Paseo Colón 840')
+    client = Client.new(username: 'flopez', phone: '4123-4123',
+                        address: 'Av Paseo Colón 840')
     ClientRepository.new.save(client)
     client
   end

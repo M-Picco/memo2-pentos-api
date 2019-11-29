@@ -11,8 +11,8 @@ require 'byebug'
 describe DeliveryAssigner do
   let(:order) { Order.new(client: client, type: 'menu_individual') }
   let(:client) do
-    Client.new('username' => 'jperez', 'phone' => '4123-4123',
-               'address' => 'Av Paseo Colón 840')
+    Client.new(username: 'jperez', phone: '4123-4123',
+               address: 'Av Paseo Colón 840')
   end
   let(:client_repository) { ClientRepository.new }
   let(:orders_repository) { OrderRepository.new }

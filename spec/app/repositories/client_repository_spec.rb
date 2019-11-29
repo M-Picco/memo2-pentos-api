@@ -5,8 +5,8 @@ describe ClientRepository do
   let(:repository) { described_class.new }
 
   it 'create new client' do
-    client = Client.new('username' => 'jperez',
-                        'phone' => '4444-4564', 'address' => 'Av 1234')
+    client = Client.new(username: 'jperez',
+                        phone: '4444-4564', address: 'Av 1234')
     repository.save(client)
     expect(client.id).to be > 0
   end
@@ -14,8 +14,8 @@ describe ClientRepository do
   describe 'find_by_name' do
     # rubocop:disable RSpec/ExampleLength:
     it 'finds a user by name' do
-      client = Client.new('username' => 'jperez',
-                          'phone' => '4444-4564', 'address' => 'Av 1234')
+      client = Client.new(username: 'jperez',
+                          phone: '4444-4564', address: 'Av 1234')
 
       repository.save(client)
 
@@ -34,8 +34,8 @@ describe ClientRepository do
 
   describe 'exists' do
     it 'returns true for an existing client' do
-      client = Client.new('username' => 'jperez',
-                          'phone' => '4444-4564', 'address' => 'Av 1234')
+      client = Client.new(username: 'jperez',
+                          phone: '4444-4564', address: 'Av 1234')
       repository.save(client)
 
       exists = repository.exists?('jperez')
@@ -50,8 +50,8 @@ describe ClientRepository do
     end
 
     it 'returns false for an inexesisting client with clients registered' do
-      client = Client.new('username' => 'jperez',
-                          'phone' => '4444-4564', 'address' => 'Av 1234')
+      client = Client.new(username: 'jperez',
+                          phone: '4444-4564', address: 'Av 1234')
       repository.save(client)
 
       exists = repository.exists?('jdoe')

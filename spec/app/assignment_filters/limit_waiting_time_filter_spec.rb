@@ -12,8 +12,8 @@ describe LimitWaitingTimeFilter do
                  'waiting_time' => 10)
   end
   let(:client) do
-    client = Client.new('username' => 'jperez', 'phone' => '4123-4123',
-                        'address' => 'Av Paseo Colón 840')
+    client = Client.new(username: 'jperez', phone: '4123-4123',
+                        address: 'Av Paseo Colón 840')
     ClientRepository.new.save(client)
     client
   end

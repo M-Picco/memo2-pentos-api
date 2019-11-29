@@ -4,8 +4,8 @@ describe DeliveryBag do
   subject(:bag) { described_class.new }
 
   let(:client) do
-    Client.new('username' => 'jperez', 'phone' => '4123-4123',
-               'address' => 'Av Paseo Colón 840')
+    Client.new(username: 'jperez', phone: '4123-4123',
+               address: 'Av Paseo Colón 840')
   end
 
   let(:order_familiar) { Order.new(client: client, type: 'menu_familiar') }
