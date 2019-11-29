@@ -114,19 +114,6 @@ describe OrderRepository do
     end
 
     it 'does not change the rating of an order with invalid rating
-        due to not being in delivered state' do
-      order = Order.new(client: client, type: 'menu_individual')
-      repository.save(order)
-
-      order.rating = 3
-      repository.save(order)
-
-      reloaded_order = repository.find(order.id)
-
-      expect(reloaded_order.rating).to be_nil
-    end
-
-    it 'does not change the rating of an order with invalid rating
         due to it being above 5' do
       order = Order.new(client: client, type: 'menu_individual')
       order.state = DeliveredState.new

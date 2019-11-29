@@ -86,46 +86,28 @@ describe Order do
   end
 
   describe 'rating' do
-    it 'is valid when no rating' do
-      expect(order.rating).to be_nil
-      expect(order.valid?).to eq(true)
-    end
-
     it 'is valid when rating with 3' do
       order.state =  StateFactory.new(weather).create_for('entregado')
 
       order.rating = 3
 
       expect(order.rating).to eq(3)
-      expect(order.valid?).to eq(true)
     end
 
-    it 'is invalid when rating an order in received state' do
-      order.rating = 3
-
-      expect(order.rating).to eq(3)
-      expect(order.valid?).to eq(false)
-      expect(order.errors.messages.first[1].first).to eq('order_not_delivered')
+    it 'raises InvalidOperationError when rating an order in received state' do
+      expect { order.rating = 3 }.to raise_error('order_not_delivered')
     end
 
-    it 'is invalid when rating an order in in_preparation state' do
+    it 'raises InvalidOperationError when rating an order in in_preparation state' do
       order.state = StateFactory.new(weather).create_for('en_preparacion')
 
-      order.rating = 3
-
-      expect(order.rating).to eq(3)
-      expect(order.valid?).to eq(false)
-      expect(order.errors.messages.first[1].first).to eq('order_not_delivered')
+      expect { order.rating = 3 }.to raise_error('order_not_delivered')
     end
 
-    it 'is invalid when rating an order in delivering state' do
-      order.state =  StateFactory.new(weather).create_for('en_entrega')
+    it 'raises InvalidOperationError when rating an order in delivering state' do
+      order.state = StateFactory.new(weather).create_for('en_entrega')
 
-      order.rating = 3
-
-      expect(order.rating).to eq(3)
-      expect(order.valid?).to eq(false)
-      expect(order.errors.messages.first[1].first).to eq('order_not_delivered')
+      expect { order.rating = 3 }.to raise_error('order_not_delivered')
     end
 
     it 'is invalid to rate an order with a value 1' do

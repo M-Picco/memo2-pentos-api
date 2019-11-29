@@ -2,6 +2,7 @@ require 'active_model'
 require_relative '../errors/invalid_menu_error'
 require_relative '../errors/order_not_cancellable_error'
 require_relative '../errors/invalid_parameter_error'
+require_relative '../errors/invalid_operation_error'
 require_relative '../states/state_factory'
 require_relative '../states/recieved_state'
 require_relative '../states/inpreparation_state'
@@ -20,8 +21,6 @@ class Order
                                      less_than_or_equal_to: 5,
                                      message: 'invalid_rating' },
                      allow_nil: true
-
-  validate :valid_state_for_rating
 
   ALLOWED_STATES = [STATES::RECEIVED, STATES::IN_PREPARATION,
                     STATES::ON_DELIVERY, STATES::DELIVERED,
@@ -81,6 +80,9 @@ class Order
   end
 
   def rating=(new_rating)
+    raise InvalidOperationError, 'order_not_delivered' if !new_rating.nil? &&
+                                                          !@state.name?(STATES::DELIVERED)
+
     @rating = new_rating
 
     return if @commission.nil?
@@ -101,12 +103,5 @@ class Order
 
   def duration
     (@delivered_on - @created_on) / 60.0 # in minutes
-  end
-
-  private
-
-  def valid_state_for_rating
-    return errors.add(:state_for_rating, 'order_not_delivered') if !@rating.nil? &&
-                                                                   !@state.name?(STATES::DELIVERED)
   end
 end
