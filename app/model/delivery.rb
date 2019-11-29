@@ -1,8 +1,4 @@
-require 'active_model'
-
 class Delivery
-  include ActiveModel::Validations
-
   attr_accessor :id, :username, :updated_on, :created_on, :bag, :delivered_count,
                 :waiting_time
 

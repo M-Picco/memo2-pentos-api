@@ -14,22 +14,10 @@ describe Delivery do
   end
 
   describe 'valid?' do
-    it 'should be valid when username not blank' do
-      delivery = described_class.new(username: 'pepemoto')
-      expect(delivery.valid?).to eq true
-      expect(delivery.errors.empty?).to eq true
-    end
-
     it 'should raise InvalidParameterError when username size is shorter than five characters' do
       expect do
         described_class.new(username: 'pepe')
       end.to raise_error('invalid_username')
-    end
-
-    it 'should be valid when username size is five characters' do
-      delivery = described_class.new(username: 'pepes')
-      expect(delivery.valid?).to eq true
-      expect(delivery.errors.empty?).to eq true
     end
 
     it 'should raise InvalidParameterError when username size
@@ -43,12 +31,6 @@ describe Delivery do
       expect do
         described_class.new(username: 'elseniordelosanillos')
       end.to raise_error('invalid_username')
-    end
-
-    it 'should be valid when username size is nineteen characters' do
-      delivery = described_class.new(username: 'elsenordelosanillos')
-      expect(delivery.valid?).to eq true
-      expect(delivery.errors.empty?).to eq true
     end
   end
 end
