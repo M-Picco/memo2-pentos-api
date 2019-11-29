@@ -46,7 +46,7 @@ class BaseRepository
   end
 
   def update(a_record)
-    if a_record.valid?
+    if valid?(a_record)
       find_dataset_by_id(a_record.id).update(update_changeset(a_record))
     else
       0
@@ -54,7 +54,7 @@ class BaseRepository
   end
 
   def insert(a_record)
-    if a_record.valid?
+    if valid?(a_record)
       id = dataset.insert(insert_changeset(a_record))
       a_record.id = id
     end
@@ -91,5 +91,11 @@ class BaseRepository
 
   def pk_column
     Sequel[self.class.table_name][:id]
+  end
+
+  private
+
+  def valid?(a_record)
+    a_record.class.method_defined?(:valid?) ? a_record.valid? : true
   end
 end
