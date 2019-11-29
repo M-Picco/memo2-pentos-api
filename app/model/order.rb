@@ -12,7 +12,6 @@ require_relative '../states/cancelled_state'
 require_relative '../states/state_names'
 
 class Order
-  include ActiveModel::Validations
   attr_reader :state, :type, :rating
   attr_accessor :id, :client, :updated_on, :created_on, :assigned_to, :commission,
                 :estimated_time, :delivered_on, :on_delivery_time
