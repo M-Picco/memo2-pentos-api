@@ -71,28 +71,24 @@ describe Order do
       order.state = StateFactory.new(weather).create_for('en_preparacion')
 
       expect(order.state).to be_a(InPreparationState)
-      expect(order.valid?).to eq(true)
     end
 
     it 'allows delivery state' do
       order.state = StateFactory.new(weather).create_for('en_entrega')
 
       expect(order.state).to be_a(OnDeliveryState)
-      expect(order.valid?).to eq(true)
     end
 
     it 'allows delivered state' do
       order.state = StateFactory.new(weather).create_for('entregado')
 
       expect(order.state).to be_a(DeliveredState)
-      expect(order.valid?).to eq(true)
     end
 
     it 'is invalid when changing to an invalid state' do
-      order.state = StateFactory.new(weather).create_for('not_contemplated_state')
+      invalid_state = StateFactory.new(weather).create_for('not_contemplated_state')
 
-      expect(order.state).to be_a(InvalidState)
-      expect(order.valid?).to eq(false)
+      expect { order.state = invalid_state }.to raise_error('invalid_state')
     end
   end
 
