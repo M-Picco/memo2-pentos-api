@@ -14,7 +14,6 @@ gem 'rake'
 gem 'sinatra'
 
 # Component requirements
-gem 'activemodel', require: 'active_model'
 gem 'faraday'
 gem 'json'
 gem 'pg', '~> 0.18'

@@ -1,4 +1,3 @@
-require 'active_model'
 require_relative '../errors/invalid_menu_error'
 require_relative '../errors/order_not_cancellable_error'
 require_relative '../errors/invalid_parameter_error'
