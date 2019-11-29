@@ -8,8 +8,6 @@ class Client
   VALID_NAME_REGEX = /\A[_A-z0-9]*((-)*[_A-z0-9])*\Z/.freeze
   VALID_PHONE_REGEX = /\A(\d)+-?(\d)+\Z/.freeze
 
-  validates :phone, presence: true, format: { with: VALID_PHONE_REGEX,
-                                              message: 'invalid_phone' }
   validates :address, presence: true, length: { minimum: 5, message: 'invalid_address' }
 
   def initialize(data = {})
@@ -18,7 +16,11 @@ class Client
     raise InvalidParameterError, 'invalid_username' unless valid_username?(data[:username])
 
     @name = data[:username]
+
+    raise InvalidParameterError, 'invalid_phone' unless valid_phone?(data[:phone])
+
     @phone = data[:phone]
+
     @address = data[:address]
     @updated_on = data[:updated_on]
     @created_on = data[:created_on]
@@ -32,5 +34,9 @@ class Client
 
   def valid_username?(username)
     !username.blank? && VALID_NAME_REGEX.match?(username)
+  end
+
+  def valid_phone?(phone)
+    !phone.blank? && VALID_PHONE_REGEX.match?(phone)
   end
 end
