@@ -1,8 +1,4 @@
-require 'active_model'
-
 class Client
-  include ActiveModel::Validations
-
   attr_accessor :id, :name, :phone, :address, :updated_on, :created_on
 
   VALID_NAME_REGEX = /\A[_A-z0-9]*((-)*[_A-z0-9])*\Z/.freeze
