@@ -4,7 +4,6 @@ require_relative '../app/states/recieved_state'
 require_relative '../app/states/inpreparation_state'
 require_relative '../app/states/ondelivery_state'
 require_relative '../app/states/delivered_state'
-require_relative '../app/states/invalid_state'
 
 describe Order do
   subject(:order) { described_class.new(client: client, type: 'menu_individual') }
@@ -12,8 +11,8 @@ describe Order do
   let(:weather) { NonRainyWeather.new }
 
   let(:client) do
-    Client.new('username' => 'jperez', 'phone' => '4123-4123',
-               'address' => 'Av Paseo Colón 840')
+    Client.new(username: 'jperez', phone: '4123-4123',
+               address: 'Av Paseo Colón 840')
   end
 
   describe 'model' do
@@ -36,12 +35,12 @@ describe Order do
 
     it 'fails to create an order without a type' do
       expect { described_class.new(client: client) }
-        .to raise_error(InvalidMenuError)
+        .to raise_error(ERRORS::INVALID_MENU)
     end
 
     it 'fails to create an order with an invalid type' do
       expect { described_class.new(client: client, type: 'menu_invalido') }
-        .to raise_error(InvalidMenuError)
+        .to raise_error(ERRORS::INVALID_MENU)
     end
   end
 
@@ -71,96 +70,70 @@ describe Order do
       order.state = StateFactory.new(weather).create_for('en_preparacion')
 
       expect(order.state).to be_a(InPreparationState)
-      expect(order.valid?).to eq(true)
     end
 
     it 'allows delivery state' do
       order.state = StateFactory.new(weather).create_for('en_entrega')
 
       expect(order.state).to be_a(OnDeliveryState)
-      expect(order.valid?).to eq(true)
     end
 
     it 'allows delivered state' do
       order.state = StateFactory.new(weather).create_for('entregado')
 
       expect(order.state).to be_a(DeliveredState)
-      expect(order.valid?).to eq(true)
     end
 
-    it 'is invalid when changing to an invalid state' do
-      order.state = StateFactory.new(weather).create_for('not_contemplated_state')
+    it 'initializes with a state received through constructor' do
+      delivered_state = StateFactory.new(weather).create_for('entregado')
 
-      expect(order.state).to be_a(InvalidState)
-      expect(order.valid?).to eq(false)
+      order = described_class.new(client: client, type: 'menu_individual', state: delivered_state)
+
+      expect(order.state).to be_a(DeliveredState)
     end
   end
 
   describe 'rating' do
-    it 'is valid when no rating' do
-      expect(order.rating).to be_nil
-      expect(order.valid?).to eq(true)
-    end
-
     it 'is valid when rating with 3' do
       order.state =  StateFactory.new(weather).create_for('entregado')
 
       order.rating = 3
 
       expect(order.rating).to eq(3)
-      expect(order.valid?).to eq(true)
     end
 
-    it 'is invalid when rating an order in received state' do
-      order.rating = 3
-
-      expect(order.rating).to eq(3)
-      expect(order.valid?).to eq(false)
-      expect(order.errors.messages.first[1].first).to eq('order_not_delivered')
+    it 'raises InvalidOperationError when rating an order in received state' do
+      expect { order.rating = 3 }.to raise_error(ERRORS::ORDER_NOT_DELIVERED)
     end
 
-    it 'is invalid when rating an order in in_preparation state' do
+    it 'raises InvalidOperationError when rating an order in in_preparation state' do
       order.state = StateFactory.new(weather).create_for('en_preparacion')
 
-      order.rating = 3
-
-      expect(order.rating).to eq(3)
-      expect(order.valid?).to eq(false)
-      expect(order.errors.messages.first[1].first).to eq('order_not_delivered')
+      expect { order.rating = 3 }.to raise_error(ERRORS::ORDER_NOT_DELIVERED)
     end
 
-    it 'is invalid when rating an order in delivering state' do
-      order.state =  StateFactory.new(weather).create_for('en_entrega')
+    it 'raises InvalidOperationError when rating an order in delivering state' do
+      order.state = StateFactory.new(weather).create_for('en_entrega')
 
-      order.rating = 3
-
-      expect(order.rating).to eq(3)
-      expect(order.valid?).to eq(false)
-      expect(order.errors.messages.first[1].first).to eq('order_not_delivered')
+      expect { order.rating = 3 }.to raise_error(ERRORS::ORDER_NOT_DELIVERED)
     end
 
-    it 'is invalid to rate an order with a value 1' do
-      order.state =  StateFactory.new(weather).create_for('entregado')
+    it 'raises InvalidParameterError when trying to rate an order with a value below 1' do
+      order.state = StateFactory.new(weather).create_for('entregado')
 
-      order.rating = -1
-
-      expect(order.valid?).to eq(false)
-      expect(order.errors.messages.first[1].first).to eq('invalid_rating')
+      expect { order.rating = -1 }.to raise_error(ERRORS::INVALID_RATING)
     end
 
-    it 'is invalid to rate an order with a value 6' do
-      order.state =  StateFactory.new(weather).create_for('entregado')
+    it 'raises InvalidParameterError when trying to rate an order with a value above 5' do
+      order.state = StateFactory.new(weather).create_for('entregado')
 
-      order.rating = 6
-
-      expect(order.valid?).to eq(false)
-      expect(order.errors.messages.first[1].first).to eq('invalid_rating')
+      expect { order.rating = 6 }.to raise_error(ERRORS::INVALID_RATING)
     end
   end
 
   describe 'delivery assigment' do
     it 'should assign when status is in "en_entrega"' do
-      delivery = Delivery.new('username' => 'pepemoto')
+      delivery = Delivery.new(username: 'pepemoto')
       DeliveryRepository.new.save(delivery)
       order.change_state(StateFactory.new(weather).create_for('en_entrega'))
       expect(order.assigned_to).to eq(delivery.username)

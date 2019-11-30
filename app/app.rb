@@ -1,25 +1,22 @@
 require 'sinatra'
 require 'json'
+require_relative 'helpers/order_helper'
+require_relative 'helpers/blank'
 require_relative 'model/client.rb'
 require_relative 'model/order.rb'
 require_relative 'model/delivery.rb'
+require_relative 'model/weather/configurable_weather_service'
+require_relative 'model/weather/open_weather_service'
+require_relative 'model/time_estimator'
 require_relative 'repositories/client_repository.rb'
 require_relative 'repositories/order_repository.rb'
 require_relative 'repositories/delivery_repository.rb'
-require_relative 'errors/order_not_found_error'
-require_relative 'errors/order_not_delivered_error'
-require_relative 'errors/invalid_menu_error'
 require_relative 'errors/client_has_no_orders_error'
-require_relative 'errors/failed_save_operation_error'
 require_relative 'errors/already_registered_error'
-require_relative 'errors/order_not_cancellable_error'
 require_relative 'errors/domain_error'
+require_relative 'errors/error_messages'
 require_relative 'states/state_factory'
 require_relative 'states/delivered_state'
-require_relative 'model/weather/configurable_weather_service'
-require_relative 'model/weather/open_weather_service'
-require_relative 'helpers/order_helper'
-require_relative 'model/time_estimator'
 
 API_KEY = ENV['API_KEY'] || 'zaraza'
 
@@ -44,9 +41,11 @@ post '/client' do
 
   raise AlreadyRegisteredError if ClientRepository.new.exists?(params['username'])
 
-  client = Client.new(params)
+  client = Client.new(username: params['username'],
+                      phone: params['phone'],
+                      address: params['address'])
 
-  raise FailedSaveOperationError, client unless ClientRepository.new.save(client)
+  ClientRepository.new.save(client)
 
   { client_id: client.id }.to_json
 end
@@ -59,7 +58,7 @@ post '/client/:username/order' do
   client = ClientRepository.new.find_by_name(params['username'])
   order = Order.new(client: client, type: body['order'])
 
-  raise FailedSaveOperationError, order unless OrderRepository.new.save(order)
+  OrderRepository.new.save(order)
 
   { order_id: order.id }.to_json
 end
@@ -78,7 +77,7 @@ put '/order/:order_id/status' do
   order = repository.find_by_id(order_id)
   order.change_state(new_status)
 
-  raise FailedSaveOperationError, order unless repository.save(order)
+  repository.save(order)
 
   status 200
 end
@@ -107,9 +106,9 @@ post '/delivery' do
 
   raise AlreadyRegisteredError if DeliveryRepository.new.exists?(params['username'])
 
-  delivery = Delivery.new(params)
+  delivery = Delivery.new(username: params['username'])
 
-  raise FailedSaveOperationError, delivery unless DeliveryRepository.new.save(delivery)
+  DeliveryRepository.new.save(delivery)
 
   status 200
   { delivery_id: delivery.id }.to_json
@@ -129,7 +128,7 @@ post '/client/:username/order/:order_id/rate' do
   order = OrderRepository.new.find_for_user(order_id, username)
   order.rating = rating
 
-  raise FailedSaveOperationError, order unless OrderRepository.new.save(order)
+  OrderRepository.new.save(order)
 
   { rating: rating }.to_json
 end

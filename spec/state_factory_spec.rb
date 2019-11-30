@@ -4,7 +4,6 @@ require_relative '../app/states/recieved_state'
 require_relative '../app/states/inpreparation_state'
 require_relative '../app/states/ondelivery_state'
 require_relative '../app/states/delivered_state'
-require_relative '../app/states/invalid_state'
 
 describe StateFactory do
   subject(:factory) { described_class.new(weather) }
@@ -32,14 +31,8 @@ describe StateFactory do
       expect(return_state).to be_a(DeliveredState)
     end
 
-    it 'should return InvalidState class when I pass "invalid_state"' do
-      return_state = factory.create_for('invalid_state')
-      expect(return_state).to be_a(InvalidState)
-    end
-
-    it 'should return InvalidState class when I pass "invalid_name"' do
-      return_state = factory.create_for('invalid_name')
-      expect(return_state).to be_a(InvalidState)
+    it 'should raise InvalidaParameterError class when I pass "invalid_state"' do
+      expect { factory.create_for('invalid_name') }.to raise_error(ERRORS::INVALID_STATE)
     end
 
     it 'should return CancelledState when I pass "cancelado"' do

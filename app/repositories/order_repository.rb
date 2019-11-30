@@ -71,16 +71,20 @@ class OrderRepository < BaseRepository
   protected
 
   def load_object(a_record)
-    order = Order.new(a_record)
+    client = ClientRepository.new.find_by_name(a_record[:client_username])
 
-    order.client = ClientRepository.new.find_by_name(a_record[:client_username])
+    commission = CommissionRepository.new.find_by_id(a_record[:commission])
 
-    order.commission = CommissionRepository.new.find_by_id(a_record[:commission])
+    weather = commission.weather
+    state = StateFactory.new(weather).create_for(a_record[:state])
 
-    weather = order.commission.weather
-    order.state = StateFactory.new(weather).create_for(a_record[:state])
+    relations_data = {
+      client: client,
+      commission: commission,
+      state: state
+    }
 
-    order
+    Order.new(a_record.merge(relations_data))
   end
 
   def changeset(order)

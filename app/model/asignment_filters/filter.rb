@@ -2,7 +2,7 @@ class Filter
   attr_accessor :next_filter
 
   def initialize
-    raise 'Subclass must implement'
+    raise ERRORS::SUBCLASS_RESPONSIBILITY
   end
 
   def run(deliveries, order)
@@ -15,6 +15,6 @@ class Filter
   end
 
   def apply(_deliveries, _order)
-    raise 'Subclass must implement'
+    raise ERRORS::SUBCLASS_RESPONSIBILITY
   end
 end

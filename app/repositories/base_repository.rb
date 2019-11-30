@@ -46,18 +46,12 @@ class BaseRepository
   end
 
   def update(a_record)
-    if a_record.valid?
-      find_dataset_by_id(a_record.id).update(update_changeset(a_record))
-    else
-      0
-    end
+    find_dataset_by_id(a_record.id).update(update_changeset(a_record))
   end
 
   def insert(a_record)
-    if a_record.valid?
-      id = dataset.insert(insert_changeset(a_record))
-      a_record.id = id
-    end
+    id = dataset.insert(insert_changeset(a_record))
+    a_record.id = id
     a_record
   end
 
@@ -82,7 +76,7 @@ class BaseRepository
   end
 
   def changeset(_a_record)
-    raise 'Subclass must implement'
+    raise ERRORS::SUBCLASS_RESPONSIBILITY
   end
 
   def class_name

@@ -1,7 +1,7 @@
 require_relative './domain_error'
 
 class NoDeliveryAvailableError < DomainError
-  def initialize(msg = 'there are no deliveries available')
+  def initialize(msg = ERRORS::NO_DELIVERY_AVAILABLE)
     super
   end
 end

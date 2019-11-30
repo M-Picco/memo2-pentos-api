@@ -1,22 +1,25 @@
-require 'active_model'
-
 class Delivery
-  include ActiveModel::Validations
-
   attr_accessor :id, :username, :updated_on, :created_on, :bag, :delivered_count,
                 :waiting_time
 
-  validates :username, presence: { message: 'invalid_username' },
-                       length: { minimum: 5, maximum: 19, message: 'invalid_username' }
+  MIN_USER_LENGTH = 5
+  MAX_USER_LENGTH = 19
 
-  # rubocop:disable Metrics/CyclomaticComplexity
   def initialize(data = {})
-    @id = data['id'] || data[:id]
-    @username = data['username'] || data[:username]
-    @updated_on = data['updated_on'] || data[:updated_on]
-    @created_on = data['created_on'] || data[:created_on]
-    @delivered_count = data['delivered_count'] || 0
-    @waiting_time = data['waiting_time'] || 0
+    @id = data[:id]
+
+    raise InvalidParameterError, ERRORS::INVALID_USERNAME unless valid_username?(data[:username])
+
+    @username = data[:username]
+    @updated_on = data[:updated_on]
+    @created_on = data[:created_on]
+    @delivered_count = data[:delivered_count] || 0
+    @waiting_time = data[:waiting_time] || 0
   end
-  # rubocop:enable Metrics/CyclomaticComplexity
+
+  private
+
+  def valid_username?(username)
+    !username.blank? && (MIN_USER_LENGTH..MAX_USER_LENGTH).include?(username.size)
+  end
 end

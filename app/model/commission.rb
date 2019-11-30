@@ -1,12 +1,7 @@
-require 'active_model'
 require_relative './weather/non_rainy_weather'
 
 class Commission
-  include ActiveModel::Validations
-
   attr_accessor :id, :amount, :order_cost, :updated_on, :created_on, :weather
-
-  validates :order_cost, numericality: { greater_than_or_equal_to: 0 }
 
   ROUNDING_DIGITS = 2
 
@@ -18,6 +13,9 @@ class Commission
 
   def initialize(data, weather)
     @id = data[:id]
+
+    raise InvalidParameterError, ERRORS::INVALID_COST if (data[:order_cost] || 0).negative?
+
     @order_cost = data[:order_cost] || 0
     @updated_on = data[:updated_on]
     @created_on = data[:created_on]

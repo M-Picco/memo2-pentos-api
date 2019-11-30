@@ -1,7 +1,7 @@
 require_relative './domain_error'
 
 class ClientHasNoOrdersError < DomainError
-  def initialize(msg = 'there are no orders')
+  def initialize(msg = ERRORS::CLIENT_HAS_NO_ORDERS)
     super
   end
 end

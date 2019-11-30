@@ -6,8 +6,8 @@ describe TimeEstimator do
   let(:repository) { OrderRepository.new }
 
   let(:client) do
-    Client.new('username' => 'jperez', 'phone' => '4123-4123',
-               'address' => 'Av Paseo Colón 840')
+    Client.new(username: 'jperez', phone: '4123-4123',
+               address: 'Av Paseo Colón 840')
   end
 
   it 'should estimate 20 minutes when order type is menu_individual' do

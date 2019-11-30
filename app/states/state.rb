@@ -2,7 +2,7 @@ class State
   attr_reader :state_name
 
   def initialize
-    raise 'Subclass must implement'
+    raise ERRORS::SUBCLASS_RESPONSIBILITY
   end
 
   def on_enter(order); end

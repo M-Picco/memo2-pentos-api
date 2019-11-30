@@ -5,7 +5,6 @@ require_relative '../../../app/states/recieved_state'
 require_relative '../../../app/states/inpreparation_state'
 require_relative '../../../app/states/ondelivery_state'
 require_relative '../../../app/states/delivered_state'
-require_relative '../../../app/states/invalid_state'
 require 'date'
 require 'json'
 
@@ -15,15 +14,15 @@ describe OrderRepository do
   let(:weather) { NonRainyWeather.new }
 
   let(:client) do
-    client = Client.new('username' => 'jperez', 'phone' => '4123-4123',
-                        'address' => 'Av Paseo Colón 840')
+    client = Client.new(username: 'jperez', phone: '4123-4123',
+                        address: 'Av Paseo Colón 840')
     ClientRepository.new.save(client)
     client
   end
 
   let(:client_two) do
-    client = Client.new('username' => 'flopez', 'phone' => '4123-4123',
-                        'address' => 'Av Paseo Colón 840')
+    client = Client.new(username: 'flopez', phone: '4123-4123',
+                        address: 'Av Paseo Colón 840')
     ClientRepository.new.save(client)
     client
   end
@@ -113,47 +112,6 @@ describe OrderRepository do
 
       expect(reloaded_order.rating).to eq(3)
     end
-
-    it 'does not change the rating of an order with invalid rating
-        due to not being in delivered state' do
-      order = Order.new(client: client, type: 'menu_individual')
-      repository.save(order)
-
-      order.rating = 3
-      repository.save(order)
-
-      reloaded_order = repository.find(order.id)
-
-      expect(reloaded_order.rating).to be_nil
-    end
-
-    it 'does not change the rating of an order with invalid rating
-        due to it being above 5' do
-      order = Order.new(client: client, type: 'menu_individual')
-      order.state = DeliveredState.new
-      repository.save(order)
-
-      order.rating = 6
-      repository.save(order)
-
-      reloaded_order = repository.find(order.id)
-
-      expect(reloaded_order.rating).to be_nil
-    end
-
-    it 'does not change the rating of an order with invalid rating
-        due to it being below 1' do
-      order = Order.new(client: client, type: 'menu_individual')
-      order.state = DeliveredState.new
-      repository.save(order)
-
-      order.rating = 0
-      repository.save(order)
-
-      reloaded_order = repository.find(order.id)
-
-      expect(reloaded_order.rating).to be_nil
-    end
   end
 
   describe 'delivery assignment' do
@@ -161,7 +119,7 @@ describe OrderRepository do
       order = Order.new(client: client, type: 'menu_individual')
       repository.save(order)
 
-      delivery = Delivery.new('username' => 'pepemoto')
+      delivery = Delivery.new(username: 'pepemoto')
       DeliveryRepository.new.save(delivery)
 
       order.change_state(StateFactory.new(weather).create_for('en_entrega'))
@@ -289,7 +247,7 @@ describe OrderRepository do
                 assigned_to: delivery.username)
     end
 
-    let(:delivery) { Delivery.new('username' => 'pepemoto') }
+    let(:delivery) { Delivery.new(username: 'pepemoto') }
 
     it 'should return "en_entrega" orders assigned to delivery' do
       ClientRepository.new.save(client)
@@ -355,7 +313,7 @@ describe OrderRepository do
 
   describe 'on_delivery time' do
     let(:order_two) do
-      delivery = Delivery.new('username' => 'pepemoto')
+      delivery = Delivery.new(username: 'pepemoto')
       DeliveryRepository.new.save(delivery)
 
       order = Order.new(client: client, type: 'menu_individual')
@@ -366,7 +324,7 @@ describe OrderRepository do
       order
     end
     let(:order) do
-      delivery = Delivery.new('username' => 'pepemoto')
+      delivery = Delivery.new(username: 'pepemoto')
       DeliveryRepository.new.save(delivery)
 
       order = Order.new(client: client, type: 'menu_individual')
@@ -377,7 +335,7 @@ describe OrderRepository do
       order
     end
     let(:delivery) do
-      delivery = Delivery.new('username' => 'pepemoto')
+      delivery = Delivery.new(username: 'pepemoto')
       DeliveryRepository.new.save(delivery)
       delivery
     end

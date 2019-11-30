@@ -3,8 +3,8 @@ require 'integration_spec_helper'
 describe OrderHelper do
   let(:helper) { described_class.new }
   let(:order) do
-    client = Client.new('username' => 'jperez', 'phone' => '4123-4123',
-                        'address' => 'Av Paseo Colón 840')
+    client = Client.new(username: 'jperez', phone: '4123-4123',
+                        address: 'Av Paseo Colón 840')
     ClientRepository.new.save(client)
     order = Order.new(client: client, type: 'menu_individual')
     OrderRepository.new.save(order)

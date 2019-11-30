@@ -11,8 +11,8 @@ require 'byebug'
 describe DeliveryAssigner do
   let(:order) { Order.new(client: client, type: 'menu_individual') }
   let(:client) do
-    Client.new('username' => 'jperez', 'phone' => '4123-4123',
-               'address' => 'Av Paseo Colón 840')
+    Client.new(username: 'jperez', phone: '4123-4123',
+               address: 'Av Paseo Colón 840')
   end
   let(:client_repository) { ClientRepository.new }
   let(:orders_repository) { OrderRepository.new }
@@ -25,7 +25,7 @@ describe DeliveryAssigner do
   end
 
   it 'should return a delivery I save' do
-    delivery = Delivery.new('username' => 'pepemoto')
+    delivery = Delivery.new(username: 'pepemoto')
     repository.save(delivery)
     sorting_hat.assign_to(order)
 
@@ -33,7 +33,7 @@ describe DeliveryAssigner do
   end
 
   it 'given an order, delivery assigner should assign it a delivery' do
-    delivery = Delivery.new('username' => 'pepemoto')
+    delivery = Delivery.new(username: 'pepemoto')
     repository.save(delivery)
     sorting_hat.assign_to(order)
     expect(order.assigned_to).not_to eq(nil)
@@ -41,8 +41,8 @@ describe DeliveryAssigner do
   # rubocop:disable RSpect/ExampleLength
 
   it 'should assign the delivery with less delivered orders' do
-    delivery = Delivery.new('username' => 'pepemoto')
-    delivery2 = Delivery.new('username' => 'pepeauto')
+    delivery = Delivery.new(username: 'pepemoto')
+    delivery2 = Delivery.new(username: 'pepeauto')
     order = Order.new(client: client, type: 'menu_individual',
                       assigned_to: delivery.username)
     order.state = DeliveredState.new
@@ -59,8 +59,8 @@ describe DeliveryAssigner do
   it 'given an order, delivery assigner should assign the nearest to fill its bag' do
     client_repository.save(client)
 
-    delivery = Delivery.new('username' => 'pepemoto')
-    delivery2 = Delivery.new('username' => 'pepeauto')
+    delivery = Delivery.new(username: 'pepemoto')
+    delivery2 = Delivery.new(username: 'pepeauto')
 
     repository.save(delivery)
     repository.save(delivery2)
@@ -88,7 +88,7 @@ describe DeliveryAssigner do
 
   it 'should not assigned if are deliveries waiting more than 10 minutes' do
     date = Time.now.round
-    delivery = Delivery.new('username' => 'pepemoto')
+    delivery = Delivery.new(username: 'pepemoto')
 
     repository.save(delivery)
     client_repository.save(client)
