@@ -1,4 +1,3 @@
-require_relative '../errors/invalid_menu_error'
 require_relative '../errors/order_not_cancellable_error'
 require_relative '../errors/invalid_parameter_error'
 require_relative '../errors/invalid_operation_error'
@@ -47,7 +46,7 @@ class Order
     @rating = data[:rating]
     @assigned_to = data[:assigned_to]
 
-    raise InvalidMenuError unless VALID_TYPES.key?(data[:type])
+    raise InvalidParameterError, 'invalid_menu' unless VALID_TYPES.key?(data[:type])
 
     @weather = data[:weather]
     @type = data[:type]

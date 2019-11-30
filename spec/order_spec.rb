@@ -35,12 +35,12 @@ describe Order do
 
     it 'fails to create an order without a type' do
       expect { described_class.new(client: client) }
-        .to raise_error(InvalidMenuError)
+        .to raise_error('invalid_menu')
     end
 
     it 'fails to create an order with an invalid type' do
       expect { described_class.new(client: client, type: 'menu_invalido') }
-        .to raise_error(InvalidMenuError)
+        .to raise_error('invalid_menu')
     end
   end
 
