@@ -35,12 +35,12 @@ describe Order do
 
     it 'fails to create an order without a type' do
       expect { described_class.new(client: client) }
-        .to raise_error('invalid_menu')
+        .to raise_error(ERRORS::INVALID_MENU)
     end
 
     it 'fails to create an order with an invalid type' do
       expect { described_class.new(client: client, type: 'menu_invalido') }
-        .to raise_error('invalid_menu')
+        .to raise_error(ERRORS::INVALID_MENU)
     end
   end
 
@@ -103,31 +103,31 @@ describe Order do
     end
 
     it 'raises InvalidOperationError when rating an order in received state' do
-      expect { order.rating = 3 }.to raise_error('order_not_delivered')
+      expect { order.rating = 3 }.to raise_error(ERRORS::ORDER_NOT_DELIVERED)
     end
 
     it 'raises InvalidOperationError when rating an order in in_preparation state' do
       order.state = StateFactory.new(weather).create_for('en_preparacion')
 
-      expect { order.rating = 3 }.to raise_error('order_not_delivered')
+      expect { order.rating = 3 }.to raise_error(ERRORS::ORDER_NOT_DELIVERED)
     end
 
     it 'raises InvalidOperationError when rating an order in delivering state' do
       order.state = StateFactory.new(weather).create_for('en_entrega')
 
-      expect { order.rating = 3 }.to raise_error('order_not_delivered')
+      expect { order.rating = 3 }.to raise_error(ERRORS::ORDER_NOT_DELIVERED)
     end
 
     it 'raises InvalidParameterError when trying to rate an order with a value below 1' do
       order.state = StateFactory.new(weather).create_for('entregado')
 
-      expect { order.rating = -1 }.to raise_error('invalid_rating')
+      expect { order.rating = -1 }.to raise_error(ERRORS::INVALID_RATING)
     end
 
     it 'raises InvalidParameterError when trying to rate an order with a value above 5' do
       order.state = StateFactory.new(weather).create_for('entregado')
 
-      expect { order.rating = 6 }.to raise_error('invalid_rating')
+      expect { order.rating = 6 }.to raise_error(ERRORS::INVALID_RATING)
     end
   end
 

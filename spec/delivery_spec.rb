@@ -17,20 +17,20 @@ describe Delivery do
     it 'should raise InvalidParameterError when username size is shorter than five characters' do
       expect do
         described_class.new(username: 'pepe')
-      end.to raise_error('invalid_username')
+      end.to raise_error(ERRORS::INVALID_USERNAME)
     end
 
     it 'should raise InvalidParameterError when username size
         is larger than twenty than characters' do
       expect do
         described_class.new(username: 'elseniordelosanillos123')
-      end.to raise_error('invalid_username')
+      end.to raise_error(ERRORS::INVALID_USERNAME)
     end
 
     it 'should raise InvalidParameterError when username size is twenty characters' do
       expect do
         described_class.new(username: 'elseniordelosanillos')
-      end.to raise_error('invalid_username')
+      end.to raise_error(ERRORS::INVALID_USERNAME)
     end
   end
 end

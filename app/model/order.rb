@@ -37,7 +37,7 @@ class Order
   def initialize(data = {})
     @id = data[:id]
 
-    raise InvalidParameterError, 'invalid_client' if data[:client].nil?
+    raise InvalidParameterError, ERRORS::INVALID_CLIENT if data[:client].nil?
 
     @client = data[:client]
     @updated_on = data[:updated_on]
@@ -46,7 +46,7 @@ class Order
     @rating = data[:rating]
     @assigned_to = data[:assigned_to]
 
-    raise InvalidParameterError, 'invalid_menu' unless VALID_TYPES.key?(data[:type])
+    raise InvalidParameterError, ERRORS::INVALID_MENU unless VALID_TYPES.key?(data[:type])
 
     @weather = data[:weather]
     @type = data[:type]
@@ -59,7 +59,7 @@ class Order
   def state=(new_state)
     valid_transition = ALLOWED_STATES.include?(new_state.state_name)
 
-    raise InvalidParameterError, 'invalid_state' unless valid_transition
+    raise InvalidParameterError, ERRORS::INVALID_STATE unless valid_transition
 
     @state = new_state
   end
@@ -78,10 +78,10 @@ class Order
   end
 
   def rating=(new_rating)
-    raise InvalidOperationError, 'order_not_delivered' if !new_rating.nil? &&
-                                                          !@state.name?(STATES::DELIVERED)
+    raise InvalidOperationError, ERRORS::ORDER_NOT_DELIVERED if !new_rating.nil? &&
+                                                                !@state.name?(STATES::DELIVERED)
     unless (MIN_RATING..MAX_RATING).include?(new_rating)
-      raise InvalidParameterError, 'invalid_rating'
+      raise InvalidParameterError, ERRORS::INVALID_RATING
     end
 
     @rating = new_rating

@@ -76,7 +76,7 @@ class BaseRepository
   end
 
   def changeset(_a_record)
-    raise 'Subclass must implement'
+    raise ERRORS::SUBCLASS_RESPONSIBILITY
   end
 
   def class_name

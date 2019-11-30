@@ -24,7 +24,7 @@ describe Commission do
     it 'should raise InvalidParameterError when order_cost is negative number' do
       expect do
         described_class.new({ order_cost: -1 }, default_weather)
-      end.to raise_error('invalid_cost')
+      end.to raise_error(ERRORS::INVALID_COST)
     end
   end
 

@@ -14,7 +14,7 @@ class Commission
   def initialize(data, weather)
     @id = data[:id]
 
-    raise InvalidParameterError, 'invalid_cost' if (data[:order_cost] || 0).negative?
+    raise InvalidParameterError, ERRORS::INVALID_COST if (data[:order_cost] || 0).negative?
 
     @order_cost = data[:order_cost] || 0
     @updated_on = data[:updated_on]

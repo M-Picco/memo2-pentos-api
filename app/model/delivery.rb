@@ -8,7 +8,7 @@ class Delivery
   def initialize(data = {})
     @id = data[:id]
 
-    raise InvalidParameterError, 'invalid_username' unless valid_username?(data[:username])
+    raise InvalidParameterError, ERRORS::INVALID_USERNAME unless valid_username?(data[:username])
 
     @username = data[:username]
     @updated_on = data[:updated_on]

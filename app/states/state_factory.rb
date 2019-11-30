@@ -18,7 +18,7 @@ class StateFactory
   end
 
   def create_for(state_name)
-    raise InvalidParameterError, 'invalid_state' unless STATE_CREATOR.include?(state_name)
+    raise InvalidParameterError, ERRORS::INVALID_STATE unless STATE_CREATOR.include?(state_name)
 
     STATE_CREATOR[state_name].call(@weather)
   end

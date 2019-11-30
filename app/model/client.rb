@@ -10,15 +10,15 @@ class Client
   def initialize(data = {})
     @id = data[:id]
 
-    raise InvalidParameterError, 'invalid_username' unless valid_username?(data[:username])
+    raise InvalidParameterError, ERRORS::INVALID_USERNAME unless valid_username?(data[:username])
 
     @name = data[:username]
 
-    raise InvalidParameterError, 'invalid_phone' unless valid_phone?(data[:phone])
+    raise InvalidParameterError, ERRORS::INVALID_PHONE unless valid_phone?(data[:phone])
 
     @phone = data[:phone]
 
-    raise InvalidParameterError, 'invalid_address' unless valid_address?(data[:address])
+    raise InvalidParameterError, ERRORS::INVALID_ADDRESS unless valid_address?(data[:address])
 
     @address = data[:address]
     @updated_on = data[:updated_on]

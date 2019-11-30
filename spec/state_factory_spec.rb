@@ -32,7 +32,7 @@ describe StateFactory do
     end
 
     it 'should raise InvalidaParameterError class when I pass "invalid_state"' do
-      expect { factory.create_for('invalid_name') }.to raise_error('invalid_state')
+      expect { factory.create_for('invalid_name') }.to raise_error(ERRORS::INVALID_STATE)
     end
 
     it 'should return CancelledState when I pass "cancelado"' do

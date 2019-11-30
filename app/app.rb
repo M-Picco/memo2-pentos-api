@@ -15,6 +15,7 @@ require_relative 'errors/client_has_no_orders_error'
 require_relative 'errors/failed_save_operation_error'
 require_relative 'errors/already_registered_error'
 require_relative 'errors/domain_error'
+require_relative 'errors/error_messages'
 require_relative 'states/state_factory'
 require_relative 'states/delivered_state'
 
