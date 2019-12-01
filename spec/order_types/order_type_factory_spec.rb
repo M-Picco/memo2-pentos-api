@@ -16,5 +16,10 @@ describe OrderTypeFactory do
       return_type = factory.create_for('menu_pareja')
       expect(return_type).to be_a(CoupleOrderType)
     end
+
+    it 'should return FamilyOrderType class when I pass "menu_familiar"' do
+      return_type = factory.create_for('menu_familiar')
+      expect(return_type).to be_a(FamilyOrderType)
+    end
   end
 end
