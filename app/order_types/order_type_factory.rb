@@ -5,8 +5,8 @@ class OrderTypeFactory
                   ORDERTYPES::COUPLE_ORDER => CoupleOrderType,
                   ORDERTYPES::FAMILY_ORDER => FamilyOrderType }.freeze
 
-  def create_for(type_name = '')
-    raise InvalidParameterError, ERRORS::INVALID_MENU if type_name == ''
+  def create_for(type_name)
+    raise InvalidParameterError, ERRORS::INVALID_MENU unless ORDER_TYPES.key?(type_name)
 
     ORDER_TYPES[type_name].new
   end

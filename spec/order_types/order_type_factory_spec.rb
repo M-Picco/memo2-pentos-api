@@ -22,8 +22,13 @@ describe OrderTypeFactory do
       expect(return_type).to be_a(FamilyOrderType)
     end
 
-    it 'fails to create an order without a type' do
-      expect { factory.create_for }
+    it 'fails to create an order type without a type name' do
+      expect { factory.create_for(nil) }
+        .to raise_error(ERRORS::INVALID_MENU)
+    end
+
+    it 'fails to create an order type with an invalid type name' do
+      expect { factory.create_for('menu_invalido') }
         .to raise_error(ERRORS::INVALID_MENU)
     end
   end
