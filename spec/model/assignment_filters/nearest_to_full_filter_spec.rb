@@ -12,14 +12,15 @@ describe NearestToFullFilter do
     Client.new(username: 'jperez', phone: '4123-4123',
                address: 'Av Paseo Colón 840')
   end
-  # rubocop:disable RSpec/ExampleLength
 
-  it 'should filters Deliveries that are nearest to full their bag' do
+  before(:each) do
     DeliveryRepository.new.save(delivery)
     DeliveryRepository.new.save(delivery2)
     delivery.bag = DeliveryBag.new
     delivery2.bag = DeliveryBag.new
+  end
 
+  it 'should filters Deliveries that are nearest to full their bag' do
     delivery.bag.load_orders_from_collection([order])
 
     # return array of Deliveries
@@ -28,15 +29,9 @@ describe NearestToFullFilter do
   end
 
   it 'should called DeliveredCount class' do
-    DeliveryRepository.new.save(delivery)
-    DeliveryRepository.new.save(delivery2)
-    delivery.bag = DeliveryBag.new
-    delivery2.bag = DeliveryBag.new
-
     delivery.bag.load_orders_from_collection([order])
 
     expect(filter.next_filter).to receive(:run).with([delivery], order)
     filter.run([delivery, delivery2], order)
   end
-  # rubocop:enable RSpec/ExampleLength
 end

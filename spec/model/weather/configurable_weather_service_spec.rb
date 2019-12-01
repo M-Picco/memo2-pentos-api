@@ -1,5 +1,3 @@
-require_relative '../app/model/weather/configurable_weather_service'
-
 describe ConfigurableWeatherService do
   subject(:service) { described_class.new }
 

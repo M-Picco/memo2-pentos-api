@@ -1,5 +1,4 @@
 require 'spec_helper'
-require_relative '../app/model/weather/weather_factory'
 
 describe WeatherFactory do
   subject(:factory) { described_class.new }

@@ -1,5 +1,4 @@
 require 'spec_helper'
-require_relative '../../app/order_types/family_order'
 
 describe FamilyOrderType do
   subject(:type) { described_class.new }

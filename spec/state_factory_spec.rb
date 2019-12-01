@@ -1,9 +1,4 @@
 require 'spec_helper'
-require_relative '../app/states/state_factory'
-require_relative '../app/states/recieved_state'
-require_relative '../app/states/inpreparation_state'
-require_relative '../app/states/ondelivery_state'
-require_relative '../app/states/delivered_state'
 
 describe StateFactory do
   subject(:factory) { described_class.new(weather) }
