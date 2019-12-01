@@ -1,10 +1,11 @@
-require_relative './individual_order'
+require_relative './order_type_names'
 
 class OrderTypeFactory
-  def create_for(type_name)
-    return CoupleOrderType.new if type_name == 'menu_pareja'
-    return FamilyOrderType.new if type_name == 'menu_familiar'
+  ORDER_TYPES = { ORDERTYPES::INDIVIDUAL_ORDER => IndividualOrderType,
+                  ORDERTYPES::COUPLE_ORDER => CoupleOrderType,
+                  ORDERTYPES::FAMILY_ORDER => FamilyOrderType }.freeze
 
-    IndividualOrderType.new
+  def create_for(type_name)
+    ORDER_TYPES[type_name].new
   end
 end
