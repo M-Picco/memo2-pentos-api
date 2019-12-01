@@ -21,5 +21,10 @@ describe OrderTypeFactory do
       return_type = factory.create_for('menu_familiar')
       expect(return_type).to be_a(FamilyOrderType)
     end
+
+    it 'fails to create an order without a type' do
+      expect { factory.create_for }
+        .to raise_error(ERRORS::INVALID_MENU)
+    end
   end
 end
