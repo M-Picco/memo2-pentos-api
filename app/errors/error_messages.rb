@@ -10,7 +10,7 @@ module ERRORS
 
   ORDER_NOT_DELIVERED = 'order_not_delivered'.freeze
   ALREADY_REGISTERED = 'already_registered'.freeze
-  CLIENT_HAS_NO_ORDERS = 'there are no orders'.freeze
+  CLIENT_HAS_NO_ORDERS = 'order not exist'.freeze
   NOT_REGISTERED = 'not_registered'.freeze
   NO_DELIVERY_AVAILABLE = 'there are no deliveries available'.freeze
   NOT_CANCELLABLE = 'cannot_cancel'.freeze

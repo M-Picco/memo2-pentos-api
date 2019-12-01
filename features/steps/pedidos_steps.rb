@@ -89,7 +89,7 @@ end
 Entonces('obtiene un mensaje indicando que no realizo pedidos') do
   expect(@response.status).to eq(400)
   parsed_response = JSON.parse(@response.body)
-  expect(parsed_response['error']).to eq('there are no orders')
+  expect(parsed_response['error']).to eq('order not exist')
 end
 
 Dado('el estado cambio a {string}') do |new_status|
