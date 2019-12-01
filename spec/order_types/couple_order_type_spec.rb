@@ -14,10 +14,10 @@ describe CoupleOrderType do
   describe 'create' do
     # rubocop:disable RSpec/MultipleExpectations
     it 'created with correct attributes values' do
-      expect(type.type_name).to eq 'menu_pareja'
-      expect(type.size).to eq 2
-      expect(type.cost).to eq 175
-      expect(type.base_time).to eq 15
+      expect(type.type_name).to eq ORDERTYPES::COUPLE_ORDER
+      expect(type.size).to eq ORDERSIZE::COUPLE_ORDER
+      expect(type.cost).to eq ORDERCOSTS::COUPLE_ORDER
+      expect(type.base_time).to eq ORDERBASETIME::COUPLE_ORDER
     end
     # rubocop:enable RSpec/MultipleExpectations
   end

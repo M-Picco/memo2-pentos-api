@@ -14,10 +14,10 @@ describe FamilyOrderType do
   describe 'create' do
     # rubocop:disable RSpec/MultipleExpectations
     it 'created with correct attributes values' do
-      expect(type.type_name).to eq 'menu_familiar'
-      expect(type.size).to eq 3
-      expect(type.cost).to eq 250
-      expect(type.base_time).to eq 20
+      expect(type.type_name).to eq ORDERTYPES::FAMILY_ORDER
+      expect(type.size).to eq ORDERSIZE::FAMILY_ORDER
+      expect(type.cost).to eq ORDERCOSTS::FAMILY_ORDER
+      expect(type.base_time).to eq ORDERBASETIME::FAMILY_ORDER
     end
     # rubocop:enable RSpec/MultipleExpectations
   end
