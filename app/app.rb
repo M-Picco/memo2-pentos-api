@@ -17,6 +17,7 @@ require_relative 'errors/domain_error'
 require_relative 'errors/error_messages'
 require_relative 'states/state_factory'
 require_relative 'states/delivered_state'
+require_relative 'order_types/order_type_factory'
 
 API_KEY = ENV['API_KEY'] || 'zaraza'
 
@@ -56,7 +57,8 @@ post '/client/:username/order' do
   body = JSON.parse(request.body.read)
 
   client = ClientRepository.new.find_by_name(params['username'])
-  order = Order.new(client: client, type: body['order'])
+  type =  OrderTypeFactory.new.create_for(body['order'])
+  order = Order.new(client: client, type: type)
 
   OrderRepository.new.save(order)
 

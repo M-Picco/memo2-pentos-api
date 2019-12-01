@@ -8,6 +8,7 @@ require_relative '../states/ondelivery_state'
 require_relative '../states/delivered_state'
 require_relative '../states/cancelled_state'
 require_relative '../states/state_names'
+require_relative '../order_types/order_type_factory'
 
 class Order
   attr_reader :state, :type, :rating
@@ -20,16 +21,6 @@ class Order
 
   CANCELLABLE_STATES = [STATES::RECEIVED, STATES::IN_PREPARATION].freeze
 
-  ORDERS_SIZE = { 'menu_individual' => 1,
-                  'menu_pareja' => 2,
-                  'menu_familiar' => 3 }.freeze
-
-  VALID_TYPES = { 'menu_individual' => 100, 'menu_pareja' => 175, 'menu_familiar' => 250 }.freeze
-
-  BASE_TIME = { 'menu_individual' => 10,
-                'menu_pareja' => 15,
-                'menu_familiar' => 20 }.freeze
-
   MIN_RATING = 1
   MAX_RATING = 5
 
@@ -40,16 +31,18 @@ class Order
     raise InvalidParameterError, ERRORS::INVALID_CLIENT if data[:client].nil?
 
     @client = data[:client]
+
     @updated_on = data[:updated_on]
     @created_on = data[:created_on]
     @state = data[:state] || RecievedState.new
     @rating = data[:rating]
     @assigned_to = data[:assigned_to]
-
-    raise InvalidParameterError, ERRORS::INVALID_MENU unless VALID_TYPES.key?(data[:type])
-
     @weather = data[:weather]
+
+    raise InvalidParameterError, ERRORS::INVALID_MENU if data[:type].nil?
+
     @type = data[:type]
+
     @commission = data[:commission]
     @delivered_on = data[:delivered_on]
     @on_delivery_time = data[:on_delivery_time]
@@ -70,11 +63,11 @@ class Order
   end
 
   def size
-    ORDERS_SIZE[@type]
+    @type.size
   end
 
   def cost
-    VALID_TYPES[@type]
+    @type.cost
   end
 
   def rating=(new_rating)
@@ -99,7 +92,7 @@ class Order
   end
 
   def base_time
-    BASE_TIME[@type]
+    @type.base_time
   end
 
   def duration

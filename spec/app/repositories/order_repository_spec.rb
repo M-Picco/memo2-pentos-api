@@ -28,14 +28,14 @@ describe OrderRepository do
   end
 
   it 'New Order' do
-    order = Order.new(client: client, type: 'menu_individual')
+    order = Order.new(client: client, type: IndividualOrderType.new)
     repository.save(order)
     expect(order.id).to be > 0
   end
 
   describe 'find by id' do
     it 'finds an order by its id' do
-      order = Order.new(client: client, type: 'menu_individual')
+      order = Order.new(client: client, type: IndividualOrderType.new)
       repository.save(order)
 
       reloaded_order = repository.find_by_id(order.id)
@@ -52,7 +52,7 @@ describe OrderRepository do
 
   describe 'find by username' do
     it 'finds an order for an existing username' do
-      order = Order.new(client: client, type: 'menu_individual')
+      order = Order.new(client: client, type: IndividualOrderType.new)
       repository.save(order)
 
       reloaded_order = repository.find_for_user(order.id, client.name)
@@ -62,7 +62,7 @@ describe OrderRepository do
     end
 
     it 'raises OrderNotFoundError if the order does not exist' do
-      order = Order.new(client: client, type: 'menu_individual')
+      order = Order.new(client: client, type: IndividualOrderType.new)
       repository.save(order)
 
       expect { repository.find_for_user(order.id + 1, client.name) }
@@ -73,7 +73,7 @@ describe OrderRepository do
   describe 'request order' do
     it 'given a client with orders, it should be true if
         I ask that the client has orders' do
-      order = Order.new(client: client, type: 'menu_individual')
+      order = Order.new(client: client, type: IndividualOrderType.new)
       repository.save(order)
       expect(repository.has_orders?(client.name)).to be(true)
     end
@@ -84,14 +84,14 @@ describe OrderRepository do
     end
 
     it 'should be able to find client order id' do
-      order = Order.new(client: client, type: 'menu_individual')
+      order = Order.new(client: client, type: IndividualOrderType.new)
       repository.save(order)
       reloaded_order = repository.find_for_user(order.id, client.name)
       expect(reloaded_order.id).to be(order.id)
     end
 
     it 'should not be able to find another client order id' do
-      order = Order.new(client: client, type: 'menu_individual')
+      order = Order.new(client: client, type: IndividualOrderType.new)
       repository.save(order)
       expect { repository.find_for_user(order.id, 'antoher_client') }
         .to raise_error(OrderNotFoundError)
@@ -101,7 +101,7 @@ describe OrderRepository do
   # rubocop:disable RSpec/ExampleLength
   describe 'change rating' do
     it 'changes the rating of an order in delivered state' do
-      order = Order.new(client: client, type: 'menu_individual')
+      order = Order.new(client: client, type: IndividualOrderType.new)
       order.state = DeliveredState.new
       repository.save(order)
 
@@ -116,7 +116,7 @@ describe OrderRepository do
 
   describe 'delivery assignment' do
     it 'should persist the assignment' do
-      order = Order.new(client: client, type: 'menu_individual')
+      order = Order.new(client: client, type: IndividualOrderType.new)
       repository.save(order)
 
       delivery = Delivery.new(username: 'pepemoto')
@@ -133,7 +133,7 @@ describe OrderRepository do
 
   describe 'today orders' do
     it 'should return an order made today' do
-      order = Order.new(client: client, type: 'menu_individual')
+      order = Order.new(client: client, type: IndividualOrderType.new)
       repository.save(order)
 
       orders = repository.orders_created_on(Date.today)
@@ -142,7 +142,7 @@ describe OrderRepository do
     end
 
     it 'should not return an order if i asked for yesterday orders' do
-      order = Order.new(client: client, type: 'menu_individual')
+      order = Order.new(client: client, type: IndividualOrderType.new)
       repository.save(order)
 
       orders = repository.orders_created_on(Date.today - 1)
@@ -151,7 +151,7 @@ describe OrderRepository do
     end
 
     it 'should not return a non delivered order made today' do
-      order = Order.new(client: client, type: 'menu_individual')
+      order = Order.new(client: client, type: IndividualOrderType.new)
       repository.save(order)
 
       orders = repository.delivered_orders_created_on(Date.today)
@@ -160,7 +160,7 @@ describe OrderRepository do
     end
 
     it 'should return a delivered order made today' do
-      order = Order.new(client: client, type: 'menu_individual')
+      order = Order.new(client: client, type: IndividualOrderType.new)
       order.state = DeliveredState.new
       repository.save(order)
 
@@ -178,7 +178,7 @@ describe OrderRepository do
     end
 
     it 'should return orders if there are orders' do
-      order = Order.new(client: client, type: 'menu_individual')
+      order = Order.new(client: client, type: IndividualOrderType.new)
       order.state = DeliveredState.new
       repository.save(order)
 
@@ -188,7 +188,7 @@ describe OrderRepository do
     end
 
     it 'should not return orders if the client does not have orders' do
-      order = Order.new(client: client, type: 'menu_individual')
+      order = Order.new(client: client, type: IndividualOrderType.new)
       order.state = DeliveredState.new
       repository.save(order)
 
@@ -197,11 +197,11 @@ describe OrderRepository do
     end
 
     it "should return only the client's orders" do
-      order = Order.new(client: client, type: 'menu_individual')
+      order = Order.new(client: client, type: IndividualOrderType.new)
       order.state = DeliveredState.new
       repository.save(order)
 
-      order_two = Order.new(client: client_two, type: 'menu_familiar')
+      order_two = Order.new(client: client_two, type: FamilyOrderType.new)
       order_two.state = DeliveredState.new
       repository.save(order_two)
 
@@ -212,7 +212,7 @@ describe OrderRepository do
     end
 
     it 'should not return recieved order' do
-      order = Order.new(client: client, type: 'menu_familiar')
+      order = Order.new(client: client, type: FamilyOrderType.new)
       repository.save(order)
 
       orders = repository.historical_orders(client.name)
@@ -221,7 +221,7 @@ describe OrderRepository do
     end
 
     it 'should not return in preparation order' do
-      order = Order.new(client: client, type: 'menu_familiar')
+      order = Order.new(client: client, type: FamilyOrderType.new)
       order.state = InPreparationState.new
       repository.save(order)
 
@@ -231,7 +231,7 @@ describe OrderRepository do
     end
 
     it 'should not return on delivery order' do
-      order = Order.new(client: client, type: 'menu_familiar')
+      order = Order.new(client: client, type: FamilyOrderType.new)
       order.state = OnDeliveryState.new(weather)
       repository.save(order)
 
@@ -243,7 +243,7 @@ describe OrderRepository do
 
   describe 'delivery bag' do
     let(:order) do
-      Order.new(client: client, type: 'menu_individual',
+      Order.new(client: client, type: IndividualOrderType.new,
                 assigned_to: delivery.username)
     end
 
@@ -263,7 +263,7 @@ describe OrderRepository do
 
   describe 'change commission' do
     it 'changes the commission of an order in delivered state' do
-      order = Order.new(client: client, type: 'menu_individual')
+      order = Order.new(client: client, type: IndividualOrderType.new)
       order.change_state(OnDeliveryState.new(weather))
       repository.save(order)
 
@@ -275,9 +275,9 @@ describe OrderRepository do
 
   describe 'last orders' do
     it 'returns one delivered order of the same type' do
-      order = Order.new(client: client, type: 'menu_individual')
+      order = Order.new(client: client, type: IndividualOrderType.new)
       order.change_state(DeliveredState.new)
-      order2 = Order.new(client: client, type: 'menu_individual')
+      order2 = Order.new(client: client, type: IndividualOrderType.new)
       order2.change_state(DeliveredState.new)
       repository.save(order)
       repository.save(order2)
@@ -287,9 +287,9 @@ describe OrderRepository do
     end
 
     it 'returns two delivered order of the same type' do
-      order = Order.new(client: client, type: 'menu_individual')
+      order = Order.new(client: client, type: IndividualOrderType.new)
       order.change_state(DeliveredState.new)
-      order2 = Order.new(client: client, type: 'menu_individual')
+      order2 = Order.new(client: client, type: IndividualOrderType.new)
       order2.change_state(DeliveredState.new)
       repository.save(order)
       repository.save(order2)
@@ -299,9 +299,9 @@ describe OrderRepository do
     end
 
     it 'returns the last delivered order of the same type' do
-      order = Order.new(client: client, type: 'menu_individual')
+      order = Order.new(client: client, type: IndividualOrderType.new)
       order.change_state(DeliveredState.new)
-      order2 = Order.new(client: client, type: 'menu_individual')
+      order2 = Order.new(client: client, type: IndividualOrderType.new)
       order2.change_state(DeliveredState.new)
       repository.save(order)
       repository.save(order2)
@@ -316,7 +316,7 @@ describe OrderRepository do
       delivery = Delivery.new(username: 'pepemoto')
       DeliveryRepository.new.save(delivery)
 
-      order = Order.new(client: client, type: 'menu_individual')
+      order = Order.new(client: client, type: IndividualOrderType.new)
       date = Time.now.round
       order.change_state(OnDeliveryState.new(weather))
       order.on_delivery_time = date + (30 * 60)
@@ -327,7 +327,7 @@ describe OrderRepository do
       delivery = Delivery.new(username: 'pepemoto')
       DeliveryRepository.new.save(delivery)
 
-      order = Order.new(client: client, type: 'menu_individual')
+      order = Order.new(client: client, type: IndividualOrderType.new)
       order.change_state(OnDeliveryState.new(weather))
       order.on_delivery_time = date
 
@@ -342,7 +342,7 @@ describe OrderRepository do
     let(:date) { Time.now.round }
 
     it 'should persist on_delivery time' do
-      order = Order.new(client: client, type: 'menu_individual')
+      order = Order.new(client: client, type: IndividualOrderType.new)
       date = Time.now.round
       order.on_delivery_time = date
       repository.save(order)

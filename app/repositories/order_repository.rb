@@ -6,6 +6,7 @@ require_relative '../errors/delivery_has_no_orders_error'
 require_relative '../states/state_factory'
 require_relative '../states/delivered_state'
 require_relative '../states/ondelivery_state'
+require_relative '../order_types/order_type_factory'
 
 class OrderRepository < BaseRepository
   self.table_name = :orders
@@ -70,6 +71,7 @@ class OrderRepository < BaseRepository
 
   protected
 
+  # rubocop:disable Metrics/AbcSize
   def load_object(a_record)
     client = ClientRepository.new.find_by_name(a_record[:client_username])
 
@@ -77,22 +79,25 @@ class OrderRepository < BaseRepository
 
     weather = commission.weather
     state = StateFactory.new(weather).create_for(a_record[:state])
+    type = OrderTypeFactory.new.create_for(a_record[:type])
 
     relations_data = {
       client: client,
       commission: commission,
-      state: state
+      state: state,
+      type: type
     }
 
     Order.new(a_record.merge(relations_data))
   end
+  # rubocop:enable Metrics/AbcSize
 
   def changeset(order)
     {
       client_username: order.client.name,
       state: order.state.state_name,
       rating: order.rating,
-      type: order.type,
+      type: order.type.type_name,
       assigned_to: order.assigned_to,
       commission: order.commission&.id,
       delivered_on: order.delivered_on,

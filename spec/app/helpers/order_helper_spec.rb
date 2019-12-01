@@ -6,7 +6,7 @@ describe OrderHelper do
     client = Client.new(username: 'jperez', phone: '4123-4123',
                         address: 'Av Paseo Colón 840')
     ClientRepository.new.save(client)
-    order = Order.new(client: client, type: 'menu_individual')
+    order = Order.new(client: client, type: IndividualOrderType.new)
     OrderRepository.new.save(order)
 
     OrderRepository.new.find_by_id(order.id)
@@ -28,7 +28,7 @@ describe OrderHelper do
     it 'should return hash with menu information' do
       order_parse = helper.parse(order)
       expect(order_parse.key?(:menu)).to eq true
-      expect(order_parse[:menu]).to eq order.type
+      expect(order_parse[:menu]).to eq order.type.type_name
     end
 
     it 'should return hash with assigned information' do
