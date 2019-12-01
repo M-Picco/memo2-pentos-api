@@ -1,10 +1,4 @@
 require 'spec_helper'
-require_relative '../app/model/delivery_assigner'
-require_relative '../app/repositories/order_repository.rb'
-require_relative '../app/repositories/client_repository.rb'
-require_relative '../app/model/order'
-require_relative '../app/model/client'
-require_relative '../app/states/waiting_state'
 require 'date'
 require 'byebug'
 

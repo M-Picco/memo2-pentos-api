@@ -1,5 +1,4 @@
 require 'spec_helper'
-require_relative '../../app/order_types/couple_order'
 
 describe CoupleOrderType do
   subject(:type) { described_class.new }

@@ -1,5 +1,4 @@
 require 'spec_helper'
-require_relative '../../app/order_types/individual_order'
 
 describe IndividualOrderType do
   subject(:type) { described_class.new }

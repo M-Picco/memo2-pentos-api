@@ -1,7 +1,4 @@
 require 'spec_helper'
-require_relative '../../app/order_types/order_type_factory'
-require_relative '../../app/order_types/individual_order'
-require_relative '../../app/order_types/couple_order'
 
 describe OrderTypeFactory do
   subject(:factory) { described_class.new }

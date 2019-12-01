@@ -1,5 +1,4 @@
 require 'spec_helper'
-require_relative '../app/model/weather/rainy_weather'
 
 describe RainyWeather do
   subject(:weather) { described_class.new }

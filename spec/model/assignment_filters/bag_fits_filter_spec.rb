@@ -12,30 +12,23 @@ describe BagFitsFilter do
     Client.new(username: 'jperez', phone: '4123-4123',
                address: 'Av Paseo Colón 840')
   end
-  let(:weather) { NonRainyWeather.new }
-  # rubocop:disable RSpec/ExampleLength
 
-  it 'should filters Deliveries that theirs bag fits the order' do
+  before(:each) do
     DeliveryRepository.new.save(delivery)
     DeliveryRepository.new.save(delivery2)
-    order.state = OnDeliveryState.new(weather)
+    order.state = OnDeliveryState.new(NonRainyWeather.new)
     ClientRepository.new.save(client)
     OrderRepository.new.save(order)
+  end
 
+  it 'should filters Deliveries that theirs bag fits the order' do
     # return array of Deliveries
     delivery_selected = filter.apply([delivery, delivery2], order)
     expect(delivery_selected.first.id).to eq delivery2.id
   end
 
   it 'should called NearestFullFilter class' do
-    DeliveryRepository.new.save(delivery)
-    DeliveryRepository.new.save(delivery2)
-    order.state = OnDeliveryState.new(weather)
-    ClientRepository.new.save(client)
-    OrderRepository.new.save(order)
-
     expect(filter.next_filter).to receive(:run).with([delivery2], order)
     filter.run([delivery, delivery2], order)
   end
-  # rubocop:enable RSpec/ExampleLength
 end
