@@ -1,4 +1,8 @@
 require_relative './order_type_names'
+require_relative './individual_order'
+require_relative './couple_order'
+require_relative './family_order'
+require_relative '../errors/error_messages'
 
 class OrderTypeFactory
   ORDER_TYPES = { ORDERTYPES::INDIVIDUAL_ORDER => IndividualOrderType,

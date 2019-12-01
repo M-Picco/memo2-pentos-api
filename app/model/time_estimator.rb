@@ -4,7 +4,7 @@ class TimeEstimator
 
   def estimate(order, weather)
     repository = OrderRepository.new
-    last_orders = repository.last_delivered_orders(order.type, TOP_ORDERS)
+    last_orders = repository.last_delivered_orders(order.type.type_name, TOP_ORDERS)
 
     return basic_estimation(order, weather) if last_orders.size < TOP_ORDERS
 

@@ -11,45 +11,45 @@ describe TimeEstimator do
   end
 
   it 'should estimate 20 minutes when order type is menu_individual' do
-    order = Order.new(client: client, type: 'menu_individual')
+    order = Order.new(client: client, type: IndividualOrderType.new)
     expect(estimator.estimate(order, non_rainy_weather)).to eq(20)
   end
 
   it 'should estimate 25 minutes when order type is menu_pareja' do
-    order = Order.new(client: client, type: 'menu_pareja')
+    order = Order.new(client: client, type: CoupleOrderType.new)
     expect(estimator.estimate(order, non_rainy_weather)).to eq(25)
   end
 
   it 'should estimate 30 minutes when order type is menu_familiar' do
-    order = Order.new(client: client, type: 'menu_familiar')
+    order = Order.new(client: client, type: FamilyOrderType.new)
     expect(estimator.estimate(order, non_rainy_weather)).to eq(30)
   end
 
   it 'should estimate 25 minutes when order type is menu_individual and its raining' do
-    order = Order.new(client: client, type: 'menu_individual')
+    order = Order.new(client: client, type: IndividualOrderType.new)
     expect(estimator.estimate(order, rainy_weather)).to eq(25)
   end
 
   it 'should be 30 minutes when order type is menu_pareja and its raining' do
-    order = Order.new(client: client, type: 'menu_pareja')
+    order = Order.new(client: client, type: CoupleOrderType.new)
     expect(estimator.estimate(order, rainy_weather)).to eq(30)
   end
 
   it 'should be 35 minutes when order type is menu_familiar and its raining' do
-    order = Order.new(client: client, type: 'menu_familiar')
+    order = Order.new(client: client, type: FamilyOrderType.new)
     expect(estimator.estimate(order, rainy_weather)).to eq(35)
   end
 
   # rubocop:disable RSpec/ExampleLength
   it 'should return the avg of the 3 last orders' do
     ClientRepository.new.save(client)
-    order = Order.new(client: client, type: 'menu_individual')
+    order = Order.new(client: client, type: IndividualOrderType.new)
     order.change_state(DeliveredState.new)
 
-    order2 = Order.new(client: client, type: 'menu_individual')
+    order2 = Order.new(client: client, type: IndividualOrderType.new)
     order2.change_state(DeliveredState.new)
 
-    order3 = Order.new(client: client, type: 'menu_individual')
+    order3 = Order.new(client: client, type: IndividualOrderType.new)
     order3.change_state(DeliveredState.new)
 
     repository.save(order)
@@ -68,7 +68,7 @@ describe TimeEstimator do
     repository.save(reloaded_order2)
     repository.save(reloaded_order3)
 
-    new_order = Order.new(client: client, type: 'menu_individual')
+    new_order = Order.new(client: client, type: IndividualOrderType.new)
     expect(estimator.estimate(new_order, rainy_weather)).to eq(10)
   end
   # rubocop:enable RSpec/ExampleLength

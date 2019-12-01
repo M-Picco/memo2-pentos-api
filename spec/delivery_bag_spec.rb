@@ -8,9 +8,9 @@ describe DeliveryBag do
                address: 'Av Paseo Colón 840')
   end
 
-  let(:order_familiar) { Order.new(client: client, type: 'menu_familiar') }
-  let(:order_pareja) { Order.new(client: client, type: 'menu_pareja') }
-  let(:order_indivual) { Order.new(client: client, type: 'menu_individual') }
+  let(:order_familiar) { Order.new(client: client, type: FamilyOrderType.new) }
+  let(:order_pareja) { Order.new(client: client, type: CoupleOrderType.new) }
+  let(:order_indivual) { Order.new(client: client, type: IndividualOrderType.new) }
 
   describe 'model' do
     it { is_expected.to respond_to(:size) }

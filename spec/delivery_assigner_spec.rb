@@ -9,7 +9,7 @@ require 'date'
 require 'byebug'
 
 describe DeliveryAssigner do
-  let(:order) { Order.new(client: client, type: 'menu_individual') }
+  let(:order) { Order.new(client: client, type: IndividualOrderType.new) }
   let(:client) do
     Client.new(username: 'jperez', phone: '4123-4123',
                address: 'Av Paseo Colón 840')
@@ -43,7 +43,7 @@ describe DeliveryAssigner do
   it 'should assign the delivery with less delivered orders' do
     delivery = Delivery.new(username: 'pepemoto')
     delivery2 = Delivery.new(username: 'pepeauto')
-    order = Order.new(client: client, type: 'menu_individual',
+    order = Order.new(client: client, type: IndividualOrderType.new,
                       assigned_to: delivery.username)
     order.state = DeliveredState.new
 
@@ -68,7 +68,7 @@ describe DeliveryAssigner do
     order.change_state(OnDeliveryState.new(weather))
 
     orders_repository.save(order)
-    new_order = Order.new(client: client, type: 'menu_familiar')
+    new_order = Order.new(client: client, type: FamilyOrderType.new)
 
     sorting_hat.assign_to(new_order)
     expect(new_order.assigned_to).not_to eq(order.assigned_to)

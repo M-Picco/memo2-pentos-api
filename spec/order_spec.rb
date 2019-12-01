@@ -6,7 +6,10 @@ require_relative '../app/states/ondelivery_state'
 require_relative '../app/states/delivered_state'
 
 describe Order do
-  subject(:order) { described_class.new(client: client, type: 'menu_individual') }
+  subject(:order) do
+    described_class.new(client: client,
+                        type: IndividualOrderType.new)
+  end
 
   let(:weather) { NonRainyWeather.new }
 
@@ -29,34 +32,29 @@ describe Order do
 
   describe 'type' do
     it 'can be created with a menu_individual type' do
-      order = described_class.new(client: client, type: 'menu_individual')
-      expect(order.type).to eq('menu_individual')
+      order = described_class.new(client: client, type: IndividualOrderType.new)
+      expect(order.type.type_name).to eq('menu_individual')
     end
 
     it 'fails to create an order without a type' do
       expect { described_class.new(client: client) }
         .to raise_error(ERRORS::INVALID_MENU)
     end
-
-    it 'fails to create an order with an invalid type' do
-      expect { described_class.new(client: client, type: 'menu_invalido') }
-        .to raise_error(ERRORS::INVALID_MENU)
-    end
   end
 
   describe 'cost' do
     it 'should be 100 if is a menu_individual type' do
-      order = described_class.new(client: client, type: 'menu_individual')
+      order = described_class.new(client: client, type: IndividualOrderType.new)
       expect(order.cost).to eq(100)
     end
 
     it 'should be 175 if is a menu_parejas type' do
-      order = described_class.new(client: client, type: 'menu_pareja')
+      order = described_class.new(client: client, type: CoupleOrderType.new)
       expect(order.cost).to eq(175)
     end
 
     it 'should be 250 if is a menu_familiar type' do
-      order = described_class.new(client: client, type: 'menu_familiar')
+      order = described_class.new(client: client, type: FamilyOrderType.new)
       expect(order.cost).to eq(250)
     end
   end
@@ -87,7 +85,8 @@ describe Order do
     it 'initializes with a state received through constructor' do
       delivered_state = StateFactory.new(weather).create_for('entregado')
 
-      order = described_class.new(client: client, type: 'menu_individual', state: delivered_state)
+      order = described_class.new(client: client, type: IndividualOrderType.new,
+                                  state: delivered_state)
 
       expect(order.state).to be_a(DeliveredState)
     end
@@ -184,17 +183,17 @@ describe Order do
 
   describe 'base time' do
     it 'should be 10 minutes when order type is menu_individual' do
-      order = described_class.new(client: client, type: 'menu_individual')
+      order = described_class.new(client: client, type: IndividualOrderType.new)
       expect(order.base_time).to eq(10)
     end
 
     it 'should be 15 minutes when order type is menu_pareja' do
-      order = described_class.new(client: client, type: 'menu_pareja')
+      order = described_class.new(client: client, type: CoupleOrderType.new)
       expect(order.base_time).to eq(15)
     end
 
     it 'should be 20 minutes when order type is menu_individual' do
-      order = described_class.new(client: client, type: 'menu_familiar')
+      order = described_class.new(client: client, type: FamilyOrderType.new)
       expect(order.base_time).to eq(20)
     end
   end

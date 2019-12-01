@@ -10,7 +10,7 @@ describe WaitingTimeFilter do
                address: 'Av Paseo Colón 840')
   end
   let(:order) do
-    Order.new(client: client, type: 'menu_pareja',
+    Order.new(client: client, type: CoupleOrderType.new,
               assigned_to: delivery.username)
   end
   # rubocop:disable RSpec/ExampleLength

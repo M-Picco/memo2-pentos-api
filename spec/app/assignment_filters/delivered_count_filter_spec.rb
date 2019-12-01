@@ -5,7 +5,8 @@ describe DeliveredCountFilter do
   let(:delivery) { Delivery.new(username: 'pepemoto') }
   let(:delivery2) { Delivery.new(username: 'pepeauto') }
   let(:order) do
-    Order.new(client: client, type: 'menu_familiar',
+    type = OrderTypeFactory.new.create_for('menu_familiar')
+    Order.new(client: client, type: type,
               assigned_to: delivery.username)
   end
   let(:client) do
